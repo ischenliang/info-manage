@@ -10,6 +10,13 @@
   静态资源中间件。
 + koa-jwt
   提供路由权限控制的功能。
++ koa2-cors
+  koa配置跨域处理
++ koa-body
+  能够接收formData数据
+  + koa-bodyparser
+    解析body的中间件，比方说你通过post来传递表单，json数据，或者上传文件，在koa中是不容易获取的，通过koa-bodyparser解析之后，在koa中this.body就能直接获取到数据。配置后就可以直接使用`ctx.request.body获取请求体`
+  + koa-better-body
 + nodemon
   Nodemon 是一款非常实用的工具，用来监控你 node.js 源代码的任何变化和自动重启你的服务器。 Nodemon 是一款完美的开发工具，可以使用 npm 安装。
 ## 数据库设计

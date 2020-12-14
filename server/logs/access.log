@@ -1,0 +1,8 @@
+[2020-12-14T16:56:24.328] [INFO] access - ::1 - - "POST /api/login HTTP/1.1" 200 220 "" "PostmanRuntime/7.26.8"
+[2020-12-14T16:57:14.316] [INFO] access - ::1 - - "POST /api/login HTTP/1.1" 200 220 "" "PostmanRuntime/7.26.8"
+[2020-12-14T16:58:01.049] [INFO] access - ::1 - - "GET /api/login HTTP/1.1" 404 - "" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+[2020-12-14T16:58:01.315] [INFO] access - ::1 - - "GET /favicon.ico HTTP/1.1" 401 53 "http://localhost:3000/api/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+[2020-12-14T16:58:03.696] [INFO] access - ::1 - - "GET /api/login HTTP/1.1" 404 - "" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+[2020-12-14T16:58:03.862] [INFO] access - ::1 - - "GET /favicon.ico HTTP/1.1" 401 53 "http://localhost:3000/api/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+[2020-12-14T17:01:15.673] [INFO] access - ::1 - - "POST /api/login HTTP/1.1" 200 220 "" "PostmanRuntime/7.26.8"
+[2020-12-14T17:03:21.647] [INFO] access - ::1 - - "POST /api/login HTTP/1.1" 200 220 "" "PostmanRuntime/7.26.8"

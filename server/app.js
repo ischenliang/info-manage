@@ -5,19 +5,45 @@ const path = require('path')
 const static = require('koa-static') // 静态资源中间件
 const jwt = require('koa-jwt') // 权限控制
 const JWT = require('jsonwebtoken') // token生成器
+const cors = require('koa2-cors')
+const bodyparser = require('koa-body')
+const app = new koa()
 
 // 导入自定义文件
 const config = require('./config/app.config')
+const { nextTick } = require('process')
 
-const app = new koa()
+
+
 /**
  * 中间件使用
 */
 // 静态资源中间件
 app.use(static(path.join(__dirname, 'public')))
 // 路由权限控制中间件
-const notauth = ['/api/login']
+const notauth = ['/api/login', '/css/**']
 app.use(jwt({ secret: 'jwt_secret', passthrough: true }).unless({ path: notauth }))
+// 配置跨域
+app.use(cors({
+  credentials: true,
+  allowMethods: ['GET', 'POST', 'DELETE', 'PUT'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept']
+}))
+// 解析request body
+app.use(bodyparser({
+  enableTypes: ['json', 'form', 'text'],
+  multipart: true // 是否支持 multipart-formdate 的表单
+}))
+// 日志的使用
+const { logger, accessLogger } = require('./utils/log')
+app.use(accessLogger())
+
+
+// 全局配置
+app.use(async (ctx,next) => {
+  logger.error('哈哈哈哈哈')
+  await next()
+})
 
 // 全局拦截器
 app.use(async (ctx, next) => {
