@@ -11,8 +11,7 @@ const app = new koa()
 
 // 导入自定义文件
 const config = require('./config/app.config')
-const { nextTick } = require('process')
-
+const seq = require('./utils/seq')
 
 
 /**
@@ -42,6 +41,7 @@ app.use(accessLogger())
 // 全局配置
 app.use(async (ctx,next) => {
   logger.error('哈哈哈哈哈')
+  logger.info('呵呵呵呵呵呵呵')
   await next()
 })
 
@@ -51,6 +51,7 @@ app.use(async (ctx, next) => {
   if (notauth.includes(ctx.url)) {
     await next()
   } else if (ctx.headers.authorization === undefined) {
+    console.log('进来了1')
     ctx.status = 401
     ctx.body = {
       status:401,
@@ -59,16 +60,14 @@ app.use(async (ctx, next) => {
   } else {
     try {
       const id = JWT.verify(ctx.headers.authorization, config.secret)
-      console.log(id)
       // 验证token
       await next()
     } catch (error) {
-      console.log(error)
-      // 验证失败
-      ctx.status = 401
+      // 全局错误处理
       ctx.body = {
-        status:401,
-        msg:'登录过期，请重新登录'
+        code: ctx.status,
+        msg: error.message,
+        data: null
       }
     }
   }

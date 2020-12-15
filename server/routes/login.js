@@ -7,11 +7,11 @@ const config = require('../config/app.config')
 router.post('/login', async(ctx, next) => {
   console.log(ctx.request.body)
   const token = jwt.sign({
-    data: 'a1b2c3d4e5f6g7ih8i9'
+    data: 'af4477a8-1359-4484-a72e-f0b77ca25162'
   }, config.secret, { expiresIn: config.expiresIn })
   ctx.body = {
     status: 200,
-    message: '哈哈哈哈哈',
+    msg: '哈哈哈哈哈',
     token: token
   }
 })
