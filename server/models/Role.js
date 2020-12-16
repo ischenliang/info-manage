@@ -26,7 +26,13 @@ const RoleModel = seq.define('role', {
     allowNull: false,
     defaultValue: moment().format('YYYY-MM-DD HH:mm:ss'),
     comment: '更新时间'
-  } 
+  },
+  status: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+    comment: '权限状态'
+  }
 }, {
   freezeTableName: true
 })

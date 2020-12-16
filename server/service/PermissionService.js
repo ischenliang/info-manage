@@ -1,4 +1,5 @@
 const { PermissionModel } = require('../models/Permission')
+const { RolePermissionModel } = require('../models/RolePermission')
 const { Op } = require("sequelize")
 const moment = require('moment')
 
@@ -12,8 +13,17 @@ async function add (permission) {
 }
 
 // 删除
+/**
+ * @param {*} id 
+ * 此时需要级联删除：删除所关联的数据
+ * 关联的表：RolePermission
+ */
 async function deleteById (id) {
   try {
+    // 删除所有关联的RolePermission
+    await RolePermissionModel.destroy({
+      where: { pid: id }
+    })
     return await PermissionModel.destroy({
       where: {
         id

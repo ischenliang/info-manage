@@ -6,7 +6,11 @@ const { add, deleteById, update, detail, findAll } = require('../service/Permiss
 // 新增权限
 router.post('/add', async(ctx, next) => {
   try {
-    ctx.body = await add(ctx.request.body)
+    ctx.body = {
+      code: 200,
+      msg: '新增成功',
+      data: await add(ctx.request.body)
+    }
   } catch (error) {
     throw error
   }
@@ -15,7 +19,11 @@ router.post('/add', async(ctx, next) => {
 // 删除权限
 router.delete('/delete/:id', async(ctx, next) => {
   try {
-    ctx.body = await deleteById(ctx.request.params.id)
+    ctx.body = {
+      code: 200,
+      msg: '删除成功',
+      data: await deleteById(ctx.request.params.id)
+    }
   } catch (error) {
     throw error
   }
@@ -24,16 +32,24 @@ router.delete('/delete/:id', async(ctx, next) => {
 // 更新权限
 router.put('/update', async(ctx, next) => {
   try {
-    ctx.body = await update(ctx.request.body)
+    ctx.body = {
+      code: 200,
+      msg: '更新成功',
+      data: await update(ctx.request.body)
+    }
   } catch (error) {
     throw error
   }
 })
 
-// 更新权限
+// 获取权限详情
 router.get('/detail/:id', async(ctx, next) => {
   try {
-    ctx.body = await detail(ctx.request.params.id)
+    ctx.body = {
+      code: 200,
+      msg: '查询成功',
+      data: await detail(ctx.request.params.id)
+    }
   } catch (error) {
     throw error
   }
@@ -53,7 +69,11 @@ router.get('/detail/:id', async(ctx, next) => {
 */
 router.get('/list', async(ctx, next) => {
   try {
-    ctx.body = await findAll(ctx.request.query)
+    ctx.body = {
+      code: 200,
+      msg: '查询成功',
+      data: await findAll(ctx.request.query)
+    }
   } catch (error) {
     throw error
   }

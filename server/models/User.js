@@ -33,6 +33,22 @@ const UserModel = seq.define('user', {
     defaultValue: 'https://dss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2712859483,1666841396&fm=26&gp=0.jpg',
     comment: '用户头像'
   },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: '用户邮箱'
+  },
+  gender: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: '未知',
+    comment: '用户性别'
+  },
+  remark: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: '用户备注'
+  },
   updatetime: {
     type: DataTypes.STRING,
     allowNull: false,

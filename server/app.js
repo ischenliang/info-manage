@@ -51,7 +51,6 @@ app.use(async (ctx, next) => {
   if (notauth.includes(ctx.url)) {
     await next()
   } else if (ctx.headers.authorization === undefined) {
-    console.log('进来了1')
     ctx.status = 401
     ctx.body = {
       status:401,
@@ -65,7 +64,7 @@ app.use(async (ctx, next) => {
     } catch (error) {
       // 全局错误处理
       ctx.body = {
-        code: ctx.status,
+        code: 500,
         msg: error.message,
         data: null
       }
