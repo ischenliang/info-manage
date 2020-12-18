@@ -12,6 +12,7 @@ const app = new koa()
 // 导入自定义文件
 const config = require('./config/app.config')
 const seq = require('./utils/seq')
+const { Test1Model, Test2Model } = require('./models/Test1')
 
 
 /**
