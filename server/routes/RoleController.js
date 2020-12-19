@@ -1,6 +1,6 @@
 const router = require('koa-router')()
 router.prefix('/api/role')
-const { add, deleteById, update, detail } = require('../service/RoleService')
+const { add, deleteById, update, detail, list } = require('../service/RoleService')
 
 
 // 新增角色
@@ -55,19 +55,6 @@ router.get('/detail/:id', async(ctx, next) => {
   }
 })
 
-// 获取角色列表
-router.get('/list', async(ctx, next) => {
-  try {
-    ctx.body = {
-      code: 200,
-      msg: '查询成功',
-      data: await detail(ctx.request.params.id)
-    }
-  } catch (error) {
-    throw error
-  }
-})
-
 
 // 角色列表
 /**
@@ -77,9 +64,16 @@ router.get('/list', async(ctx, next) => {
  *  search: 搜索条件
 */
 router.get('/list', async(ctx, next) => {
-  ctx.body = '角色列表'
+  try {
+    ctx.body = {
+      code: 200,
+      msg: '查询成功',
+      data: await list()
+    }
+  } catch (error) {
+    throw error
+  }
 })
-
 // 角色菜单更新
 /**
  * 实现方式：先将数据库里面的删除，然后再重新添加

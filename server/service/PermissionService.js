@@ -1,5 +1,4 @@
 const { PermissionModel } = require('../models/Permission')
-const { RolePermissionModel } = require('../models/RolePermission')
 const { Op } = require("sequelize")
 const moment = require('moment')
 

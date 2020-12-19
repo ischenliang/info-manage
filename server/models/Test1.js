@@ -40,6 +40,17 @@ const Test2Model = seq.define('test2', {
 // 这样建立中间表
 Test1Model.belongsToMany(Test2Model, { through: 'test1Test2', as:'Test1Test2' })
 Test2Model.belongsToMany(Test1Model, { through: 'test1Test2', as:'Test1Test2' })
+// 关联表查询
+// async function test () {
+//   const test = await Test1Model.findAll({
+//     include: {
+//       model: Test2Model,
+//       as: 'Test1Test2' // 这个as一定要和上面的as同名
+//     }
+//   })
+//   console.log(test)
+// }
+// test()
 
 module.exports = {
   Test1Model,

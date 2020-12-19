@@ -1,7 +1,5 @@
 const { RoleModel } = require('../models/Role')
-const { RolePermissionModel } = require('../models/RolePermission')
-const { UserRoleModel } = require('../models/UserRole')
-const { RoleMenuModel } = require('../models/RoleMenu')
+const { Test1Model, Test2Model } = require('../models/Test1')
 const { Op } = require("sequelize")
 const moment = require('moment')
 
@@ -65,10 +63,26 @@ async function detail (id) {
   }
 }
 
+// 列表
+async function list () {
+  try {
+    return await Test1Model.findAll({
+      include: {
+        model: Test2Model,
+        as: 'Test1Test2',
+        attributes: ["id", "name"],
+        through: { attributes: [] } // 隐藏中间表字段
+      }
+    })
+  } catch (error) {
+    throw error
+  }
+}
 
 module.exports =  {
   add,
   deleteById,
   update,
-  detail
+  detail,
+  list
 }
