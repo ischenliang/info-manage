@@ -41,8 +41,6 @@ app.use(accessLogger())
 
 // 全局配置
 app.use(async (ctx,next) => {
-  logger.error('哈哈哈哈哈')
-  logger.info('呵呵呵呵呵呵呵')
   await next()
 })
 

@@ -1,5 +1,6 @@
 const { RoleModel } = require('../models/Role')
-const { Test1Model, Test2Model } = require('../models/Test1')
+const { PermissionModel } = require('../models/Permission')
+const { MenuModel } = require('../models/Menu')
 const { Op } = require("sequelize")
 const moment = require('moment')
 
@@ -14,7 +15,6 @@ async function add (role) {
 
 // 删除
 /**
- * @param {*} id 
  * 此时需要级联删除：删除所关联的数据
  * 关联的表：RolePermission、UserRole、RoleMenu
  * 此处：就不做删除，为了避免删除时将用户也该删除了
@@ -49,31 +49,69 @@ async function update (role) {
   }
 }
 
-// 详情
+/**
+ * 角色详情
+ * @param {*} id 
+ *  将角色、角色权限、角色菜单等都带出去
+ */
 async function detail (id) {
   try {
-    const role = await RoleModel.findOne({
+    return await RoleModel.findOne({
       where: {
         id
-      }
+      },
+      include: [
+        {
+          model: PermissionModel,
+          as: 'rp',
+          through: { attributes: [] }
+        },
+        {
+          model: MenuModel,
+          as: 'rm',
+          through: { attributes: [] }
+        }
+      ],
     })
-    return Object.assign(role, { menu: [] }, { permission: [] })
   } catch (error) {
     throw error
   }
 }
 
-// 列表
-async function list () {
+/**
+ * 角色列表
+ * query参数：
+ *  page: 页码
+ *  size: 每页显示数量
+ *  search: 搜索条件
+*/
+async function list (query) {
   try {
-    return await Test1Model.findAll({
-      include: {
-        model: Test2Model,
-        as: 'Test1Test2',
-        attributes: ["id", "name"],
-        through: { attributes: [] } // 隐藏中间表字段
-      }
-    })
+    return {
+      total: (await RoleModel.findAll({
+        where: {
+          [Op.or]: [
+            { name:  { [Op.like]: query.search ? `%${query.search}%` :　'%%' } },
+            { description:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
+            { updatetime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } }
+          ]
+        }
+      })).length,
+      data: await RoleModel.findAll({
+        where: {
+          [Op.or]: [
+            { name:  { [Op.like]: query.search ? `%${query.search}%` :　'%%' } },
+            { description:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
+            { updatetime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } }
+          ]
+        },
+        order: [
+          [query.sort ? query.sort : 'id', query.order ? query.order : 'desc']
+        ],
+        limit: query.size ? parseInt(query.size) : 10,
+        offset: query.page ? (parseInt(query.page) - 1) * limit : 0
+      })
+    }
   } catch (error) {
     throw error
   }

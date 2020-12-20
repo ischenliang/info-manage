@@ -68,7 +68,7 @@ router.get('/list', async(ctx, next) => {
     ctx.body = {
       code: 200,
       msg: '查询成功',
-      data: await list()
+      data: await list(ctx.request.query)
     }
   } catch (error) {
     throw error

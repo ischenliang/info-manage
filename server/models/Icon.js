@@ -19,7 +19,7 @@ const IconModel = seq.define('icon', {
   prefix: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'xapi',
+    defaultValue: 'xapi', // 应该从system表获取
     comment: '图标的前缀'
   },
   code: {

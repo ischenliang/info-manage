@@ -1,4 +1,4 @@
-const { Sequelize, } = require('sequelize')
+const { Sequelize } = require('sequelize')
 const logger = require('../utils/log')
 const config = require('../config/app.config')
 

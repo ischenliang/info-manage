@@ -95,33 +95,22 @@ async function findAll (query) {
       }
     }
   }
-  // 排序处理
-  if (query.sort) {
-    if (query.order) {
-      order.push([query.sort, query.order])
-    } else {
-      order.push([query.sort, 'desc'])
-    }
-  }
-  // 分页处理
-  if (query.size) {
-    limit = parseInt(query.size)
-  }
-  if (query.page) {
-    offset = (parseInt(query.page) - 1) * limit
-  }
   // 返回数据
   try {
     return {
       total: (await PermissionModel.findAll({
         where,
-        order: order
+        order: [
+          [query.sort ? query.sort : 'id', query.order ? query.order : 'desc']
+        ]
       })).length,
       data: await PermissionModel.findAll({
         where,
-        order: order,
-        limit,
-        offset
+        order: [
+          [query.sort ? query.sort : 'id', query.order ? query.order : 'desc']
+        ],
+        limit: query.size ? parseInt(query.size) : 10,
+        offset: query.page ? (parseInt(query.page) - 1) * limit : 0
       })
     }
   } catch (error) {

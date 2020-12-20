@@ -1,6 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize')
 const moment = require('moment')
 const seq = require('../utils/seq')
+const { IconModel } = require('./Icon')
 
 // Menu 模型
 const MenuModel = seq.define('menu', {
@@ -25,11 +26,6 @@ const MenuModel = seq.define('menu', {
     type: DataTypes.UUID,
     allowNull: true,
     comment: '上级菜单'
-  },
-  icon: {
-    type: DataTypes.STRING,
-    allowNull: true,
-    comment: '图标icon'
   },
   component: {
     type: DataTypes.STRING,
