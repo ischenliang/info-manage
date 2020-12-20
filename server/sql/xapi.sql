@@ -11,7 +11,7 @@
  Target Server Version : 50715
  File Encoding         : 65001
 
- Date: 19/12/2020 17:02:31
+ Date: 20/12/2020 22:16:25
 */
 
 SET NAMES utf8mb4;
@@ -26,13 +26,14 @@ CREATE TABLE `icon`  (
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图标名称',
   `prefix` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'xapi' COMMENT '图标的前缀',
   `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图标的code',
-  `updatetime` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '2020-12-15 15:00:28' COMMENT '图标更新时间',
+  `updatetime` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '2020-12-20 15:43:45' COMMENT '图标更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of icon
 -- ----------------------------
+INSERT INTO `icon` VALUES ('3f5e982b-caaf-47d3-9797-856ca40f6408', 'home', 'xapi', 'xapi-home', '2020-12-20 15:43:45');
 
 -- ----------------------------
 -- Table structure for menu
@@ -43,7 +44,6 @@ CREATE TABLE `menu`  (
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '菜单名称',
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '菜单路径',
   `pid` char(36) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '上级菜单',
-  `icon` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图标icon',
   `component` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'Layout' COMMENT '组件名称',
   `enable` tinyint(1) NOT NULL DEFAULT 0 COMMENT '菜单是否启用',
   `visible` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否显示在菜单栏上',
@@ -51,12 +51,29 @@ CREATE TABLE `menu`  (
   `order` int(11) NOT NULL DEFAULT 1 COMMENT '排序：值越大就越靠前',
   `type` int(11) NOT NULL DEFAULT 2 COMMENT '菜单类别：目录1，菜单2',
   `redirect` char(36) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '重定向：为了解决目录菜单时应该默认前往哪个子菜单',
-  `updatetime` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '2020-12-15 14:36:02' COMMENT '重定向：为了解决目录菜单时应该默认前往哪个子菜单',
+  `updatetime` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '2020-12-20 15:43:45' COMMENT '重定向：为了解决目录菜单时应该默认前往哪个子菜单',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of menu
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for menu_icon
+-- ----------------------------
+DROP TABLE IF EXISTS `menu_icon`;
+CREATE TABLE `menu_icon`  (
+  `menuId` char(36) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `iconId` char(36) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`menuId`, `iconId`) USING BTREE,
+  INDEX `iconId`(`iconId`) USING BTREE,
+  CONSTRAINT `menu_icon_ibfk_1` FOREIGN KEY (`menuId`) REFERENCES `menu` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `menu_icon_ibfk_2` FOREIGN KEY (`iconId`) REFERENCES `icon` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of menu_icon
 -- ----------------------------
 
 -- ----------------------------
@@ -102,6 +119,23 @@ INSERT INTO `role` VALUES ('01508269-6b98-4504-a6dd-b50cfdef9929', 'admin', '管
 INSERT INTO `role` VALUES ('f8a1e00b-ebfe-4d21-a661-e85789664607', 'superadmin', '超级管理员', '2020-12-16 17:08:26', 1);
 
 -- ----------------------------
+-- Table structure for role_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `role_menu`;
+CREATE TABLE `role_menu`  (
+  `roleId` char(36) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `menuId` char(36) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`roleId`, `menuId`) USING BTREE,
+  INDEX `menuId`(`menuId`) USING BTREE,
+  CONSTRAINT `role_menu_ibfk_1` FOREIGN KEY (`roleId`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `role_menu_ibfk_2` FOREIGN KEY (`menuId`) REFERENCES `menu` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of role_menu
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for role_permission
 -- ----------------------------
 DROP TABLE IF EXISTS `role_permission`;
@@ -117,6 +151,7 @@ CREATE TABLE `role_permission`  (
 -- ----------------------------
 -- Records of role_permission
 -- ----------------------------
+INSERT INTO `role_permission` VALUES ('01508269-6b98-4504-a6dd-b50cfdef9929', '258e6797-8ce1-45d5-8d8d-d8be3bc0b064');
 
 -- ----------------------------
 -- Table structure for system
@@ -149,56 +184,6 @@ CREATE TABLE `system`  (
 -- Records of system
 -- ----------------------------
 INSERT INTO `system` VALUES ('1d7c1a02-cb74-43c8-9652-9e1b946960b2', 'Xpi项目接口管理系统', 'http://blog.itchenliang.club/', 'http://www.chenliang0829.cn:8081/public/images/logo1.png', 'http://www.chenliang0829.cn:8081/public/images/favicon.ico', '不得在公共空间吸烟', 'Copyright © 2019-2020 itchenliang.club', '蜀ICP备19023554号-1', 'itchenliang@163.com', '1825956830', NULL, NULL, '.*', 10240, NULL, 1, 'xapi', '//at.alicdn.com/t/font_2246210_adlq9vrj0x7.css', '2020-12-15 15:18:29');
-
--- ----------------------------
--- Table structure for test1
--- ----------------------------
-DROP TABLE IF EXISTS `test1`;
-CREATE TABLE `test1`  (
-  `id` char(36) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'uuid',
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '哈哈哈',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of test1
--- ----------------------------
-INSERT INTO `test1` VALUES ('3e67010a-2151-43ca-af1a-4255de2ed2a4', 'test1');
-
--- ----------------------------
--- Table structure for test1test2
--- ----------------------------
-DROP TABLE IF EXISTS `test1test2`;
-CREATE TABLE `test1test2`  (
-  `test1Id` char(36) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `test2Id` char(36) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`test1Id`, `test2Id`) USING BTREE,
-  INDEX `test2Id`(`test2Id`) USING BTREE,
-  CONSTRAINT `test1test2_ibfk_1` FOREIGN KEY (`test1Id`) REFERENCES `test1` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `test1test2_ibfk_2` FOREIGN KEY (`test2Id`) REFERENCES `test2` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of test1test2
--- ----------------------------
-INSERT INTO `test1test2` VALUES ('3e67010a-2151-43ca-af1a-4255de2ed2a4', '0e3da640-f85e-461d-9c4a-4e4293c9d1c8');
-INSERT INTO `test1test2` VALUES ('3e67010a-2151-43ca-af1a-4255de2ed2a4', '0e3da640-f85e-461d-9c4a-4e4293c9d1c9');
-
--- ----------------------------
--- Table structure for test2
--- ----------------------------
-DROP TABLE IF EXISTS `test2`;
-CREATE TABLE `test2`  (
-  `id` char(36) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'uuid',
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '哈哈哈',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of test2
--- ----------------------------
-INSERT INTO `test2` VALUES ('0e3da640-f85e-461d-9c4a-4e4293c9d1c8', 'test22');
-INSERT INTO `test2` VALUES ('0e3da640-f85e-461d-9c4a-4e4293c9d1c9', 'test2');
 
 -- ----------------------------
 -- Table structure for user
