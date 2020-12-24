@@ -25,7 +25,7 @@ const MenuModel = seq.define('menu', {
   pid: {
     type: DataTypes.UUID,
     allowNull: true,
-    comment: '上级菜单'
+    comment: '上级菜单id'
   },
   component: {
     type: DataTypes.STRING,
