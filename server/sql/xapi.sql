@@ -11,7 +11,7 @@
  Target Server Version : 50715
  File Encoding         : 65001
 
- Date: 20/12/2020 22:16:25
+ Date: 25/12/2020 14:06:45
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,8 @@ CREATE TABLE `icon`  (
 -- ----------------------------
 -- Records of icon
 -- ----------------------------
-INSERT INTO `icon` VALUES ('3f5e982b-caaf-47d3-9797-856ca40f6408', 'home', 'xapi', 'xapi-home', '2020-12-20 15:43:45');
+INSERT INTO `icon` VALUES ('3f5e982b-caaf-47d3-9797-856ca40f6402', 'role', 'xapi', 'xapi-role', '2020-12-20 15:43:45');
+INSERT INTO `icon` VALUES ('3f5e982b-caaf-47d3-9797-856ca40f6408', 'system', 'xapi', 'xapi-sys', '2020-12-20 15:43:45');
 
 -- ----------------------------
 -- Table structure for menu
@@ -58,6 +59,8 @@ CREATE TABLE `menu`  (
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
+INSERT INTO `menu` VALUES ('1d5dfef6-9938-4c33-b614-2dd7f187d51d', '系统管理', '/system', '', 'Layout', 0, 1, '', 1, 1, '', '2020-12-24 14:37:17');
+INSERT INTO `menu` VALUES ('e561d111-fa1c-4bd5-a85f-64f9114312bd', '角色管理', '/system/role', '1d5dfef6-9938-4c33-b614-2dd7f187d51d', 'SystemRole', 0, 1, '', 1, 1, '', '2020-12-24 14:45:01');
 
 -- ----------------------------
 -- Table structure for menu_icon
@@ -75,6 +78,8 @@ CREATE TABLE `menu_icon`  (
 -- ----------------------------
 -- Records of menu_icon
 -- ----------------------------
+INSERT INTO `menu_icon` VALUES ('e561d111-fa1c-4bd5-a85f-64f9114312bd', '3f5e982b-caaf-47d3-9797-856ca40f6402');
+INSERT INTO `menu_icon` VALUES ('1d5dfef6-9938-4c33-b614-2dd7f187d51d', '3f5e982b-caaf-47d3-9797-856ca40f6408');
 
 -- ----------------------------
 -- Table structure for permission
