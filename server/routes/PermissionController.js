@@ -1,6 +1,6 @@
 const router = require('koa-router')()
 router.prefix('/api/permission')
-const { add, deleteById, update, detail, findAll } = require('../service/PermissionService')
+const { add, deleteById, update, detail, list } = require('../service/PermissionService')
 
 
 // 新增权限
@@ -72,7 +72,7 @@ router.get('/list', async(ctx, next) => {
     ctx.body = {
       code: 200,
       msg: '查询成功',
-      data: await findAll(ctx.request.query)
+      data: await list(ctx.request.query)
     }
   } catch (error) {
     throw error

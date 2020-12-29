@@ -15,21 +15,8 @@ async function add (icon) {
 // 图标删除：删除时需要将关联到的地方都删除/清空
 async function deleteById (id) {
   try {
-    // 清空菜单标的icon
-    const menus = await MenuModel.findAll({
-      where: {
-        icon: id
-      }
-    })
-    menus.forEach(item => {
-      MenuModel.update({
-        icon: null // 此处必须设为null，否则会报错
-      },{
-        where: {
-          id: item.id
-        }
-      })
-    })
+    // 清空菜单表的icon
+    await sequelize.query(`delete from menu_icon where iconId='${id}'`)
     // 删除icon
     return await IconModel.destroy({
       where: {

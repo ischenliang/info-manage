@@ -9,12 +9,12 @@ const UserModel = seq.define('user', {
     allowNull: false,
     primaryKey: true, // 主键
     defaultValue: Sequelize.UUIDV4
-    // autoIncrement: true, // 自动递增
   },
   username: {
     type: DataTypes.STRING,
     allowNull: false,
-    comment: '登录账号'
+    comment: '登录账号',
+    unique: true // 登录账号只能唯一
   },
   password: {
     type: DataTypes.STRING,
@@ -32,11 +32,6 @@ const UserModel = seq.define('user', {
     allowNull: false,
     defaultValue: 'https://dss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2712859483,1666841396&fm=26&gp=0.jpg',
     comment: '用户头像'
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: true,
-    comment: '用户邮箱'
   },
   gender: {
     type: DataTypes.STRING,

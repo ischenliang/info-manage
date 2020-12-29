@@ -13,6 +13,7 @@ const app = new koa()
 const config = require('./config/app.config')
 const seq = require('./utils/seq')
 require('./models/Middles')
+require('./models/Resource')
 
 
 /**
@@ -21,7 +22,7 @@ require('./models/Middles')
 // 静态资源中间件
 app.use(static(path.join(__dirname, 'public')))
 // 路由权限控制中间件
-const notauth = ['/api/login', '/css/**']
+const notauth = ['/api/login']
 app.use(jwt({ secret: 'jwt_secret', passthrough: true }).unless({ path: notauth }))
 // 配置跨域
 app.use(cors({

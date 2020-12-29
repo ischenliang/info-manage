@@ -66,7 +66,7 @@ async function detail (id) {
 }
 
 // 详情
-async function findAll (query) {
+async function list (query) {
   const where = {}
   const order = []
   let limit = 10
@@ -97,21 +97,17 @@ async function findAll (query) {
   }
   // 返回数据
   try {
+    const { count, rows } = await PermissionModel.findAndCountAll({
+      where,
+      order: [
+        [query.sort ? query.sort : 'id', query.order ? query.order : 'desc']
+      ],
+      limit: query.size ? parseInt(query.size) : 10,
+      offset: query.page ? (parseInt(query.page) - 1) * limit : 0
+    })
     return {
-      total: (await PermissionModel.findAll({
-        where,
-        order: [
-          [query.sort ? query.sort : 'id', query.order ? query.order : 'desc']
-        ]
-      })).length,
-      data: await PermissionModel.findAll({
-        where,
-        order: [
-          [query.sort ? query.sort : 'id', query.order ? query.order : 'desc']
-        ],
-        limit: query.size ? parseInt(query.size) : 10,
-        offset: query.page ? (parseInt(query.page) - 1) * limit : 0
-      })
+      total: count,
+      data: rows
     }
   } catch (error) {
     throw error
@@ -123,5 +119,5 @@ module.exports =  {
   deleteById,
   update,
   detail,
-  findAll
+  list
 }

@@ -19,12 +19,14 @@
   + koa-better-body
 + nodemon
   Nodemon 是一款非常实用的工具，用来监控你 node.js 源代码的任何变化和自动重启你的服务器。 Nodemon 是一款完美的开发工具，可以使用 npm 安装。
-## 数据库设计
+## 1、数据库设计
 
+这里是数据库设计......
 
-## 接口设计
-### 菜单管理
-1. 新增菜单
+## 2、接口设计
+
+### 2.1 菜单管理
+1. **新增菜单**
 地址：/api/menu/add
 类型：POST
 请求头：`Authorization: token`
@@ -66,7 +68,7 @@
   }
 }
 ```
-2. 修改菜单
+2. **修改菜单**
 地址：/api/menu/update
 类型：PUT
 请求头：`Authorization: token`
@@ -96,7 +98,7 @@
   "data": [1]
 }
 ```
-3. 删除菜单
+3. **删除菜单**
 地址：/api/menu/delete/{id}
 类型：DELETE
 请求头：`Authorization: token`
@@ -108,7 +110,7 @@
   "data": 1
 }
 ```
-4. 查询菜单详情
+4. **查询菜单详情**
 地址：/api/menu/detail/{id}
 类型：GET
 请求头：`Authorization: token`
@@ -142,4 +144,235 @@
   }
 }
 ```
+
+5. **查询菜单列表**
+   地址：/api/menu/list?page=1&size=10&search=系统&sort=id&order=desc
+   类型：GET
+   请求头：`Authorization: token`
+   返回结果：
+
+   ```json
+   {
+       "code": 200,
+       "msg": "查询成功",
+       "data": {
+           "total": 1,
+           "data": [
+               {
+                   "id": "1d5dfef6-9938-4c33-b614-2dd7f187d51d",
+                   "name": "系统管理",
+                   "url": "/system",
+                   "pid": "",
+                   "component": "Layout",
+                   "enable": false,
+                   "visible": true,
+                   "active": "",
+                   "order": 1,
+                   "type": 1,
+                   "redirect": "",
+                   "updatetime": "2020-12-24 14:37:17",
+                   "children": [
+                       {
+                           "id": "e561d111-fa1c-4bd5-a85f-64f9114312bd",
+                           "name": "角色管理",
+                           "url": "/system/role",
+                           "pid": "1d5dfef6-9938-4c33-b614-2dd7f187d51d",
+                           "component": "SystemRole",
+                           "enable": false,
+                           "visible": true,
+                           "active": "",
+                           "order": 1,
+                           "type": 1,
+                           "redirect": "",
+                           "updatetime": "2020-12-24 14:45:01",
+                           "children": [
+                               {
+                                   "id": "38e63fa0-a77b-4765-b45e-92acff72acd9",
+                                   "name": "广告管理",
+                                   "url": "/ad",
+                                   "pid": "e561d111-fa1c-4bd5-a85f-64f9114312bd",
+                                   "component": "Layout",
+                                   "enable": false,
+                                   "visible": true,
+                                   "active": "",
+                                   "order": 1,
+                                   "type": 2,
+                                   "redirect": "",
+                                   "updatetime": "2020-12-27 09:34:45",
+                                   "mi": [
+                                       {
+                                           "id": "3f5e982b-caaf-47d3-9797-856ca40f6402",
+                                           "name": "role",
+                                           "prefix": "xapi",
+                                           "code": "xapi-role",
+                                           "updatetime": "2020-12-20 15:43:45"
+                                       }
+                                   ]
+                               }
+                           ],
+                           "mi": [
+                               {
+                                   "id": "3f5e982b-caaf-47d3-9797-856ca40f6402",
+                                   "name": "role",
+                                   "prefix": "xapi",
+                                   "code": "xapi-role",
+                                   "updatetime": "2020-12-20 15:43:45"
+                               }
+                           ]
+                       }
+                   ],
+                   "mi": [
+                       {
+                           "id": "3f5e982b-caaf-47d3-9797-856ca40f6408",
+                           "name": "system",
+                           "prefix": "xapi",
+                           "code": "xapi-sys",
+                           "updatetime": "2020-12-20 15:43:45"
+                       }
+                   ]
+               }
+           ]
+       }
+   }
+   ```
+
+   
+
+### 2.2 权限管理
+
+1. **新增权限**
+
+   地址：/api/permission/add
+   类型：POST
+   请求头：`Authorization: token`
+   请求体数据：
+
+2. 删除权限
+
+   地址：/api/permission/delete/{id}
+   类型：DELETE
+   请求头：`Authorization: token`
+
+3. 更新权限
+
+4. 权限详情
+
+5. 查询权限列表
+
+
+
+### 2.3 图标管理
+
+1. 新增图标
+2. 删除图标
+3. 更新图标
+4. 图标详情
+5. 查询图标列表
+
+
+
+### 2.4 角色管理
+
+1. 新增角色
+2. 删除角色
+3. 更新角色
+4. 角色详情
+5. 查询角色列表
+
+
+
+### 2.5 用户管理
+
+1. 用户注册(新增用户)：使用邮箱加验证码注册
+2. 删除用户
+3. 更新基本信息
+4. 更新头像
+5. 修改密码
+6. 查询用户列表
+7. 用户详情
+
+
+
+### 2.6 系统管理
+
+1. 系统详情
+2. 更新系统
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

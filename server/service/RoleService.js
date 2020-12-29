@@ -87,30 +87,24 @@ async function detail (id) {
 */
 async function list (query) {
   try {
+    const limit = query.size ? parseInt(query.size) : 10
+    const { count, rows } = await RoleModel.findAndCountAll({
+      where: {
+        [Op.or]: [
+          { name:  { [Op.like]: query.search ? `%${query.search}%` :　'%%' } },
+          { description:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
+          { updatetime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } }
+        ]
+      },
+      order: [
+        [query.sort ? query.sort : 'id', query.order ? query.order : 'desc']
+      ],
+      limit: limit,
+      offset: query.page ? (parseInt(query.page) - 1) * limit : 0
+    })
     return {
-      total: (await RoleModel.findAll({
-        where: {
-          [Op.or]: [
-            { name:  { [Op.like]: query.search ? `%${query.search}%` :　'%%' } },
-            { description:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
-            { updatetime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } }
-          ]
-        }
-      })).length,
-      data: await RoleModel.findAll({
-        where: {
-          [Op.or]: [
-            { name:  { [Op.like]: query.search ? `%${query.search}%` :　'%%' } },
-            { description:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
-            { updatetime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } }
-          ]
-        },
-        order: [
-          [query.sort ? query.sort : 'id', query.order ? query.order : 'desc']
-        ],
-        limit: query.size ? parseInt(query.size) : 10,
-        offset: query.page ? (parseInt(query.page) - 1) * limit : 0
-      })
+      total: count,
+      data: rows
     }
   } catch (error) {
     throw error

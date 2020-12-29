@@ -115,44 +115,62 @@ async function detail (id) {
 */
 async function list (query) {
   try {
-    // 获取第一层
+    const limit = query.size ? parseInt(query.size) : 10
+    const { count, rows } = await MenuModel.findAndCountAll({
+      where: {
+        pid: {
+          [Op.eq]: ''
+        },
+        [Op.or]: [
+          { name:  { [Op.like]: query.search ? `%${query.search}%` :　'%%' } },
+          { url:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
+          { component:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
+          { updatetime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } }
+        ]
+      },
+      // 第二层
+      include: [
+        {
+          model: MenuModel,
+          as: 'children',
+          required: false,
+          // 第三层
+          include: [
+            {
+              model: MenuModel,
+              as: 'children',
+              required: false,
+              include: {
+                model: IconModel,
+                as: 'mi',
+                required: false,
+                through: { attributes: [] }
+              }
+            },
+            {
+              model: IconModel,
+              as: 'mi',
+              nested : true,
+              through: { attributes: [] }
+            }
+          ]
+        },
+        {
+          model: IconModel,
+          as: 'mi',
+          required: false,
+          through: { attributes: [] }
+        }
+      ],
+      order: [
+        [query.sort ? query.sort : 'id', query.order ? query.order : 'desc']
+      ],
+      limit: limit,
+      offset: query.page ? (parseInt(query.page) - 1) * limit : 0
+    })
     return {
-      total: (await MenuModel.findAll({
-        where: {
-          pid: {
-            [Op.eq]: ''
-          }
-        },
-        include: {
-          model: MenuModel,
-          as: 'children',
-          required: false,
-          include: {
-            model: IconModel,
-            as: 'mi',
-            nested : true,
-            through: { attributes: [] }
-          }
-        }
-      })).length,
-      data: await MenuModel.findAll({
-        where: {
-          pid: {
-            [Op.eq]: ''
-          }
-        },
-        include: {
-          model: MenuModel,
-          as: 'children',
-          required: false,
-          include: {
-            model: IconModel,
-            as: 'mi',
-            nested : true,
-            through: { attributes: [] }
-          }
-        }
-      })
+      total: count,
+      data: rows
     }
   } catch (error) {
     throw error
