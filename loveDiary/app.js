@@ -4,11 +4,13 @@ const schedule = require("node-schedule")
 const fs = require('fs')
 const moment = require('moment')
 
+console.log('项目启动了....')
+
 // 发送邮件封装
 async function sendMail (text) {
   var user = '1825956830@qq.com' // 自己的邮箱
   var pass = 'pmjcgrpplkwociaf' // 邮箱授权码
-  var to = '1737770335@qq.com' // 对方邮箱
+  var to = 'itchenliang@163.com' // 对方邮箱
   let transporter = nodemailer.createTransport({
     host: "smtp.qq.com",
     port: 587,
@@ -23,6 +25,7 @@ async function sendMail (text) {
     to: `我爱的宝宝<${to}>`, // list of receivers
     subject: "我的小笨猪", // Subject line
     text: text, // plain text body
+    html: '<div><b>哇哈哈哈哈</b> <i>呵呵呵呵呵</i></div>' // tml body
   })
   console.log("发送成功")
 }
@@ -36,7 +39,7 @@ function getText () {
 }
 
 // 每天定时发送：11:14:00
-schedule.scheduleJob({ hour: 11, minute: 14 }, function () {
+schedule.scheduleJob({ hour: 16, minute: 52 }, function () {
   fs.appendFileSync('success.log', `[${moment().format('YYYY-MM-DD HH:mm:ss')}] [DEBUG] start ---- 200 "启动任务"\n`)
   getText().then(res => {
     sendMail('情话内容：' + res.data)

@@ -472,3 +472,8 @@
 [2020-12-27T13:48:50.426] [INFO] access - ::1 - - "GET /api/resource/detail HTTP/1.1" 200 90 "" "PostmanRuntime/7.26.8"
 [2020-12-27T13:56:21.489] [INFO] access - ::1 - - "GET /api/resource/detail HTTP/1.1" 200 42 "" "PostmanRuntime/7.26.8"
 [2020-12-27T13:57:12.344] [INFO] access - ::1 - - "GET /api/resource/detail HTTP/1.1" 200 42 "" "PostmanRuntime/7.26.8"
+[2021-01-07T13:36:45.802] [INFO] access - ::1 - - "GET /api/resource/detail HTTP/1.1" 200 44 "" "PostmanRuntime/7.26.8"
+[2021-01-07T13:37:26.965] [INFO] access - ::1 - - "POST /api/login HTTP/1.1" 200 238 "" "PostmanRuntime/7.26.8"
+[2021-01-07T13:37:38.937] [INFO] access - ::1 - - "GET /api/resource/detail HTTP/1.1" 200 42 "" "PostmanRuntime/7.26.8"
+[2021-01-07T13:45:21.223] [INFO] access - ::1 - - "GET /api/sys/detail HTTP/1.1" 200 44 "" "PostmanRuntime/7.26.8"
+[2021-01-07T13:45:27.760] [INFO] access - ::1 - - "GET /api/sys/detail HTTP/1.1" 200 682 "" "PostmanRuntime/7.26.8"
