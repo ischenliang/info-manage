@@ -6,7 +6,12 @@ const cors = require('koa2-cors')
 const router = require('koa-router')
 // 路由自动加载
 const requireDirectory = require('require-directory')
+// 解析请求体
+const koaBody = require('koa-body')
+// 权限控制
+const jwt = require('koa-jwt')
 const path = require('path')
+
 
 // 加载中间件
 function loadMiddleware (app) {
@@ -16,6 +21,14 @@ function loadMiddleware (app) {
     allowMethods: ['GET', 'POST', 'DELETE', 'PUT'],
     allowHeaders: ['Content-Type', 'Authorization', 'Accept']
   }))
+  // 解析request body
+  app.use(koaBody({
+    enableTypes: ['json', 'form', 'text'],
+    multipart: true // 是否支持 multipart-formdate 的表单
+  }))
+  // 路由权限控制中间件
+  const notauth = ['/api/login']
+  app.use(jwt({ secret: 'jwt_secret', passthrough: true }).unless({ path: notauth }))
 }
 
 // 自定加载路由：避免了多很多路由文件，而需要一个个去加载

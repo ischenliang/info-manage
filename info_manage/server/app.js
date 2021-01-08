@@ -10,6 +10,7 @@ app.use(async (ctx, next) => {
   await next()
 })
 
+
 // 路由自动加载
 loadRoutes(app)
 
