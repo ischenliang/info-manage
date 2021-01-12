@@ -10,6 +10,8 @@ const requireDirectory = require('require-directory')
 const koaBody = require('koa-body')
 // 权限控制
 const jwt = require('koa-jwt')
+// 参数验证
+const parameter = require('koa-parameter')
 const path = require('path')
 
 
@@ -29,6 +31,8 @@ function loadMiddleware (app) {
   // 路由权限控制中间件
   const notauth = ['/api/login']
   app.use(jwt({ secret: 'jwt_secret', passthrough: true }).unless({ path: notauth }))
+  // 参数验证
+  app.use(parameter(app))
 }
 
 // 自定加载路由：避免了多很多路由文件，而需要一个个去加载

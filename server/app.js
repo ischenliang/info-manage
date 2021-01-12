@@ -54,7 +54,7 @@ app.use(async (ctx, next) => {
     ctx.status = 401
     ctx.body = {
       status:401,
-      msg:'登录过期，请重新登录'
+      msg: '登录过期，请重新登录'
     }
   } else {
     try {
