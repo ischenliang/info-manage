@@ -1,5 +1,6 @@
 const User = require('./User')
 const Role = require('./Role')
+const Menu = require('./Menu')
 
 // 用户角色表
 User.belongsToMany(Role, { through: 'user_role', as:'ur' })

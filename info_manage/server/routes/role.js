@@ -2,18 +2,15 @@ const router = require('koa-router')()
 const moment = require('moment')
 router.prefix('/api/role')
 const resConfig = require('../config/app.res')
-const { add, deleteById } = require('../service/role')
+const { add, deleteById, update, detail, list } = require('../service/role')
 
 router.get('/list', async(ctx, next) => {
   try {
-    console.log(ctx.query)
-    // 验证参数
-    ctx.verifyParams({
-      name: { type: 'string' },
-      age:{ type: 'string' },
-    })
+    ctx.status = 200
     ctx.body = {
-      data: '哇哈哈哈'
+      code: 200,
+      msg: resConfig[ctx.request.method],
+      data: await list(ctx.query)
     }
   } catch (error) {
     ctx.throw(error.status, error)
@@ -42,7 +39,37 @@ router.delete('/deleteById/:id', async(ctx, next) => {
     ctx.body = {
       code: 200,
       msg: resConfig[ctx.request.method],
-      data: '哈哈' // await deleteById(ctx.params.id)
+      data: await deleteById(ctx.params.id)
+    }
+  } catch (error) {
+    error.status = error.status ? error.status : 500
+    ctx.throw(error.status, error)
+  }
+})
+
+// 修改
+router.put('/update', async(ctx, next) => {
+  try {
+    ctx.status = 200
+    ctx.body = {
+      code: 200,
+      msg: resConfig[ctx.request.method],
+      data: await update(ctx.request.body)
+    }
+  } catch (error) {
+    error.status = error.status ? error.status : 500
+    ctx.throw(error.status, error)
+  }
+})
+
+// 查询
+router.get('/detail/:id', async(ctx, next) => {
+  try {
+    ctx.status = 200
+    ctx.body = {
+      code: 200,
+      msg: resConfig[ctx.request.method],
+      data:  await detail(ctx.params.id)
     }
   } catch (error) {
     error.status = error.status ? error.status : 500

@@ -1,7 +1,6 @@
 const koa = require('koa')
 const { loadMiddleware, loadRoutes } = require('./config/app.middleware')
 const app = new koa()
-const moment = require('moment')
 
 const appConfig = require('./config/app.config')
 const errorConfig = require('./config/app.error')
@@ -24,7 +23,7 @@ app.on('error', async(error, ctx) => {
   ctx.body = {
     code: code,
     msg: errorConfig[code], // 这个msg应该从数据库/配置文件中获取
-    data: error.message
+    data: error.original ? error.original.sqlMessage : error.message // 判断是否是数据库发生的错误....
   }
 })
 

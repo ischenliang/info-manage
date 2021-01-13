@@ -3,7 +3,7 @@ const moment = require('moment')
 const seq = require('../utils/seq')
 /**
  * id: 角色主键 UUID
- * name：角色名称 String
+ * name：角色名称 String 唯一
  * priority：角色优先级 Integer
  * status：角色状态 Boolean
  * remark：角色备注 String
@@ -22,7 +22,7 @@ const Role = seq.define('role', {
     type: DataTypes.STRING,
     allowNull: false,
     comment: '角色名称',
-    unique: true
+    unique: 'name'
   },
   priority: {
     type: DataTypes.INTEGER,

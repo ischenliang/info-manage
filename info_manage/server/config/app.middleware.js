@@ -17,7 +17,7 @@ const path = require('path')
 
 // 加载中间件
 function loadMiddleware (app) {
-  app.use(static(path.join(__dirname, 'public')))
+  app.use(static(path.join(__dirname, '../public')))
   app.use(cors({
     credentials: true,
     allowMethods: ['GET', 'POST', 'DELETE', 'PUT'],
@@ -26,7 +26,16 @@ function loadMiddleware (app) {
   // 解析request body
   app.use(koaBody({
     enableTypes: ['json', 'form', 'text'],
-    multipart: true // 是否支持 multipart-formdate 的表单
+    multipart: true, // 是否支持 multipart-formdate 的表单
+    formidable: {
+      // 配置了这两项之后：文件在上传后会自动上传到指定目录下，且文件名会被加密处理，但是不便于我们后续使用，不建议.....
+      // 建议方式：通过拿到文件，将文件使用读入流和写入流写入到指定的目录，还可以进行自定义名称
+      // // 上传目录
+      // uploadDir: path.join(__dirname, '../public/avatar'),
+      // // 保留文件扩展名
+      // keepExtensions: true,
+      maxFileSize: 200 * 1024 * 1024 // 文件最大支持的大小
+    }
   }))
   // 路由权限控制中间件
   const notauth = ['/api/login']
