@@ -1,7 +1,8 @@
-const { User, Role } = require('../models/Middle')
+const { User, Role, Menu } = require('../models/Middle')
 const { Op } = require("sequelize")
 const sequelize = require('../utils/seq')
 const { MD5, uploadAvatar } = require('../utils/util')
+const { getMenuTree } = require('./menu')
 const moment = require('moment')
 
 /**
@@ -110,6 +111,44 @@ async function detail (id) {
 }
 
 /**
+ * 用户菜单
+ * @param {*} id 
+ */
+async function userMenu (id) {
+  try {
+    const user = (await User.findOne({
+      where: {
+        id
+      },
+      include: [
+        { // 用户角色
+          model: Role,
+          as: 'ur',
+          through: { attributes: [] },
+          include: [ // 角色菜单
+            {
+              model: Menu,
+              as: 'rm',
+              through: { attributes: [] }
+            }
+          ]
+        }
+      ]
+    })).toJSON()
+    // 用户角色
+    let menuIds = []
+    user.ur.forEach(item => {
+      item.rm.forEach(subItem => {
+        menuIds.push(subItem.id)
+      })
+    })
+    return getMenuTree(menuIds)
+  } catch (error) {
+    throw error
+  }
+}
+
+/**
  * 查询列表
  * @param {*} query
  *  size: 每页显示数量 默认10
@@ -191,6 +230,7 @@ module.exports =  {
   deleteById,
   update,
   detail,
+  userMenu,
   list,
   resetPwd,
   updateAvatar

@@ -2,7 +2,7 @@ const router = require('koa-router')()
 const moment = require('moment')
 router.prefix('/api/role')
 const resConfig = require('../config/app.res')
-const { add, deleteById, update, detail, list } = require('../service/role')
+const { add, deleteById, update, detail, list, roleMenu } = require('../service/role')
 
 router.get('/list', async(ctx, next) => {
   try {
@@ -70,6 +70,22 @@ router.get('/detail/:id', async(ctx, next) => {
       code: 200,
       msg: resConfig[ctx.request.method],
       data:  await detail(ctx.params.id)
+    }
+  } catch (error) {
+    error.status = error.status ? error.status : 500
+    ctx.throw(error.status, error)
+  }
+})
+
+
+// 角色菜单授权
+router.post('/roleMenu/:id', async(ctx, next) => {
+  try {
+    ctx.status = 200
+    ctx.body = {
+      code: 200,
+      msg: resConfig['PERMS_SUCCESS'],
+      data:  await roleMenu(ctx.params.id, ctx.request.body)
     }
   } catch (error) {
     error.status = error.status ? error.status : 500

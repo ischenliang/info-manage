@@ -1,0 +1,124 @@
+import Vue from 'vue'
+
+import {
+  Button,
+  Form,
+  Loading,
+  Input,
+  FormItem,
+  Message,
+  Container,
+  Scrollbar,
+  Header,
+  Aside,
+  Main,
+  Menu,
+  MenuItem,
+  Submenu,
+  Tree,
+  Dialog,
+  Table,
+  TableColumn,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
+  Tabs,
+  TabPane,
+  Select,
+  Option,
+  Breadcrumb,
+  BreadcrumbItem,
+  Pagination,
+  MessageBox,
+  Tooltip,
+  Timeline,
+  TimelineItem,
+  Steps,
+  Step,
+  Transfer,
+  Row,
+  Col,
+  Card,
+  Avatar,
+  Progress,
+  Autocomplete,
+  InputNumber,
+  Tag,
+  Checkbox,
+  CheckboxButton,
+  DatePicker,
+  TimeSelect,
+  TimePicker,
+  CheckboxGroup,
+  Switch,
+  Divider,
+  PageHeader,
+  Drawer,
+  Notification,
+  Upload,
+  Alert,
+  Slider,
+  Collapse,
+  CollapseItem
+} from 'element-ui'
+
+Vue.use(Button)
+Vue.use(Form)
+Vue.use(Input)
+Vue.use(FormItem)
+Vue.use(Container)
+Vue.use(Header)
+Vue.use(Aside)
+Vue.use(Main)
+Vue.use(Menu)
+Vue.use(MenuItem)
+Vue.use(Submenu)
+Vue.use(Tree)
+Vue.use(Dialog)
+Vue.use(Table)
+Vue.use(TableColumn)
+Vue.use(Loading)
+Vue.use(Dropdown)
+Vue.use(DropdownMenu)
+Vue.use(DropdownItem)
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(Breadcrumb)
+Vue.use(BreadcrumbItem)
+Vue.use(Pagination)
+Vue.use(Tooltip)
+Vue.use(Timeline)
+Vue.use(TimelineItem)
+Vue.use(Steps)
+Vue.use(Step)
+Vue.use(Transfer)
+Vue.use(Row)
+Vue.use(Col)
+Vue.use(Card)
+Vue.use(Avatar)
+Vue.use(Tag)
+Vue.use(Autocomplete)
+Vue.use(Progress)
+Vue.use(InputNumber)
+Vue.use(Checkbox)
+Vue.use(CheckboxButton)
+Vue.use(CheckboxGroup)
+Vue.use(DatePicker)
+Vue.use(TimeSelect)
+Vue.use(TimePicker)
+Vue.use(Switch)
+Vue.use(Scrollbar)
+Vue.use(Divider)
+Vue.use(PageHeader)
+Vue.use(Drawer)
+Vue.use(Upload)
+Vue.use(Alert)
+Vue.use(Slider)
+Vue.use(Collapse)
+Vue.use(CollapseItem)
+// 将Message挂在到Vue原型链上,使得每个Vue的实例都能访问
+Vue.prototype.$msg = Message
+Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$notify = Notification

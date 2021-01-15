@@ -1,5 +1,5 @@
-const { Role } = require('../models/Middle')
-const { Op } = require("sequelize")
+const { Role, Menu } = require('../models/Middle')
+const { Op, QueryTypes } = require("sequelize")
 const sequelize = require('../utils/seq')
 const moment = require('moment')
 
@@ -50,13 +50,28 @@ async function update (role) {
   }
 }
 
-// 查询
+/**
+ * 查询
+ * @param {*} id 
+ * 
+ */
 async function detail (id) {
   try {
+    // 查询role_menu所有数据
+    // const results = await sequelize.query(`select * from role_menu where roleId='${id}'`, { type: QueryTypes.SELECT })
+    // const role = (await Role.findOne({ where: { id } })).toJSON()
     return await Role.findOne({
       where: {
         id
-      }
+      },
+      include: [
+        {
+          model: Menu,
+          as: 'rm',
+          required: false,
+          through: { attributes: [] }
+        }
+      ]
     })
   } catch (error) {
     throw error
@@ -103,11 +118,33 @@ async function list (query) {
   }
 }
 
+/**
+ * 角色菜单授权
+ * @param {*} id 角色id
+ * @param {*} menuIds 菜单ids
+ * 1.先清空role_menu里面roleId的数据
+ * 2.重新添加role_menu
+ */
+async function roleMenu (id, menuIds) {
+  try {
+    await sequelize.query(`delete from role_menu where roleId='${id}'`)
+    let values = []
+    menuIds.forEach(item => {
+      values.push(`('${id}', '${item}')`)
+    })
+    // 批量添加role_menu
+    return await sequelize.query(`insert into role_menu (roleId, menuId) values${values.join(',')}`)
+  } catch(error) {
+    throw error
+  }
+}
+
 
 module.exports =  {
   add,
   deleteById,
   update,
   detail,
-  list
+  list,
+  roleMenu
 }
