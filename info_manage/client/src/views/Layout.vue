@@ -6,7 +6,7 @@
       </div>
        <div class="el-scrollbar">
         <el-menu
-          default-active="1"
+          default-active="/system/role"
           class="el-menu-vertical-demo"
           background-color="#304156"
           text-color="#C1CBD9"

@@ -9,7 +9,20 @@ const list = {
   /**
    * 角色管理
   */
-  GetRoles: { method: 'get', url: '/role/list' }
+  // 角色列表 请求类型：get 请求地址：/role/list
+  GetRoles: { method: 'get', url: '/role/list' },
+  // 更新角色 请求类型：put 请求地址：/role/update
+  UpdateRole: { method: 'put', url: '/role/update' },
+
+  /**
+   * 菜单管理
+  */
+  GetMenus: { method: 'get', url: '/menu/list' },
+
+  /**
+   * 用户管理
+  */
+  GetUsers: { method: 'get', url: '/user/list' }
 }
 
 export default (config) => {
@@ -30,7 +43,7 @@ export default (config) => {
       requestConfig.params = config.params
     }
     if (method === 'post' || method === 'put') {
-      requestConfig.data = config.params
+      requestConfig.data = config.data
     }
 
     // 处理paths参数
@@ -49,9 +62,9 @@ export default (config) => {
     http(requestConfig).then(res => {
       if (res.data) {
         if (res.data.code === 200) {
-          resolve(res.data.data)
+          resolve(res.data)
         } else {
-          reject(res.data.msg)
+          reject(res.data)
         }
       }
     }).catch(error => {
