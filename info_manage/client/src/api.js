@@ -13,6 +13,10 @@ const list = {
   GetRoles: { method: 'get', url: '/role/list' },
   // 更新角色 请求类型：put 请求地址：/role/update
   UpdateRole: { method: 'put', url: '/role/update' },
+  // 更新角色 请求类型：put 请求地址：/role/update
+  DeleteRole: { method: 'delete', url: '/role/deleteById' },
+  // 新增角色 请求类型：post 请求地址：/role/add
+  AddRole: { method: 'post', url: '/role/add' },
 
   /**
    * 菜单管理

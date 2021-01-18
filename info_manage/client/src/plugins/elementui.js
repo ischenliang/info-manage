@@ -119,6 +119,131 @@ Vue.use(Slider)
 Vue.use(Collapse)
 Vue.use(CollapseItem)
 // 将Message挂在到Vue原型链上,使得每个Vue的实例都能访问
-Vue.prototype.$msg = Message
-Vue.prototype.$confirm = MessageBox.confirm
-Vue.prototype.$notify = Notification
+Vue.prototype.$message = {
+  success: function (message = '成功的提示消息', duration = 1000, showClose = false) {
+    return Message({
+      type: 'success',
+      showClose: showClose, // 可关闭
+      message: message,
+      duration: duration
+    })
+  },
+  error: function (message = '错误的提示消息', duration = 1000, showClose = false) {
+    return Message({
+      type: 'error',
+      showClose: showClose,
+      message: message,
+      duration: duration
+    })
+  },
+  warning: function (message = '错误的提示消息', duration = 1000, showClose = false) {
+    return Message({
+      type: 'warning',
+      showClose: showClose,
+      message: message,
+      duration: duration
+    })
+  },
+  info: function (message = '错误的提示消息', duration = 1000, showClose = false) {
+    return Message({
+      type: 'info',
+      showClose: showClose,
+      message: message,
+      duration: duration
+    })
+  }
+}
+Vue.prototype.$confirm = {
+  success: function (message = '默认提示信息内容?', title = '提示') {
+    return MessageBox.confirm(message, title, {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'success'
+    })
+  },
+  error: function (message = '默认提示信息内容?', title = '提示') {
+    return MessageBox.confirm(message, title, {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'error'
+    })
+  },
+  warning: function (message = '默认提示信息内容?', title = '提示') {
+    return MessageBox.confirm(message, title, {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+  },
+  info: function (message = '默认提示信息内容?', title = '提示') {
+    return MessageBox.confirm(message, title, {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'info'
+    })
+  }
+}
+Vue.prototype.$notify = {
+  success: function (message = '成功的提示消息', duration = 1000, position = 'top-right', title = '成功') {
+    return Notification({
+      title: title,
+      message: message,
+      type: 'success',
+      duration: duration,
+      position: position
+    })
+  },
+  error: function (message = '错误的提示消息', duration = 1000, position = 'top-right', title = '错误') {
+    return Notification({
+      title: title,
+      message: message,
+      type: 'error',
+      duration: duration,
+      position: position
+    })
+  },
+  info: function (message = '消息的提示消息', duration = 1000, position = 'top-right', title = '消息') {
+    return Notification({
+      title: title,
+      message: message,
+      type: 'info',
+      duration: duration,
+      position: position
+    })
+  },
+  warning: function (message = '警告的提示消息', duration = 1000, position = 'top-right', title = '警告') {
+    return Notification({
+      title: title,
+      message: message,
+      type: 'warning',
+      duration: duration,
+      position: position
+    })
+  }
+}
+Vue.prototype.$alert = {
+  success: function (message = '成功消息提示', title = '消息提示') {
+    return MessageBox.alert(message, title, {
+      confirmButtonText: '确定',
+      type: 'success'
+    })
+  },
+  error: function (message = '错误消息提示', title = '消息提示') {
+    return MessageBox.alert(message, title, {
+      confirmButtonText: '确定',
+      type: 'error'
+    })
+  },
+  warning: function (message = '警告消息提示', title = '消息提示') {
+    return MessageBox.alert(message, title, {
+      confirmButtonText: '确定',
+      type: 'warning'
+    })
+  },
+  info: function (message = '默认消息提示', title = '消息提示') {
+    return MessageBox.alert(message, title, {
+      confirmButtonText: '确定',
+      type: 'info'
+    })
+  }
+}

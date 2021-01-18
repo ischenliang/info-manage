@@ -1,0 +1,29 @@
+.el-dialog{
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform:translate(-50%, -50%);
+  .el-dialog__header {
+    padding: 20px 20px 0;
+  }
+  .el-dialog__body{
+    flex: 1;
+    overflow: auto;
+    padding: 20px 20px;
+  }
+}
+
+.el-form-item {
+  margin-bottom: 18px;
+}
+.el-form--label-top{
+  .el-form-item__label{
+    padding: 0;
+    line-height: 30px;
+    font-weight: bold;
+  }
+}

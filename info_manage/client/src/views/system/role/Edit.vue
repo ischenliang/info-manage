@@ -2,6 +2,7 @@
   <el-dialog
     title="提示"
     :visible.sync="visible"
+    :close-on-click-modal="false"
     :before-close="close">
     <span>这是一段信息</span>
     <span slot="footer" class="dialog-footer">

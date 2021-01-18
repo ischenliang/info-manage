@@ -7,11 +7,11 @@
         <el-option :value="false" label="禁用" />
       </el-select>
       <div style="flex: auto;"></div>
-      <el-button type="primary" size="medium">新增</el-button>
+      <el-button type="primary" size="medium" @click="addVisible = true">新增</el-button>
       <el-button type="warning" size="medium">导出</el-button>
-      <el-button type="danger" size="medium">删除</el-button>
+      <el-button type="danger" size="medium" @click="itemDelete">删除</el-button>
       <!-- 考虑做成组件 -->
-      <cDropdown :show.sync="show" />
+      <c-dropdown :show.sync="show" />
     </div>
     <div class="table">
       <el-table
@@ -38,7 +38,7 @@
           <template v-slot="{ row }">
             <el-button type="success" size="mini" icon="el-icon-lock" title="授权" />
             <el-button type="primary" size="mini" icon="el-icon-edit" title="编辑" @click="itemEdit(row)" />
-            <el-button type="danger" size="mini" icon="el-icon-delete" title="删除" />
+            <el-button type="danger" size="mini" icon="el-icon-delete" title="删除" @click="itemDelete(row)" />
           </template>
         </el-table-column>
       </el-table>
@@ -49,14 +49,17 @@
       :size.sync="list.size"
       @change="listGet" />
     <com-edit :visible.sync="editVisible" :id="id" />
+    <com-add :visible.sync="addVisible" />
   </div>
 </template>
 
 <script>
 import ComEdit from './Edit'
+import ComAdd from './Add'
 export default {
   components: {
-    ComEdit
+    ComEdit,
+    ComAdd
   },
   name: 'SystemRole',
   data () {
@@ -77,6 +80,7 @@ export default {
         }
       },
       editVisible: false,
+      addVisible: false,
       id: ''
     }
   },
@@ -156,9 +160,24 @@ export default {
       }
       this.listGet()
     },
+    // 编辑
     itemEdit (row) {
       this.id = row.id
       this.editVisible = true
+    },
+    // 删除
+    itemDelete (row) {
+      this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
+        this.$http({
+          name: 'DeleteRole',
+          requireAuth: true,
+          paths: [row.id]
+        }).then(res => {
+          this.$notify.succss()
+        }).catch(error => {
+          console.log(error)
+        })
+      }).catch(() => {})
     }
   },
   created () {

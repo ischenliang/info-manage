@@ -5,6 +5,7 @@ import store from './store'
 
 import './plugins/elementui'
 import '@/assets/css/style.scss'
+import '@/assets/css/global.scss'
 import CUI from '@/components/index'
 import http from './api'
 

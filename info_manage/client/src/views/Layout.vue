@@ -2,17 +2,21 @@
   <div class="app-wrapper">
     <div class="sidebar-container has-logo">
       <div class="sidebar-logo-container">
-        <img src="../assets/img/logo.png" alt="" style="width: 100%;height: 100%;">
+        <label>个人信息管理系统</label>
       </div>
        <div class="el-scrollbar">
         <el-menu
-          default-active="/system/role"
+          :default-active="$route.path"
           class="el-menu-vertical-demo"
           background-color="#304156"
           text-color="#C1CBD9"
           active-text-color="#409EFF"
           style="border-right: none;"
           router>
+          <el-menu-item index="/home">
+            <i class="el-icon-s-home"></i>
+            <span slot="title">首页</span>
+          </el-menu-item>
           <el-submenu index="/system">
             <template slot="title">
               <i class="el-icon-setting"></i>
