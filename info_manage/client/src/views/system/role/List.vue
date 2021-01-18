@@ -7,9 +7,9 @@
         <el-option :value="false" label="禁用" />
       </el-select>
       <div style="flex: auto;"></div>
-      <el-button type="primary" size="medium" @click="addVisible = true">新增</el-button>
+      <el-button type="primary" size="medium" @click="visible = true">新增</el-button>
       <el-button type="warning" size="medium">导出</el-button>
-      <el-button type="danger" size="medium" @click="itemDelete">删除</el-button>
+      <el-button type="danger" size="medium" @click="deleteSelected" :disabled="deleteDisabled">删除</el-button>
       <!-- 考虑做成组件 -->
       <c-dropdown :show.sync="show" />
     </div>
@@ -22,6 +22,7 @@
         ref="table"
         v-loading="list.loading"
         @sort-change="sortChange"
+        @selection-change="selectChange"
         :data="list.data">
         <el-table-column type="selection" width="60" align="center"/>
         <el-table-column v-if="show[0].value" prop="name" label="角色名称" width="200" align="center" sortable="custom" />
@@ -36,7 +37,7 @@
         <el-table-column v-if="show[5].value" prop="mtime" label="修改时间" width="170" align="center" sortable="custom" />
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
-            <el-button type="success" size="mini" icon="el-icon-lock" title="授权" />
+            <el-button type="success" size="mini" icon="el-icon-lock" title="授权" @click="itemAuth(row)" />
             <el-button type="primary" size="mini" icon="el-icon-edit" title="编辑" @click="itemEdit(row)" />
             <el-button type="danger" size="mini" icon="el-icon-delete" title="删除" @click="itemDelete(row)" />
           </template>
@@ -48,18 +49,24 @@
       :page.sync="list.page"
       :size.sync="list.size"
       @change="listGet" />
-    <com-edit :visible.sync="editVisible" :id="id" />
-    <com-add :visible.sync="addVisible" />
+    <com-dialog v-if="visible" :visible.sync="visible" @submit="listGet" :id.sync="id" />
   </div>
 </template>
 
 <script>
-import ComEdit from './Edit'
-import ComAdd from './Add'
+import ComDialog from './Dialog'
 export default {
   components: {
-    ComEdit,
-    ComAdd
+    ComDialog
+  },
+  computed: {
+    deleteDisabled: function () {
+      if (this.list.selected.length > 0) {
+        return false
+      } else {
+        return true
+      }
+    }
   },
   name: 'SystemRole',
   data () {
@@ -77,10 +84,10 @@ export default {
           status: '',
           sort: '',
           order: ''
-        }
+        },
+        selected: []
       },
-      editVisible: false,
-      addVisible: false,
+      visible: false,
       id: ''
     }
   },
@@ -160,10 +167,14 @@ export default {
       }
       this.listGet()
     },
+    // 选择回调
+    selectChange (rows) {
+      this.list.selected = rows.map(item => item.id)
+    },
     // 编辑
     itemEdit (row) {
       this.id = row.id
-      this.editVisible = true
+      this.visible = true
     },
     // 删除
     itemDelete (row) {
@@ -173,11 +184,37 @@ export default {
           requireAuth: true,
           paths: [row.id]
         }).then(res => {
-          this.$notify.succss()
+          this.$notify.success()
+          this.listGet()
         }).catch(error => {
-          console.log(error)
+          this.$notify.error(error.message)
         })
       }).catch(() => {})
+    },
+    deleteSelected () {
+      this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
+        this.list.selected.forEach((item, index) => {
+          this.$http({
+            name: 'DeleteRole',
+            requireAuth: true,
+            paths: [item]
+          }).then(res => {
+            if (index === this.list.selected.length - 1) {
+              this.$notify.success()
+              this.listGet()
+              this.list.selected = []
+            }
+          }).catch(error => {
+            this.$notify.error(error.message)
+          })
+        })
+      }).catch(() => {})
+    },
+    // 授权
+    itemAuth (row) {
+      this.$router.push({
+        path: '/system/permission/' + row.id
+      })
     }
   },
   created () {

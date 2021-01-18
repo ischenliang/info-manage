@@ -34,6 +34,10 @@
               <i class="el-icon-user"></i>
               <span>用户管理</span>
             </el-menu-item>
+            <el-menu-item index="/system/permission">
+              <i class="el-icon-user"></i>
+              <span>权限管理</span>
+            </el-menu-item>
           </el-submenu>
           <el-menu-item index="/project">
             <i class="el-icon-s-grid"></i>

@@ -35,6 +35,11 @@ const routes = [
         path: 'menu',
         name: 'SystemMenu',
         component: () => import('@/views/system/menu/List')
+      },
+      {
+        path: 'permission/:id',
+        name: 'SystemPermission',
+        component: () => import('@/views/system/permission/List')
       }
     ]
   },

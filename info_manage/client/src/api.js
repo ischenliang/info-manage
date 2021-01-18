@@ -17,6 +17,8 @@ const list = {
   DeleteRole: { method: 'delete', url: '/role/deleteById' },
   // 新增角色 请求类型：post 请求地址：/role/add
   AddRole: { method: 'post', url: '/role/add' },
+  // 角色详情 请求类型：get 请求地址：/role/detail
+  GetRole: { method: 'get', url: '/role/detail' },
 
   /**
    * 菜单管理
