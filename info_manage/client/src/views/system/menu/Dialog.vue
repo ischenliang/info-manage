@@ -33,15 +33,15 @@
           v-model="popover.icon">
           <!-- 不设置title和content：然后设置下面的html代码，会显示在内容区 -->
           <div class="icon-body">
-            <div>
-              <i class="el-icon-delete"></i>
-              <span>哇哈哈哈</span>
+            <div style="width: 100%;margin-bottom: 8px;">
+              <el-input v-model="input" placeholder="请输入内容"></el-input>
             </div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <div class="icons-list">
+              <div v-for="(item, index) in list.icons" :key="index">
+                <i :class="item.value"></i>
+                <span>{{ item.name }}</span>
+              </div>
+            </div>
           </div>
         </el-popover>
       </el-form-item>
@@ -121,9 +121,30 @@ export default {
       // 存放所有里面用到的列表数据
       list: {
         icons: [
+          { name: '删除', value: 'el-icon-delete' },
           { name: '首页', value: 'el-icon-s-home' },
           { name: '日期', value: 'el-icon-date' },
           { name: '权限', value: 'el-icon-lock' },
+          { name: '文件夹(关闭)', value: 'el-icon-folder' },
+          { name: '文件夹(打开)', value: 'el-icon-folder-opened' },
+          { name: '设置', value: 'el-icon-setting' },
+          { name: '删除', value: 'el-icon-delete' },
+          { name: '首页', value: 'el-icon-s-home' },
+          { name: '日期', value: 'el-icon-date' },
+          { name: '权限', value: 'el-icon-lock' },
+          { name: '文件夹(关闭)', value: 'el-icon-folder' },
+          { name: '文件夹(打开)', value: 'el-icon-folder-opened' },
+          { name: '设置', value: 'el-icon-setting' },
+          { name: '删除', value: 'el-icon-delete' },
+          { name: '首页', value: 'el-icon-s-home' },
+          { name: '日期', value: 'el-icon-date' },
+          { name: '权限', value: 'el-icon-lock' },
+          { name: '文件夹(关闭)', value: 'el-icon-folder' },
+          { name: '文件夹(打开)', value: 'el-icon-folder-opened' },
+          { name: '设置', value: 'el-icon-setting' },
+          { name: '文件夹(关闭)', value: 'el-icon-folder' },
+          { name: '文件夹(打开)', value: 'el-icon-folder-opened' },
+          { name: '设置', value: 'el-icon-setting' },
           { name: '文件夹(关闭)', value: 'el-icon-folder' },
           { name: '文件夹(打开)', value: 'el-icon-folder-opened' },
           { name: '设置', value: 'el-icon-setting' }
@@ -133,7 +154,8 @@ export default {
       popover: {
         icon: false,
         pid: false
-      }
+      },
+      input: ''
     }
   },
   methods: {
@@ -190,7 +212,7 @@ export default {
       }).then(res => {
         this.form = res.data
         // 后期这里使用ajax获取后台的icons
-        this.list.icons = [{ value: '三全鲜食（北新泾店）', address: '长宁区新渔路144号' }]
+        // this.list.icons = [{ value: '三全鲜食（北新泾店）', address: '长宁区新渔路144号' }]
       }).catch(error => {
         this.$notify.error(error.message)
       })
@@ -223,32 +245,51 @@ export default {
 }
 .icon-body{
   display: flex;
-  height: 200px;
-  flex-wrap: wrap;
-  overflow: auto;
-  border: 1px solid #eee;
-  > div {
-    width: 88px;
-    height: 60px;
+  height: 290px;
+  flex-direction: column;
+  .icons-list{
+    width: 100%;
+    height: 242px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-right: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    > i {
-      font-size: 30px;
-    }
-    > span {
-      display: block;
-      width: 100%;
-      height: 20px;
-      line-height: 20px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      text-align: center;
-      font-size: 12px;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    overflow: auto;
+    > div {
+      width: 86px;
+      height: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      &:nth-child(1),
+      &:nth-child(2),
+      &:nth-child(3),
+      &:nth-child(4),
+      &:nth-child(5),
+      &:nth-child(6){
+        border-top: 1px solid #eee;
+      }
+      &:nth-child(6n + 1) {
+        border-left: 1px solid #eee;
+      }
+      > i {
+        font-size: 32px;
+      }
+      > span {
+        display: block;
+        width: 100%;
+        height: 20px;
+        line-height: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-align: center;
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.5);
+      }
     }
   }
 }
