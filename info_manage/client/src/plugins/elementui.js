@@ -59,7 +59,9 @@ import {
   Alert,
   Slider,
   Collapse,
-  CollapseItem
+  CollapseItem,
+  Radio,
+  Popover
 } from 'element-ui'
 
 Vue.use(Button)
@@ -118,6 +120,8 @@ Vue.use(Alert)
 Vue.use(Slider)
 Vue.use(Collapse)
 Vue.use(CollapseItem)
+Vue.use(Radio)
+Vue.use(Popover)
 // 将Message挂在到Vue原型链上,使得每个Vue的实例都能访问
 Vue.prototype.$message = {
   success: function (message = '成功的提示消息', duration = 1000, showClose = false) {

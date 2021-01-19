@@ -109,13 +109,7 @@ export default {
         this.list.total = res.data.total
         this.list.data = res.data.data
       }).catch(error => {
-        this.$notify({
-          title: '错误',
-          message: error,
-          type: 'error',
-          duration: 1000,
-          position: 'top-right'
-        })
+        this.$notify.error(error)
       }).finally(() => {
         this.list.loading = false
       })
@@ -138,22 +132,11 @@ export default {
         requireAuth: true,
         data: row
       }).then(res => {
-        this.listGet()
-        this.$notify({
-          title: '成功',
-          message: '更新成功',
-          type: 'success',
-          duration: 1000,
-          position: 'top-right'
-        })
+        this.$notify.success(res.msg)
       }).catch(error => {
-        this.$notify({
-          title: '错误',
-          message: error,
-          type: 'error',
-          duration: 1000,
-          position: 'top-right'
-        })
+        this.$notify.error(error)
+      }).finally(() => {
+        this.listGet()
       })
     },
     // 排序回调
@@ -185,9 +168,10 @@ export default {
           paths: [row.id]
         }).then(res => {
           this.$notify.success()
-          this.listGet()
         }).catch(error => {
-          this.$notify.error(error.message)
+          this.$notify.error(error)
+        }).finally(() => {
+          this.listGet()
         })
       }).catch(() => {})
     },
@@ -201,11 +185,12 @@ export default {
           }).then(res => {
             if (index === this.list.selected.length - 1) {
               this.$notify.success()
-              this.listGet()
               this.list.selected = []
             }
           }).catch(error => {
-            this.$notify.error(error.message)
+            this.$notify.error(error)
+          }).finally(() => {
+            this.listGet()
           })
         })
       }).catch(() => {})

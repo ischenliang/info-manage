@@ -13,7 +13,7 @@ const list = {
   GetRoles: { method: 'get', url: '/role/list' },
   // 更新角色 请求类型：put 请求地址：/role/update
   UpdateRole: { method: 'put', url: '/role/update' },
-  // 更新角色 请求类型：put 请求地址：/role/update
+  // 删除角色 请求类型：put 请求地址：/role/update
   DeleteRole: { method: 'delete', url: '/role/deleteById' },
   // 新增角色 请求类型：post 请求地址：/role/add
   AddRole: { method: 'post', url: '/role/add' },
@@ -23,7 +23,14 @@ const list = {
   /**
    * 菜单管理
   */
+  // 菜单列表 请求类型：get 请求地址：/menu/list
   GetMenus: { method: 'get', url: '/menu/list' },
+  // 更新菜单 请求类型：put 请求地址：/menu/update
+  UpdateMenu: { method: 'put', url: '/menu/update' },
+  // 更新菜单 请求类型：put 请求地址：/menu/update
+  DeleteMenu: { method: 'delete', url: '/menu/deleteById' },
+  // 获取菜单 请求类型：get 请求地址：/menu/update
+  GetMenu: { method: 'get', url: '/menu/detail' },
 
   /**
    * 用户管理
