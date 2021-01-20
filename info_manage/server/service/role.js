@@ -5,6 +5,8 @@ const moment = require('moment')
 
 // 新增
 async function add (role) {
+  role.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
+  role.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
   try {
     return await Role.create(role)
   } catch (error) {

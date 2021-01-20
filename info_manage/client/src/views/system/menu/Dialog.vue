@@ -14,6 +14,18 @@
           <el-input v-model="form.path"></el-input>
         </el-form-item>
       </div>
+      <el-form-item label="上级菜单" prop="pid">
+        <el-input v-model="form.pid" v-popover:popover_pid readonly></el-input>
+        <el-popover
+          ref="popover_pid"
+          placement="bottom-start"
+          width="560"
+          trigger="focus"
+          :offset="0"
+          v-model="popover.pid">
+          <c-popmenu :id.sync="form.pid" :visible.sync="popover.pid"  />
+        </el-popover>
+      </el-form-item>
       <div class="form-inline">
         <el-form-item label="菜单组件" prop="component">
           <el-input v-model="form.component"></el-input>
@@ -23,7 +35,7 @@
         </el-form-item>
       </div>
       <el-form-item label="菜单图标" prop="icon">
-        <el-input v-model="form.icon" v-popover:popover_icon readonly></el-input>
+        <el-input v-model="form.icon"  v-popover:popover_icon readonly></el-input>
         <el-popover
           ref="popover_icon"
           placement="bottom-start"
@@ -31,19 +43,14 @@
           trigger="focus"
           :offset="0"
           v-model="popover.icon">
-          <!-- 不设置title和content：然后设置下面的html代码，会显示在内容区 -->
-          <div class="icon-body">
-            <div style="width: 100%;margin-bottom: 8px;">
-              <el-input v-model="input" placeholder="请输入内容"></el-input>
-            </div>
-            <div class="icons-list">
-              <div v-for="(item, index) in list.icons" :key="index">
-                <i :class="item.value"></i>
-                <span>{{ item.name }}</span>
-              </div>
-            </div>
-          </div>
+          <c-popicon :icon.sync="form.icon" :visible.sync="popover.icon" />
         </el-popover>
+      </el-form-item>
+      <el-form-item label="菜单类型" prop="type">
+        <el-select v-model="form.type" style="width: 100%;">
+          <el-option :value="1" label="目录" />
+          <el-option :value="2" label="菜单" />
+        </el-select>
       </el-form-item>
       <div class="form-inline">
         <el-form-item label="菜单状态" prop="status">
@@ -59,25 +66,6 @@
           <el-radio v-model="form.is_frame" :label="false">否</el-radio>
         </el-form-item>
       </div>
-      <el-form-item label="菜单类型" prop="type">
-        <el-select v-model="form.type" style="width: 100%;">
-          <el-option :value="1" label="目录" />
-          <el-option :value="2" label="菜单" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="上级菜单" prop="pid">
-        <el-input v-model="form.pid" v-popover:popover_pid readonly></el-input>
-        <el-popover
-          ref="popover_pid"
-          placement="bottom-start"
-          width="560"
-          trigger="focus"
-          :offset="0">
-          <div style="height: 200px;">
-            <p>这是一段内容这是一段内容确定删除吗？</p>
-          </div>
-        </el-popover>
-      </el-form-item>
       <el-form-item label="备注信息" prop="remark">
         <el-input type="textarea" v-model="form.remark" :rows="2"></el-input>
       </el-form-item>
@@ -118,44 +106,11 @@ export default {
         path: [{ required: true, message: '请输入路由', trigger: 'blur' }],
         component: [{ required: true, message: '请输入组件路径', trigger: 'blur' }]
       },
-      // 存放所有里面用到的列表数据
-      list: {
-        icons: [
-          { name: '删除', value: 'el-icon-delete' },
-          { name: '首页', value: 'el-icon-s-home' },
-          { name: '日期', value: 'el-icon-date' },
-          { name: '权限', value: 'el-icon-lock' },
-          { name: '文件夹(关闭)', value: 'el-icon-folder' },
-          { name: '文件夹(打开)', value: 'el-icon-folder-opened' },
-          { name: '设置', value: 'el-icon-setting' },
-          { name: '删除', value: 'el-icon-delete' },
-          { name: '首页', value: 'el-icon-s-home' },
-          { name: '日期', value: 'el-icon-date' },
-          { name: '权限', value: 'el-icon-lock' },
-          { name: '文件夹(关闭)', value: 'el-icon-folder' },
-          { name: '文件夹(打开)', value: 'el-icon-folder-opened' },
-          { name: '设置', value: 'el-icon-setting' },
-          { name: '删除', value: 'el-icon-delete' },
-          { name: '首页', value: 'el-icon-s-home' },
-          { name: '日期', value: 'el-icon-date' },
-          { name: '权限', value: 'el-icon-lock' },
-          { name: '文件夹(关闭)', value: 'el-icon-folder' },
-          { name: '文件夹(打开)', value: 'el-icon-folder-opened' },
-          { name: '设置', value: 'el-icon-setting' },
-          { name: '文件夹(关闭)', value: 'el-icon-folder' },
-          { name: '文件夹(打开)', value: 'el-icon-folder-opened' },
-          { name: '设置', value: 'el-icon-setting' },
-          { name: '文件夹(关闭)', value: 'el-icon-folder' },
-          { name: '文件夹(打开)', value: 'el-icon-folder-opened' },
-          { name: '设置', value: 'el-icon-setting' }
-        ]
-      },
       // 控制popover的状态
       popover: {
         icon: false,
         pid: false
-      },
-      input: ''
+      }
     }
   },
   methods: {
@@ -165,8 +120,12 @@ export default {
     },
     // 新增提交
     addSubmit () {
+      // 删除this.form.pid属性
+      if (this.form.pid === '') {
+        delete this.form.pid
+      }
       this.$http({
-        name: 'AddRole',
+        name: 'AddMenu',
         requireAuth: true,
         data: this.form
       }).then(res => {
@@ -180,7 +139,7 @@ export default {
     // 编辑提交
     editSubmit () {
       this.$http({
-        name: 'UpdateRole',
+        name: 'UpdateMenu',
         requireAuth: true,
         data: this.form
       }).then(res => {
@@ -216,10 +175,6 @@ export default {
       }).catch(error => {
         this.$notify.error(error.message)
       })
-    },
-    // queryString:搜索的数据 cb：回调函数
-    querySearch (queryString, cb) {
-      cb(this.list.icons)
     }
   },
   created () {
@@ -240,56 +195,6 @@ export default {
     }
     &:last-child{
       margin-left: 10px;
-    }
-  }
-}
-.icon-body{
-  display: flex;
-  height: 290px;
-  flex-direction: column;
-  .icons-list{
-    width: 100%;
-    height: 242px;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    overflow: auto;
-    > div {
-      width: 86px;
-      height: 60px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border-right: 1px solid #eee;
-      border-bottom: 1px solid #eee;
-      cursor: pointer;
-      &:nth-child(1),
-      &:nth-child(2),
-      &:nth-child(3),
-      &:nth-child(4),
-      &:nth-child(5),
-      &:nth-child(6){
-        border-top: 1px solid #eee;
-      }
-      &:nth-child(6n + 1) {
-        border-left: 1px solid #eee;
-      }
-      > i {
-        font-size: 32px;
-      }
-      > span {
-        display: block;
-        width: 100%;
-        height: 20px;
-        line-height: 20px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        text-align: center;
-        font-size: 12px;
-        color: rgba(0, 0, 0, 0.5);
-      }
     }
   }
 }

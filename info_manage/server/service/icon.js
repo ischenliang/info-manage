@@ -5,6 +5,8 @@ const moment = require('moment')
 
 // 新增
 async function add (icon) {
+  icon.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
+  icon.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
   try {
     return await Icon.create(icon)
   } catch (error) {

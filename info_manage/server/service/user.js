@@ -18,6 +18,7 @@ const moment = require('moment')
  */
 async function add (user) {
   try {
+    user.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
     user.password = MD5(user.password)
     const res = await User.create(user)
     let values = []

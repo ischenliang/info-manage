@@ -5,6 +5,8 @@ const moment = require('moment')
 
 // 新增
 async function add (menu) {
+  menu.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
+  menu.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
   try {
     return await Menu.create(menu)
   } catch (error) {

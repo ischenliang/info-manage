@@ -31,6 +31,8 @@ const list = {
   DeleteMenu: { method: 'delete', url: '/menu/deleteById' },
   // 获取菜单 请求类型：get 请求地址：/menu/update
   GetMenu: { method: 'get', url: '/menu/detail' },
+  // 新增菜单 请求类型：post 请求地址：/menu/add
+  AddMenu: { method: 'post', url: '/menu/add' },
 
   /**
    * 用户管理

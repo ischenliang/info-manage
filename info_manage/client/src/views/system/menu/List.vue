@@ -28,12 +28,25 @@
         <!-- 不好做:选择时将子代数据全选操作 -->
         <el-table-column type="selection" width="60" align="center"/>
         <el-table-column v-if="show[0].value" prop="name" label="菜单名称" width="200" align="left" sortable="custom" :show-overflow-tooltip="true" />
-        <el-table-column v-if="show[1].value" prop="icon" label="图标" min-width="120" align="center" sortable="custom" />
+        <el-table-column v-if="show[1].value" prop="icon" label="图标" min-width="120" align="center" sortable="custom">
+          <template v-slot="{ row }">
+            <i :class="row.icon" style="font-size: 22px;"></i>
+          </template>
+        </el-table-column>
         <el-table-column v-if="show[2].value" prop="component" label="组件路径" min-width="120" align="center" sortable="custom" />
         <el-table-column v-if="show[3].value" prop="path" label="路由地址" min-width="120" align="center" sortable="custom" />
         <el-table-column v-if="show[4].value" prop="order" label="显示顺序" min-width="120" align="center" sortable="custom" />
-        <el-table-column v-if="show[5].value" prop="is_frame" label="是否外链" min-width="120" align="center" sortable="custom" />
-        <el-table-column v-if="show[6].value" prop="type" label="类型" min-width="120" align="center" sortable="custom" />
+        <el-table-column v-if="show[5].value" prop="is_frame" label="是否外链" min-width="120" align="center" sortable="custom">
+          <template v-slot="{ row }">
+            <el-switch v-model="row.is_frame" @change="updateRow(row)"></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="show[6].value" prop="type" label="类型" min-width="120" align="center" sortable="custom">
+          <template v-slot="{ row }">
+            <el-tag type="default" v-if="row.type === 1">目录</el-tag>
+            <el-tag type="success" v-if="row.type === 2">菜单</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column v-if="show[7].value" prop="status" label="状态" min-width="120" align="center" sortable="custom">
           <template v-slot="{ row }">
             <el-switch v-model="row.status" @change="updateRow(row)"></el-switch>
@@ -129,10 +142,10 @@ export default {
         { label: '路由地址', disabled: true, value: true },
         { label: '显示顺序', disabled: false, value: false },
         { label: '是否外链', disabled: false, value: false },
-        { label: '类型', disabled: false, value: false },
+        { label: '类型', disabled: false, value: true },
         { label: '状态', disabled: false, value: true },
         { label: '创建时间', disabled: false, value: true },
-        { label: '修改时间', disabled: false, value: true },
+        { label: '修改时间', disabled: false, value: false },
         { label: '备注', disabled: false, value: false }
       ]
     },
@@ -186,7 +199,27 @@ export default {
         })
       }).catch(() => {})
     },
-    deleteSelected () {}
+    // 删除已选
+    deleteSelected () {
+      this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
+        this.list.selected.forEach((item, index) => {
+          this.$http({
+            name: 'DeleteMenu',
+            requireAuth: true,
+            paths: [item]
+          }).then(res => {
+            if (index === this.list.selected.length - 1) {
+              this.$notify.success()
+              this.list.selected = []
+            }
+          }).catch(error => {
+            this.$notify.error(error)
+          }).finally(() => {
+            this.listGet()
+          })
+        })
+      }).catch(() => {})
+    }
   },
   created () {
     this.setShow()
