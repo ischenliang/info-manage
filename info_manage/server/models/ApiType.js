@@ -3,14 +3,12 @@ const moment = require('moment')
 const seq = require('../utils/seq')
 
 /**
- * id: 权限主键 UUID
- * name：权限名称 String
- * path：权限路径 String
- * type：权限类型 String
- *    GET POST PUT DELETE
- * 
+ * id: api类别id UUID
+ * name：api名称 String
+ * ctime：创建时间 String
+ * mtime：更新时间 String
  */
-const Permission = seq.define('permission', {
+const ApiType = seq.define('api_type', {
   id: {
     type: DataTypes.UUID,
     allowNull: false,
@@ -21,25 +19,15 @@ const Permission = seq.define('permission', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
-    comment: '权限名称'
+    comment: '分类名称'
   },
-  path: {
+  ctime: {
     type: DataTypes.STRING,
     allowNull: false,
-    comment: '权限地址'
+    defaultValue: moment().format('YYYY-MM-DD HH:mm:ss'),
+    comment: '创建时间'
   },
-  type: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    defaultValue: 'get',
-    comment: '权限类型'
-  },
-  basename: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    comment: '所属类别：用户管理/角色管理等等'
-  },
-  updatetime: {
+  mtime: {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -49,4 +37,4 @@ const Permission = seq.define('permission', {
   freezeTableName: true
 })
 
-module.exports = Permission
+module.exports = ApiType
