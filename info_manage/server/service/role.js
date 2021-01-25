@@ -28,6 +28,7 @@ async function deleteById (id) {
   try {
     // 删除角色关联的表
     await sequelize.query(`delete from user_role where roleId='${id}'`)
+    await sequelize.query(`delete from role_api where roleId='${id}'`)
     return await Role.destroy({
       where: {
         id
@@ -141,6 +142,27 @@ async function roleMenu (id, menuIds) {
   }
 }
 
+/**
+ * 角色接口授权
+ * @param {*} id 角色id
+ * @param {*} apiIds 菜单ids
+ * 1.先清空role_menu里面roleId的数据
+ * 2.重新添加role_menu
+ */
+async function roleApi (id, apiIds) {
+  try {
+    await sequelize.query(`delete from role_api where roleId='${id}'`)
+    let values = []
+    apiIds.forEach(item => {
+      values.push(`('${id}', '${item}')`)
+    })
+    // 批量添加role_menu
+    return await sequelize.query(`insert into role_api (roleId, apiId) values${values.join(',')}`)
+  } catch(error) {
+    throw error
+  }
+}
+
 
 module.exports =  {
   add,
@@ -148,5 +170,6 @@ module.exports =  {
   update,
   detail,
   list,
-  roleMenu
+  roleMenu,
+  roleApi
 }

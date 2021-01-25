@@ -9,7 +9,7 @@ const seq = require('../utils/seq')
  * type：api类型 String
  *    GET POST PUT DELETE
  * tid：api类别/api所属类别 UUID
- *    关联api_type表
+ *    关联api_type表，删除时将其清空即可
  * ctime：api创建时间 String
  * mtime：api更新时间 String
  */
@@ -34,13 +34,18 @@ const Api = seq.define('api', {
   type: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'get',
+    defaultValue: 'GET',
     comment: '权限类型'
   },
   tid: {
     type: DataTypes.UUID,
     allowNull: true,
     comment: 'api_type表关联'
+  },
+  remark: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: '接口备注'
   },
   ctime: {
     type: DataTypes.STRING,

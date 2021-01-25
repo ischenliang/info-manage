@@ -25,6 +25,11 @@ Icon.belongsTo(IconProject, { foreignKey: 'pid', targetKey: 'id', })
 ApiType.hasMany(Api, { foreignKey: 'tid', sourceKey: 'id' })
 Api.belongsTo(ApiType, { foreignKey: 'tid', sourceKey: 'id' })
 
+// role与api表关联
+Role.belongsToMany(Api, { through: 'role_api', as: 'ra' })
+Api.belongsToMany(Role, { through: 'role_api', as: 'ra' })
+
+
 
 // 向外抛出所有的model：后续使用就只需要引入这一个 model 即可
 module.exports = {
@@ -32,5 +37,7 @@ module.exports = {
   Role,
   Menu,
   Icon,
-  IconProject
+  IconProject,
+  Api,
+  ApiType
 }
