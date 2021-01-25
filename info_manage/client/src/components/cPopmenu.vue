@@ -49,7 +49,7 @@ export default {
       }).then(res => {
         this.menus = res.data.data
       }).catch(error => {
-        this.$notify.error(error.message)
+        this.$notify.error(error)
       }).finally(() => {
         this.loading = false
       })

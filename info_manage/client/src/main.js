@@ -4,15 +4,15 @@ import router from './router'
 import store from './store'
 
 import './plugins/elementui'
+import './plugins/plugin'
+import config from './config/export_fields'
 import '@/assets/css/style.scss'
 import '@/assets/css/global.scss'
-import CUI from '@/components/index'
 import http from './api'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = http
-
-Vue.use(CUI)
+Vue.prototype.$fields = config
 
 new Vue({
   router,

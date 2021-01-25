@@ -37,6 +37,11 @@ const routes = [
         component: () => import('@/views/system/menu/List')
       },
       {
+        path: 'api',
+        name: 'SystemApi',
+        component: () => import('@/views/system/api/List')
+      },
+      {
         path: 'permission/:id',
         name: 'SystemPermission',
         component: () => import('@/views/system/permission/List')
@@ -56,6 +61,17 @@ const routes = [
         path: '',
         name: 'project',
         component: () => import('@/views/project/List')
+      }
+    ]
+  },
+  {
+    path: '/test',
+    component: () => import('@/views/Layout'),
+    children: [
+      {
+        path: '',
+        name: 'test',
+        component: () => import('@/views/test/Test')
       }
     ]
   }

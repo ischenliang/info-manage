@@ -8,7 +8,7 @@
       </el-select>
       <div style="flex: auto;"></div>
       <el-button type="primary" size="medium" @click="visible = true">新增</el-button>
-      <el-button type="warning" size="medium">导出</el-button>
+      <c-json-excel :name="'GetRoles'" :fields="$fields.role" :filename="'role'" style="margin: 0 10px;" />
       <el-button type="danger" size="medium" @click="deleteSelected" :disabled="deleteDisabled">删除</el-button>
       <!-- 考虑做成组件 -->
       <c-dropdown :show.sync="show" />

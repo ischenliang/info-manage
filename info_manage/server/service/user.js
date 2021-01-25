@@ -74,7 +74,12 @@ async function update (user) {
     })
     await sequelize.query(`insert into user_role (userId, roleId) values${values.join(',')}`)
     // 更新用户
-    user.password = MD5(user.password)
+    if (user.password !== '' && user.password !== undefined && user.password !== null) {
+      user.password = MD5(user.password)
+    } else {
+      // 删除password属性
+      delete user.password
+    }
     return await User.update(user,{
       where: {
         id: user.id

@@ -13,12 +13,14 @@ const list = {
   GetRoles: { method: 'get', url: '/role/list' },
   // 更新角色 请求类型：put 请求地址：/role/update
   UpdateRole: { method: 'put', url: '/role/update' },
-  // 删除角色 请求类型：put 请求地址：/role/update
+  // 删除角色 请求类型：delete 请求地址：/role/deleteById/:id
   DeleteRole: { method: 'delete', url: '/role/deleteById' },
   // 新增角色 请求类型：post 请求地址：/role/add
   AddRole: { method: 'post', url: '/role/add' },
-  // 角色详情 请求类型：get 请求地址：/role/detail
+  // 角色详情 请求类型：get 请求地址：/role/detail/:id
   GetRole: { method: 'get', url: '/role/detail' },
+  // 角色菜单 请求类型：post 请求地址：/role/roleMenu/:id
+  UpdateRoleMenu: { method: 'post', url: '/role/roleMenu' },
 
   /**
    * 菜单管理
@@ -27,9 +29,9 @@ const list = {
   GetMenus: { method: 'get', url: '/menu/list' },
   // 更新菜单 请求类型：put 请求地址：/menu/update
   UpdateMenu: { method: 'put', url: '/menu/update' },
-  // 更新菜单 请求类型：put 请求地址：/menu/update
+  // 更新菜单 请求类型：delete 请求地址：/menu/deleteById/:id
   DeleteMenu: { method: 'delete', url: '/menu/deleteById' },
-  // 获取菜单 请求类型：get 请求地址：/menu/update
+  // 获取菜单 请求类型：get 请求地址：/menu/detail/:id
   GetMenu: { method: 'get', url: '/menu/detail' },
   // 新增菜单 请求类型：post 请求地址：/menu/add
   AddMenu: { method: 'post', url: '/menu/add' },
@@ -37,7 +39,16 @@ const list = {
   /**
    * 用户管理
   */
-  GetUsers: { method: 'get', url: '/user/list' }
+  // 用户列表 请求类型：get 请求地址：/user/list
+  GetUsers: { method: 'get', url: '/user/list' },
+  // 用户详情 请求类型：get 请求地址：/user/detail
+  GetUser: { method: 'get', url: '/user/detail' },
+  // 新增用户 请求类型：post 请求地址：/user/add
+  AddUser: { method: 'post', url: '/user/add' },
+  // 更新用户 请求类型：put 请求地址：/user/update
+  UpdateUser: { method: 'put', url: '/user/update' },
+  // 删除用户 请求类型：delete 请求地址：/user/deleteById/:id
+  DeleteUser: { method: 'delete', url: '/user/deleteById' }
 }
 
 export default (config) => {

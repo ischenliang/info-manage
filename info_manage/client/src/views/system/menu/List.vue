@@ -128,7 +128,7 @@ export default {
         this.list.total = res.data.total
         this.list.data = res.data.data
       }).catch(error => {
-        this.$notify.error(error.message)
+        this.$notify.error(error)
       }).finally(() => {
         this.list.loading = false
       })

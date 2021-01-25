@@ -133,7 +133,7 @@ export default {
         this.close()
         this.$notify.success(res.msg)
       }).catch(error => {
-        this.$notify.error(error.message)
+        this.$notify.error(error)
       })
     },
     // 编辑提交
@@ -147,7 +147,7 @@ export default {
         this.close()
         this.$notify.success(res.msg)
       }).catch(error => {
-        this.$notify.error(error.message)
+        this.$notify.error(error)
       })
     },
     // 提交中间件
@@ -173,7 +173,7 @@ export default {
         // 后期这里使用ajax获取后台的icons
         // this.list.icons = [{ value: '三全鲜食（北新泾店）', address: '长宁区新渔路144号' }]
       }).catch(error => {
-        this.$notify.error(error.message)
+        this.$notify.error(error)
       })
     }
   },

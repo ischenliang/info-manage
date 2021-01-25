@@ -66,7 +66,7 @@ export default {
         this.close()
         this.$notify.success(res.msg)
       }).catch(error => {
-        this.$notify.error(error.message)
+        this.$notify.error(error)
       })
     },
     // 编辑提交
@@ -80,7 +80,7 @@ export default {
         this.close()
         this.$notify.success(res.msg)
       }).catch(error => {
-        this.$notify.error(error.message)
+        this.$notify.error(error)
       })
     },
     // 提交中间件
@@ -104,7 +104,7 @@ export default {
       }).then(res => {
         this.form = res.data
       }).catch(error => {
-        this.$notify.error(error.message)
+        this.$notify.error(error)
       })
     }
   },

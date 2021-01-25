@@ -66,7 +66,8 @@ export default {
         { name: '标签', value: 'el-icon-collection-tag' },
         { name: '收藏', value: 'el-icon-collection' },
         { name: '排序', value: 'el-icon-s-order' },
-        { name: '事项', value: 'el-icon-tickets' }
+        { name: '事项', value: 'el-icon-tickets' },
+        { name: '接口', value: 'el-icon-s-operation' }
       ],
       filters: []
     }

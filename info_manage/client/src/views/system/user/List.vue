@@ -7,9 +7,9 @@
         <el-option :value="false" label="禁用" />
       </el-select>
       <div style="flex: auto;"></div>
-      <el-button type="primary" size="medium">新增</el-button>
-      <el-button type="warning" size="medium">导出</el-button>
-      <el-button type="danger" size="medium">删除</el-button>
+      <el-button type="primary" size="medium" @click="visible = true">新增</el-button>
+      <c-json-excel :name="'GetUsers'" :fields="$fields.user" :filename="'user'" style="margin: 0 10px;" />
+      <el-button type="danger" size="medium" @click="deleteSelected" :disabled="deleteDisabled">删除</el-button>
       <!-- 考虑做成组件 -->
       <cDropdown :show.sync="show" />
     </div>
@@ -22,6 +22,7 @@
         ref="table"
         v-loading="list.loading"
         @sort-change="sortChange"
+        @selection-change="selectChange"
         :data="list.data">
         <el-table-column type="selection" width="60" align="center"/>
         <el-table-column v-if="show[0].value" prop="username" label="用户名称" width="200" align="center" sortable="custom" />
@@ -44,9 +45,10 @@
         <el-table-column v-if="show[5].value" prop="ctime" label="创建时间" min-width="170" align="center" sortable="custom" />
         <el-table-column v-if="show[6].value" prop="remark" label="备注" min-width="200" align="center" sortable="custom" />
         <el-table-column label="操作" width="220" align="center">
-          <template>
-            <el-button type="primary" size="mini" icon="el-icon-edit" title="编辑" />
-            <el-button type="danger" size="mini" icon="el-icon-delete" title="删除" />
+          <template v-slot="{ row }">
+            <el-button type="success" size="mini" icon="el-icon-key" title="重置" @click="resetPwd(row)" />
+            <el-button type="primary" size="mini" icon="el-icon-edit" title="编辑" @click="itemEdit(row)" />
+            <el-button type="danger" size="mini" icon="el-icon-delete" title="删除" @click="itemDelete(row)" />
           </template>
         </el-table-column>
       </el-table>
@@ -56,12 +58,26 @@
       :page.sync="list.page"
       :size.sync="list.size"
       @change="listGet" />
+    <com-dialog v-if="visible" :visible.sync="visible" @submit="listGet" :id.sync="id" />
   </div>
 </template>
 
 <script>
+import ComDialog from './Dialog'
 export default {
   name: 'SystemUser',
+  components: {
+    ComDialog
+  },
+  computed: {
+    deleteDisabled: function () {
+      if (this.list.selected.length > 0) {
+        return false
+      } else {
+        return true
+      }
+    }
+  },
   data () {
     return {
       // 用于dropdown的循环和动态切换el-table-column的显示
@@ -77,8 +93,11 @@ export default {
           status: '',
           sort: '',
           order: ''
-        }
-      }
+        },
+        selected: []
+      },
+      visible: false,
+      id: ''
     }
   },
   methods: {
@@ -122,29 +141,38 @@ export default {
         { label: '用户备注', disabled: false, value: false }
       ]
     },
-    // 更新role
+    // 更新
     updateRow (row) {
+      const role = []
+      row.ur.forEach(item => role.push(item.id))
+      this.$set(row, 'role', role)
+      row.password = '' // 不更新密码
       this.$http({
-        name: 'UpdateRole',
+        name: 'UpdateUser',
         requireAuth: true,
         data: row
       }).then(res => {
         this.listGet()
-        this.$notify({
-          title: '成功',
-          message: '更新成功',
-          type: 'success',
-          duration: 1000,
-          position: 'top-right'
-        })
+        this.$notify.success(res.msg)
       }).catch(error => {
-        this.$notify({
-          title: '错误',
-          message: error,
-          type: 'error',
-          duration: 1000,
-          position: 'top-right'
-        })
+        this.$notify.error(error)
+      })
+    },
+    // 重置
+    resetPwd (row) {
+      const role = []
+      row.ur.forEach(item => role.push(item.id))
+      this.$set(row, 'role', role)
+      row.password = '111111'
+      this.$http({
+        name: 'UpdateUser',
+        requireAuth: true,
+        data: row
+      }).then(res => {
+        this.listGet()
+        this.$notify.success(res.msg)
+      }).catch(error => {
+        this.$notify.error(error)
       })
     },
     // 排序回调
@@ -158,12 +186,59 @@ export default {
       }
       this.listGet()
     },
+    // 选择回调
+    selectChange (rows) {
+      this.list.selected = rows.map(item => item.id)
+    },
+    // 格式化角色列表
     formatRole (roles) {
       const roleNames = []
       roles.forEach(item => {
         roleNames.push(item.name)
       })
       return roleNames.join('、')
+    },
+    // 修改
+    itemEdit (row) {
+      this.visible = true
+      this.id = row.id
+    },
+    // 删除
+    itemDelete (row) {
+      this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
+        this.$http({
+          name: 'DeleteUser',
+          requireAuth: true,
+          paths: [row.id]
+        }).then(res => {
+          this.$notify.success()
+        }).catch(error => {
+          this.$notify.error(error)
+        }).finally(() => {
+          this.listGet()
+        })
+      }).catch(() => {})
+    },
+    // 批量删除
+    deleteSelected () {
+      this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
+        this.list.selected.forEach((item, index) => {
+          this.$http({
+            name: 'DeleteUser',
+            requireAuth: true,
+            paths: [item]
+          }).then(res => {
+            if (index === this.list.selected.length - 1) {
+              this.$notify.success()
+              this.list.selected = []
+            }
+          }).catch(error => {
+            this.$notify.error(error)
+          }).finally(() => {
+            this.listGet()
+          })
+        })
+      }).catch(() => {})
     }
   },
   created () {
