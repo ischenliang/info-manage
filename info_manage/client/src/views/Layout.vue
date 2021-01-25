@@ -6,7 +6,7 @@
       </div>
        <div class="el-scrollbar">
         <el-menu
-          :default-active="$route.path"
+          :default-active="active"
           class="el-menu-vertical-demo"
           background-color="#304156"
           text-color="#C1CBD9"
@@ -34,10 +34,6 @@
               <i class="el-icon-user"></i>
               <span>用户管理</span>
             </el-menu-item>
-            <el-menu-item index="/system/permission">
-              <i class="el-icon-user"></i>
-              <span>权限管理</span>
-            </el-menu-item>
           </el-submenu>
           <el-menu-item index="/project">
             <i class="el-icon-s-grid"></i>
@@ -61,7 +57,17 @@
 
 <script>
 export default {
-
+  computed: {
+    active () {
+      switch (this.$route.name) {
+        case 'SystemPermission':
+        case 'SystemEdit':
+          return '/system/role'
+        default:
+          return this.$route.path
+      }
+    }
+  }
 }
 </script>
 

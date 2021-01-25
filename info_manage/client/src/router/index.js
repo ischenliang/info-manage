@@ -40,6 +40,11 @@ const routes = [
         path: 'permission/:id',
         name: 'SystemPermission',
         component: () => import('@/views/system/permission/List')
+      },
+      {
+        path: 'edit/:id',
+        name: 'SystemEdit',
+        component: () => import('@/views/system/permission/Edit')
       }
     ]
   },
