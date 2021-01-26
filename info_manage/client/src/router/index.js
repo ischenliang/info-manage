@@ -39,7 +39,20 @@ const routes = [
       {
         path: 'api',
         name: 'SystemApi',
-        component: () => import('@/views/system/api/List')
+        component: () => import('@/views/Index'),
+        redirect: 'api/list',
+        children: [
+          {
+            path: 'list',
+            name: 'SystemApiList',
+            component: () => import('@/views/system/api/List')
+          },
+          {
+            path: 'type',
+            name: 'SystemApiType',
+            component: () => import('@/views/system/api/Type')
+          }
+        ]
       },
       {
         path: 'permission/:id',

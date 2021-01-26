@@ -48,7 +48,19 @@ const list = {
   // 更新用户 请求类型：put 请求地址：/user/update
   UpdateUser: { method: 'put', url: '/user/update' },
   // 删除用户 请求类型：delete 请求地址：/user/deleteById/:id
-  DeleteUser: { method: 'delete', url: '/user/deleteById' }
+  DeleteUser: { method: 'delete', url: '/user/deleteById' },
+
+  /**
+   * 接口类别管理
+  */
+  // 接口类别列表 请求类型：get 请求地址：/apitype/list
+  GetApiTypes: { method: 'get', url: '/apitype/list' },
+  // 更新接口类别 请求类型：put 请求地址：/apitype/update
+  UpdateApiType: { method: 'put', url: '/apitype/update' },
+  // 新增接口类别 请求类型：post 请求地址：/apitype/add
+  AddApiType: { method: 'post', url: '/apitype/add' },
+  // 接口类别详情 请求类型：get 请求地址：/user/detail
+  GetApiType: { method: 'get', url: '/user/detail' }
 }
 
 export default (config) => {

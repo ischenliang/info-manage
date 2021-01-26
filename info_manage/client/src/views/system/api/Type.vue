@@ -1,16 +1,15 @@
 <template>
   <div class="app-page">
     <div class="toolbar">
-      <el-input v-model="list.filters.search" placeholder="请输入内容" @input="listGet" suffix-icon="el-icon-search"/>
-      <el-select v-model="list.filters.status" @change="listGet" clearable>
-        <el-option :value="true" label="启用" />
-        <el-option :value="false" label="禁用" />
+      <el-input v-model="list.filters.search" placeholder="请输入内容" suffix-icon="el-icon-search" @input="listGet"/>
+      <el-select v-model="list.filters.status" clearable filterable @change="listGet">
+        <el-option label="启用" :value="true" />
+        <el-option label="禁用" :value="false" />
       </el-select>
       <div style="flex: auto;"></div>
       <el-button type="primary" size="medium" @click="visible = true">新增</el-button>
-      <el-button type="warning" size="medium">导出</el-button>
+      <c-json-excel :name="'GetApiTypes'" :fields="$fields.apitype" :filename="'api_type'" style="margin: 0 10px;" />
       <el-button type="danger" size="medium" @click="deleteSelected" :disabled="deleteDisabled">删除</el-button>
-      <!-- 考虑做成组件 -->
       <cDropdown :show.sync="show" />
     </div>
     <div class="table">
@@ -19,42 +18,21 @@
         height="100%"
         stripe
         ref="table"
+        border
         v-loading="list.loading"
         @sort-change="sortChange"
-        row-key="id"
-        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
         @selection-change="selectChange"
         :data="list.data">
-        <!-- 不好做:选择时将子代数据全选操作 -->
         <el-table-column type="selection" width="60" align="center"/>
-        <el-table-column v-if="show[0].value" prop="name" label="菜单名称" width="200" align="left" sortable="custom" :show-overflow-tooltip="true" />
-        <el-table-column v-if="show[1].value" prop="icon" label="图标" min-width="120" align="center" sortable="custom">
-          <template v-slot="{ row }">
-            <i :class="row.icon" style="font-size: 22px;"></i>
-          </template>
-        </el-table-column>
-        <el-table-column v-if="show[2].value" prop="component" label="组件路径" min-width="120" align="center" sortable="custom" />
-        <el-table-column v-if="show[3].value" prop="path" label="路由地址" min-width="120" align="center" sortable="custom" />
-        <el-table-column v-if="show[4].value" prop="order" label="显示顺序" min-width="120" align="center" sortable="custom" />
-        <el-table-column v-if="show[5].value" prop="is_frame" label="是否外链" min-width="120" align="center" sortable="custom">
-          <template v-slot="{ row }">
-            <el-switch v-model="row.is_frame" @change="updateRow(row)"></el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column v-if="show[6].value" prop="type" label="类型" min-width="120" align="center" sortable="custom">
-          <template v-slot="{ row }">
-            <el-tag type="default" v-if="row.type === 1">目录</el-tag>
-            <el-tag type="success" v-if="row.type === 2">菜单</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column v-if="show[7].value" prop="status" label="状态" min-width="120" align="center" sortable="custom">
+        <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="150" align="center" sortable="custom"/>
+        <el-table-column v-if="show[1].value" label="备注" prop="remark" min-width="250" align="center" sortable="custom"/>
+        <el-table-column v-if="show[2].value" label="状态" prop="status" min-width="100" align="center" sortable="custom">
           <template v-slot="{ row }">
             <el-switch v-model="row.status" @change="updateRow(row)"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column v-if="show[8].value" prop="ctime" label="创建时间" min-width="170" align="center" sortable="custom" />
-        <el-table-column v-if="show[9].value" prop="mtime" label="修改时间" min-width="170" align="center" sortable="custom" />
-        <el-table-column v-if="show[10].value" prop="remark" label="备注" min-width="200" align="center" sortable="custom" />
+        <el-table-column v-if="show[3].value" label="创建时间" prop="ctime" min-width="170" align="center" sortable="custom"/>
+        <el-table-column v-if="show[4].value" label="修改时间" prop="mtime" min-width="170" align="center" sortable="custom"/>
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
             <el-button type="primary" size="mini" icon="el-icon-edit" title="编辑" @click="itemEdit(row)" />
@@ -73,22 +51,25 @@
 </template>
 
 <script>
-import ComDialog from './Dialog'
+import ComDialog from './TypeDialog'
 export default {
   components: {
     ComDialog
   },
-  name: 'SystemMenu',
   data () {
     return {
-      // 用于dropdown的循环和动态切换el-table-column的显示
-      show: [],
+      show: [
+        { label: '名称', disabled: true, value: true },
+        { label: '备注', disabled: true, value: true },
+        { label: '状态', disabled: false, value: true },
+        { label: '创建时间', disabled: false, value: true },
+        { label: '修改时间', disabled: false, value: true }
+      ],
       list: {
-        total: 0,
-        size: 10,
         page: 1,
+        size: 10,
+        total: 0,
         loading: false,
-        data: [],
         filters: {
           search: '',
           status: '',
@@ -97,8 +78,8 @@ export default {
         },
         selected: []
       },
-      visible: false,
-      id: ''
+      id: '',
+      visible: false
     }
   },
   computed: {
@@ -111,19 +92,20 @@ export default {
     }
   },
   methods: {
+    // 获取数据
     listGet () {
       this.list.loading = true
       this.$http({
-        name: 'GetMenus',
+        name: 'GetApiTypes',
+        requireAuth: true,
         params: {
-          status: this.list.filters.status,
           page: this.list.page,
           size: this.list.size,
           search: this.list.filters.search,
           sort: this.list.filters.sort,
-          order: this.list.filters.order
-        },
-        requireAuth: true
+          order: this.list.filters.order,
+          status: this.list.filters.status
+        }
       }).then(res => {
         this.list.total = res.data.total
         this.list.data = res.data.data
@@ -133,26 +115,10 @@ export default {
         this.list.loading = false
       })
     },
-    // 设置动态显示el-table-column想
-    setShow () {
-      this.show = [
-        { label: '角色名称', disabled: true, value: true },
-        { label: '图标', disabled: true, value: true },
-        { label: '组件路径', disabled: true, value: true },
-        { label: '路由地址', disabled: true, value: true },
-        { label: '显示顺序', disabled: false, value: false },
-        { label: '是否外链', disabled: false, value: false },
-        { label: '类型', disabled: false, value: true },
-        { label: '状态', disabled: false, value: true },
-        { label: '创建时间', disabled: false, value: true },
-        { label: '修改时间', disabled: false, value: false },
-        { label: '备注', disabled: false, value: false }
-      ]
-    },
-    // 更新role
+    // 行内更新
     updateRow (row) {
       this.$http({
-        name: 'UpdateMenu',
+        name: 'UpdateApiType',
         requireAuth: true,
         data: row
       }).then(res => {
@@ -178,7 +144,7 @@ export default {
     selectChange (rows) {
       this.list.selected = rows.map(item => item.id)
     },
-    // 编辑
+    // 更改
     itemEdit (row) {
       this.id = row.id
       this.visible = true
@@ -199,7 +165,7 @@ export default {
         })
       }).catch(() => {})
     },
-    // 删除已选
+    // 批量删除
     deleteSelected () {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.list.selected.forEach((item, index) => {
@@ -222,7 +188,6 @@ export default {
     }
   },
   created () {
-    this.setShow()
     this.listGet()
   },
   // 解决：el-table抖动问题

@@ -1,7 +1,7 @@
 <template>
   <div class="app-page">
     <div class="toolbar">
-      <el-input v-model="list.filters.search" placeholder="请输入内容" @input="listGet"></el-input>
+      <el-input v-model="list.filters.search" placeholder="请输入内容" @input="listGet"/>
       <el-select v-model="list.filters.status" @change="listGet" clearable>
         <el-option :value="true" label="启用" />
         <el-option :value="false" label="禁用" />
@@ -118,13 +118,7 @@ export default {
         this.list.total = res.data.total
         this.list.data = res.data.data
       }).catch(error => {
-        this.$notify({
-          title: '错误',
-          message: error,
-          type: 'error',
-          duration: 1000,
-          position: 'top-right'
-        })
+        this.$notify.error(error)
       }).finally(() => {
         this.list.loading = false
       })

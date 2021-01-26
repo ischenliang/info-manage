@@ -28,5 +28,12 @@ export default {
     status: 'status',
     ctime: 'ctime',
     mtime: 'mtime'
+  },
+  apitype: {
+    name: 'name',
+    remark: 'remark',
+    status: 'status',
+    ctime: 'ctime',
+    mtime: 'mtime'
   }
 }

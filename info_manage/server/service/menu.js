@@ -125,8 +125,13 @@ async function list (query) {
       include: [
         {
           required: false,
-          all: true,
-          nested : true
+          model: Menu,
+          as: 'children',
+          // all: true,
+          // nested : true
+          include: [
+            { required: false, model: Menu, as: 'children' }
+          ]
         }
       ]
     })

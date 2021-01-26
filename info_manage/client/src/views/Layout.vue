@@ -34,10 +34,21 @@
               <i class="el-icon-user"></i>
               <span>用户管理</span>
             </el-menu-item>
-            <el-menu-item index="/system/api">
-              <i class="el-icon-s-operation"></i>
-              <span>接口管理</span>
-            </el-menu-item>
+            <!-- 第三层嵌套 -->
+            <el-submenu index="/system/api">
+              <template slot="title">
+                <i class="el-icon-location"></i>
+                <span slot="title">接口管理</span>
+              </template>
+              <el-menu-item index="/system/api/list">
+                <i class="el-icon-s-operation"></i>
+                <span>接口列表</span>
+              </el-menu-item>
+              <el-menu-item index="/system/api/type">
+                <i class="el-icon-s-operation"></i>
+                <span>类别管理</span>
+              </el-menu-item>
+            </el-submenu>
           </el-submenu>
           <el-menu-item index="/project">
             <i class="el-icon-s-grid"></i>
