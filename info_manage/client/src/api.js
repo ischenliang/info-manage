@@ -59,8 +59,16 @@ const list = {
   UpdateApiType: { method: 'put', url: '/apitype/update' },
   // 新增接口类别 请求类型：post 请求地址：/apitype/add
   AddApiType: { method: 'post', url: '/apitype/add' },
-  // 接口类别详情 请求类型：get 请求地址：/user/detail
-  GetApiType: { method: 'get', url: '/user/detail' }
+  // 接口类别详情 请求类型：get 请求地址：/apitype/detail
+  GetApiType: { method: 'get', url: '/apitype/detail' },
+  // 删除接口类别 请求类型：delete 请求地址：/apitype/deleteById/:id
+  DeleteApiType: { method: 'delete', url: '/apitype/deleteById' },
+
+  /**
+   * 接口管理
+  */
+  // 接口列表 请求类型：get 请求地址：/api/list
+  GetApis: { method: 'get', url: '/api/list' }
 }
 
 export default (config) => {

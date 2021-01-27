@@ -14,6 +14,15 @@ Vue.config.productionTip = false
 Vue.prototype.$http = http
 Vue.prototype.$fields = config
 
+// 全局值空过滤器
+Vue.filter('valueEmpty', (value) => {
+  if (value === '' || value === null || value === undefined) {
+    return '-'
+  } else {
+    return value
+  }
+})
+
 new Vue({
   router,
   store,

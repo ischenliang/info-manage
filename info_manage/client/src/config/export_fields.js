@@ -35,5 +35,21 @@ export default {
     status: 'status',
     ctime: 'ctime',
     mtime: 'mtime'
+  },
+  api: {
+    name: 'name',
+    path: 'path',
+    remark: 'remark',
+    tid: 'tid',
+    type: 'type',
+    ctime: 'ctime',
+    mtime: 'mtime',
+    type_name: {
+      field: 'api_type',
+      callback: value => {
+        console.log(value)
+        return value.name
+      }
+    }
   }
 }

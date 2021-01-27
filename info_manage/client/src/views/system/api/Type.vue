@@ -153,7 +153,7 @@ export default {
     itemDelete (row) {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.$http({
-          name: 'DeleteMenu',
+          name: 'DeleteApiType',
           requireAuth: true,
           paths: [row.id]
         }).then(res => {
@@ -170,7 +170,7 @@ export default {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.list.selected.forEach((item, index) => {
           this.$http({
-            name: 'DeleteMenu',
+            name: 'DeleteApiType',
             requireAuth: true,
             paths: [item]
           }).then(res => {

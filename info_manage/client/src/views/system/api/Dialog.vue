@@ -6,15 +6,11 @@
     :before-close="close"
     :destroy-on-close="true">
     <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="top">
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="form.name" placeholder="请输入名称"></el-input>
+      <el-form-item label="prop1" prop="prop1">
+        <el-input v-model="form.prop1"></el-input>
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-radio v-model="form.status" :label="true">启用</el-radio>
-        <el-radio v-model="form.status" :label="false">禁用</el-radio>
-      </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="form.remark" type="textarea" :rows="2"></el-input>
+      <el-form-item label="prop2" prop="prop2">
+        <el-input v-model="form.prop2"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -36,12 +32,11 @@ export default {
   data () {
     return {
       form: {
-        name: '',
-        status: true,
-        remark: ''
+        prop1: '',
+        prop2: ''
       },
       rules: {
-        name: [{ required: true, message: '请输入接口类别名', trigger: 'blur' }]
+        prop1: [{ required: true, message: '请输入prop1', trigger: 'blur' }]
       }
     }
   },
@@ -53,7 +48,7 @@ export default {
     // 新增提交
     addSubmit () {
       this.$http({
-        name: 'AddApiType',
+        name: 'AddUser',
         requireAuth: true,
         data: this.form
       }).then(res => {
@@ -67,7 +62,7 @@ export default {
     // 编辑提交
     editSubmit () {
       this.$http({
-        name: 'UpdateApiType',
+        name: 'UpdateUser',
         requireAuth: true,
         data: this.form
       }).then(res => {
@@ -92,12 +87,12 @@ export default {
     },
     // 获取数据
     listGet () {
+      // 获取数据....
       this.$http({
-        name: 'GetApiType',
+        name: 'GetUser',
         requireAuth: true,
         paths: [this.id]
       }).then(res => {
-        this.form = res.data
       }).catch(error => {
         this.$notify.error(error)
       })

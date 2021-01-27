@@ -99,7 +99,12 @@ async function list (query) {
         [query.sort ? query.sort : 'ctime', query.order ? query.order : 'desc']
       ],
       limit: limit,
-      offset: query.page ? (parseInt(query.page) - 1) * limit : 0
+      offset: query.page ? (parseInt(query.page) - 1) * limit : 0,
+      include: [
+        {
+          model: ApiType
+        }
+      ]
     })
     return {
       total: count,
