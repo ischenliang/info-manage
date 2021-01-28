@@ -77,7 +77,8 @@ async function detail (id) {
  *  sort：排序字段 默认ctime
  *  order：排序方式 默认desc
  *  search: 搜索 默认%%
- *  status: 角色状态
+ *  type: 类型
+ *  tid: 所属模块
  */
 async function list (query) {
   try {
@@ -93,6 +94,9 @@ async function list (query) {
         ],
         type: {
           [Op.like]: query.type ? `%${query.type}%` : '%%'
+        },
+        tid: {
+          [Op.like]: query.tid ? `%${query.tid}%` : '%%'
         }
       },
       order: [

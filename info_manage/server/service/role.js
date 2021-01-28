@@ -1,5 +1,5 @@
-const { Role, Menu } = require('../models/Middle')
-const { Op, QueryTypes } = require("sequelize")
+const { Role, Menu, Api } = require('../models/Middle')
+const { Op } = require("sequelize")
 const sequelize = require('../utils/seq')
 const moment = require('moment')
 
@@ -73,6 +73,12 @@ async function detail (id) {
           as: 'rm',
           required: false,
           through: { attributes: [] }
+        },
+        {
+          model: Api,
+          as: 'ra',
+          required: false,
+          through: { attributes: [] }
         }
       ]
     })
@@ -130,13 +136,17 @@ async function list (query) {
  */
 async function roleMenu (id, menuIds) {
   try {
-    await sequelize.query(`delete from role_menu where roleId='${id}'`)
-    let values = []
-    menuIds.forEach(item => {
-      values.push(`('${id}', '${item}')`)
-    })
-    // 批量添加role_menu
-    return await sequelize.query(`insert into role_menu (roleId, menuId) values${values.join(',')}`)
+    if (menuIds.length === 0) {
+      return await sequelize.query(`delete from role_menu where roleId='${id}'`)
+    } else {
+      await sequelize.query(`delete from role_menu where roleId='${id}'`)
+      let values = []
+      menuIds.forEach(item => {
+        values.push(`('${id}', '${item}')`)
+      })
+      // 批量添加role_menu
+      return await sequelize.query(`insert into role_menu (roleId, menuId) values${values.join(',')}`)
+    }
   } catch(error) {
     throw error
   }
@@ -146,18 +156,22 @@ async function roleMenu (id, menuIds) {
  * 角色接口授权
  * @param {*} id 角色id
  * @param {*} apiIds 菜单ids
- * 1.先清空role_menu里面roleId的数据
- * 2.重新添加role_menu
+ * 1.先清空role_api里面roleId的数据
+ * 2.重新添加role_api里
  */
 async function roleApi (id, apiIds) {
   try {
-    await sequelize.query(`delete from role_api where roleId='${id}'`)
     let values = []
-    apiIds.forEach(item => {
-      values.push(`('${id}', '${item}')`)
-    })
-    // 批量添加role_menu
-    return await sequelize.query(`insert into role_api (roleId, apiId) values${values.join(',')}`)
+    if (apiIds.length === 0) {
+      return await sequelize.query(`delete from role_api where roleId='${id}'`)
+    } else {
+      await sequelize.query(`delete from role_api where roleId='${id}'`)
+      apiIds.forEach(item => {
+        values.push(`('${id}', '${item}')`)
+      })
+      // 批量添加role_api
+      return await sequelize.query(`insert into role_api (roleId, apiId) values${values.join(',')}`)
+    }
   } catch(error) {
     throw error
   }

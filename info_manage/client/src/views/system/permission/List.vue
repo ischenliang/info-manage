@@ -1,14 +1,14 @@
 <template>
   <div class="app-page">
-    <el-tabs type="border-card" class="permission-tabs">
-      <el-tab-pane label="菜单授权">
-        <menu-auth />
+    <el-tabs type="border-card" class="permission-tabs" v-model="active">
+      <el-tab-pane label="菜单授权" name="first">
+        <menu-auth v-if="active === 'first'" />
       </el-tab-pane>
-      <el-tab-pane label="接口授权">
-        <api-auth />
+      <el-tab-pane label="接口授权" name="second">
+        <api-auth v-if="active === 'second'" />
       </el-tab-pane>
-      <el-tab-pane label="数据授权">
-        <data-auth />
+      <el-tab-pane label="数据授权" name="third">
+        <data-auth v-if="active === 'third'" />
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -24,6 +24,11 @@ export default {
     MenuAuth,
     ApiAuth,
     DataAuth
+  },
+  data () {
+    return {
+      active: 'first'
+    }
   }
 }
 </script>

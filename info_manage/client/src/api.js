@@ -21,6 +21,8 @@ const list = {
   GetRole: { method: 'get', url: '/role/detail' },
   // 角色菜单 请求类型：post 请求地址：/role/roleMenu/:id
   UpdateRoleMenu: { method: 'post', url: '/role/roleMenu' },
+  // 角色接口 请求类型：post 请求地址：/role/roleApi/:id
+  UpdateRoleApi: { method: 'post', url: '/role/roleApi' },
 
   /**
    * 菜单管理
@@ -68,7 +70,15 @@ const list = {
    * 接口管理
   */
   // 接口列表 请求类型：get 请求地址：/api/list
-  GetApis: { method: 'get', url: '/api/list' }
+  GetApis: { method: 'get', url: '/api/list' },
+  // 更新接口 请求类型：put 请求地址：/api/update
+  UpdateApi: { method: 'put', url: '/api/update' },
+  // 新增接口 请求类型：post 请求地址：/api/add
+  AddApi: { method: 'post', url: '/api/add' },
+  // 接口详情 请求类型：get 请求地址：/api/detail
+  GetApi: { method: 'get', url: '/api/detail' },
+  // 删除接口 请求类型：delete 请求地址：/api/deleteById/:id
+  DeleteApi: { method: 'delete', url: '/api/deleteById' }
 }
 
 export default (config) => {

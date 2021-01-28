@@ -6,11 +6,26 @@
     :before-close="close"
     :destroy-on-close="true">
     <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="top">
-      <el-form-item label="prop1" prop="prop1">
-        <el-input v-model="form.prop1"></el-input>
+      <el-form-item label="名称" prop="name">
+        <el-input v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="prop2" prop="prop2">
-        <el-input v-model="form.prop2"></el-input>
+      <el-form-item label="地址" prop="path">
+        <el-input v-model="form.path"></el-input>
+      </el-form-item>
+      <div class="form-inline">
+        <el-form-item label="接口类型" prop="type">
+          <el-select v-model="form.type" style="width: 100%;">
+            <el-option v-for="(item, index) in list.types" :key="index" :label="item.label" :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="所属模块" prop="tid">
+          <el-select v-model="form.tid" style="width: 100%;">
+            <el-option v-for="(item, index) in list.apiTypes" :key="index" :label="item.name" :value="item.id" />
+          </el-select>
+        </el-form-item>
+      </div>
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model="form.remark" type="textarea" :rows="2"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -32,11 +47,26 @@ export default {
   data () {
     return {
       form: {
-        prop1: '',
-        prop2: ''
+        name: '',
+        path: '',
+        type: 'GET',
+        tid: '',
+        remark: ''
       },
       rules: {
-        prop1: [{ required: true, message: '请输入prop1', trigger: 'blur' }]
+        name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        path: [{ required: true, message: '请输入地址', trigger: 'blur' }],
+        type: [{ required: true, message: '请选择接口类型', trigger: 'blur' }],
+        tid: [{ required: true, message: '请选择类型', trigger: 'blur' }]
+      },
+      list: {
+        types: [
+          { label: 'GET', value: 'GET' },
+          { label: 'POST', value: 'POST' },
+          { label: 'PUT', value: 'PUT' },
+          { label: 'DELETE', value: 'DELETE' }
+        ],
+        apiTypes: []
       }
     }
   },
@@ -48,7 +78,7 @@ export default {
     // 新增提交
     addSubmit () {
       this.$http({
-        name: 'AddUser',
+        name: 'AddApi',
         requireAuth: true,
         data: this.form
       }).then(res => {
@@ -62,7 +92,7 @@ export default {
     // 编辑提交
     editSubmit () {
       this.$http({
-        name: 'UpdateUser',
+        name: 'UpdateApi',
         requireAuth: true,
         data: this.form
       }).then(res => {
@@ -86,25 +116,39 @@ export default {
       })
     },
     // 获取数据
-    listGet () {
+    itemGet () {
       // 获取数据....
       this.$http({
-        name: 'GetUser',
+        name: 'GetApi',
         requireAuth: true,
         paths: [this.id]
       }).then(res => {
+        this.form = res.data
+      }).catch(error => {
+        this.$notify.error(error)
+      })
+    },
+    // 获取列表数据
+    listGet () {
+      this.$http({
+        name: 'GetApiTypes',
+        requireAuth: true,
+        params: {
+          page: 1,
+          size: 10000
+        }
+      }).then(res => {
+        this.list.apiTypes = res.data.data
       }).catch(error => {
         this.$notify.error(error)
       })
     }
   },
   created () {
+    this.listGet()
     if (this.id !== '') {
-      this.listGet()
+      this.itemGet()
     } else {
-      // 这里面对一些不同的需求做判断，如：
-      // 新增时：密码不填 修改时：密码不必填
-      // this.$set(this.rules, 'password', [{ required: true, message: '请输入用户密码', trigger: 'blur' }])
     }
   }
 }

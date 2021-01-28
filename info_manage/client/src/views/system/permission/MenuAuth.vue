@@ -1,5 +1,9 @@
 <template>
   <div class="app-page" style="padding: 0;">
+    <div class="toolbar">
+      <el-button type="primary" size="medium" @click="handleSelect('all')">全选</el-button>
+      <el-button type="primary" size="medium" @click="handleSelect('no')">全不选</el-button>
+    </div>
     <div class="table">
       <el-tree
         :data="list.data"
@@ -69,20 +73,6 @@ export default {
         this.list.loading = false
       })
     },
-    // 角色详情
-    itemGet () {
-      this.$http({
-        name: 'GetRole',
-        requireAuth: true,
-        paths: [this.$route.params.id]
-      }).then(res => {
-        console.log(res)
-      }).catch(error => {
-        this.$notify.error(error)
-      }).finally(() => {
-        this.loading = false
-      })
-    },
     // 提交
     submit () {
       this.loading = true
@@ -103,6 +93,21 @@ export default {
     // 返回上一级
     cancel () {
       this.$router.go(-1)
+    },
+    // 设置tree全选或全不选
+    handleSelect (type) {
+      switch (type) {
+        case 'all':
+          this.$nextTick(() => {
+            this.$refs.tree.setCheckedNodes(this.list.data)
+          })
+          break
+        case 'no':
+          this.$nextTick(() => {
+            this.$refs.tree.setCheckedKeys([])
+          })
+          break
+      }
     }
   },
   created () {

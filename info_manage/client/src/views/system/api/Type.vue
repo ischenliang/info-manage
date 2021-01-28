@@ -157,7 +157,7 @@ export default {
           requireAuth: true,
           paths: [row.id]
         }).then(res => {
-          this.$notify.success()
+          this.$notify.success(res.msg)
         }).catch(error => {
           this.$notify.error(error)
         }).finally(() => {
@@ -175,7 +175,7 @@ export default {
             paths: [item]
           }).then(res => {
             if (index === this.list.selected.length - 1) {
-              this.$notify.success()
+              this.$notify.success(res.msg)
               this.list.selected = []
             }
           }).catch(error => {

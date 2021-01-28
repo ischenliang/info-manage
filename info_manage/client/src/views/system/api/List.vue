@@ -2,6 +2,12 @@
   <div class="app-page">
     <div class="toolbar">
       <el-input v-model="list.filters.search" placeholder="请输入内容" suffix-icon="el-icon-search" @input="listGet"/>
+      <el-select v-model="list.filters.type" clearable filterable @change="listGet">
+        <el-option v-for="(item, index) in list.types" :key="index" :label="item.label" :value="item.value" />
+      </el-select>
+      <el-select v-model="list.filters.tid" clearable filterable @change="listGet">
+        <el-option v-for="(item, index) in list.apiTypes" :key="index" :label="item.name" :value="item.id" />
+      </el-select>
       <div style="flex: auto;"></div>
       <el-button type="primary" size="medium" @click="visible = true">新增</el-button>
       <c-json-excel :name="'GetApis'" :fields="$fields.api" :filename="'api'" style="margin: 0 10px;" />
@@ -25,12 +31,16 @@
           <template v-slot="{ row }">{{ row.remark | valueEmpty }}</template>
         </el-table-column>
         <el-table-column v-if="show[2].value" label="地址" prop="path" min-width="150" align="center" sortable="custom"/>
-        <el-table-column v-if="show[3].value" label="类别" prop="tid" min-width="100" align="center" sortable="custom">
+        <el-table-column v-if="show[3].value" label="所属模块" prop="tid" min-width="100" align="center" sortable="custom">
           <template v-slot="{ row }">{{ row.api_type.name }}</template>
         </el-table-column>
-        <el-table-column v-if="show[4].value" label="类型" prop="type" min-width="80" align="center" sortable="custom"/>
+        <el-table-column v-if="show[4].value" label="类型" prop="type" min-width="80" align="center" sortable="custom">
+          <template v-slot="{ row }">
+             <el-tag :type="row.type | typeFormat" effect="dark" size="medium" style="width: 68px;">{{ row.type }}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column v-if="show[5].value" label="创建时间" prop="ctime" min-width="170" align="center" sortable="custom"/>
-        <el-table-column v-if="show[6].value" label="更新时间" prop="mtime" min-width="170" align="center" sortable="custom"/>
+        <el-table-column v-if="show[6].value" label="修改时间" prop="mtime" min-width="170" align="center" sortable="custom"/>
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
             <el-button type="primary" size="mini" icon="el-icon-edit" title="编辑" @click="itemEdit(row)" />
@@ -49,7 +59,7 @@
 </template>
 
 <script>
-import ComDialog from './TypeDialog'
+import ComDialog from './Dialog'
 export default {
   components: {
     ComDialog
@@ -73,9 +83,18 @@ export default {
         filters: {
           search: '',
           sort: '',
-          order: ''
+          order: '',
+          type: '',
+          tid: ''
         },
-        selected: []
+        selected: [],
+        types: [
+          { label: 'GET', value: 'GET' },
+          { label: 'POST', value: 'POST' },
+          { label: 'PUT', value: 'PUT' },
+          { label: 'DELETE', value: 'DELETE' }
+        ],
+        apiTypes: []
       },
       id: '',
       visible: false
@@ -87,6 +106,20 @@ export default {
         return false
       } else {
         return true
+      }
+    }
+  },
+  filters: {
+    typeFormat: function (data) {
+      switch (data) {
+        case 'GET':
+          return 'primary'
+        case 'POST':
+          return 'success'
+        case 'PUT':
+          return 'warning'
+        case 'DELETE':
+          return 'danger'
       }
     }
   },
@@ -102,12 +135,23 @@ export default {
           size: this.list.size,
           search: this.list.filters.search,
           sort: this.list.filters.sort,
-          order: this.list.filters.order
+          order: this.list.filters.order,
+          type: this.list.filters.type,
+          tid: this.list.filters.tid
         }
       }).then(res => {
         this.list.total = res.data.total
         this.list.data = res.data.data
-        console.log(res.data.data)
+        return this.$http({
+          name: 'GetApiTypes',
+          requireAuth: true,
+          params: {
+            page: 1,
+            size: 10000
+          }
+        })
+      }).then(res => {
+        this.list.apiTypes = res.data.data
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
@@ -138,11 +182,11 @@ export default {
     itemDelete (row) {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.$http({
-          name: 'DeleteMenu',
+          name: 'DeleteApi',
           requireAuth: true,
           paths: [row.id]
         }).then(res => {
-          this.$notify.success()
+          this.$notify.success(res.msg)
         }).catch(error => {
           this.$notify.error(error)
         }).finally(() => {
@@ -155,12 +199,12 @@ export default {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.list.selected.forEach((item, index) => {
           this.$http({
-            name: 'DeleteMenu',
+            name: 'DeleteApi',
             requireAuth: true,
             paths: [item]
           }).then(res => {
             if (index === this.list.selected.length - 1) {
-              this.$notify.success()
+              this.$notify.success(res.msg)
               this.list.selected = []
             }
           }).catch(error => {
