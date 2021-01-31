@@ -1,7 +1,7 @@
 const router = require('koa-router')()
-router.prefix('/api/api')
+router.prefix('/api/ctype')
 const resConfig = require('../config/app.res')
-const { add, deleteById, update, detail, list } = require('../service/api')
+const { add, deleteById, update, detail, list } = require('../service/collectType')
 
 router.get('/list', async(ctx, next) => {
   try {

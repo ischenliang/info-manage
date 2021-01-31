@@ -1,8 +1,9 @@
-const { User, Role, Menu } = require('../models/Middle')
+const { User, Role, Menu, Api, ApiType } = require('../models/Middle')
 const { Op } = require("sequelize")
 const sequelize = require('../utils/seq')
 const { MD5, uploadAvatar } = require('../utils/util')
 const { getMenuTree } = require('./menu')
+const { getApiTree } = require('./api')
 const moment = require('moment')
 
 /**
@@ -135,7 +136,19 @@ async function userMenu (id) {
             {
               model: Menu,
               as: 'rm',
-              through: { attributes: [] }
+              through: { attributes: [] },
+              include: [
+                {
+                  model: Menu,
+                  as: 'children',
+                  include: [
+                    {
+                      model: Menu,
+                      as: 'children'
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
@@ -149,6 +162,49 @@ async function userMenu (id) {
       })
     })
     return getMenuTree(menuIds)
+  } catch (error) {
+    throw error
+  }
+}
+
+/**
+ * 用户接口
+ * @param {*} id 
+ */
+async function userApi (id) {
+  try {
+    const user = (await User.findOne({
+      where: {
+        id
+      },
+      include: [
+        { // 用户角色
+          model: Role,
+          as: 'ur',
+          through: { attributes: [] },
+          include: [ // 角色菜单
+            {
+              model: Api,
+              as: 'ra',
+              through: { attributes: [] },
+              include: [
+                {
+                  model: ApiType
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    })).toJSON()
+    // 用户角色
+    let apiIds = []
+    user.ur.forEach(item => {
+      item.ra.forEach(subItem => {
+        apiIds.push(subItem.id)
+      })
+    })
+    return getApiTree(apiIds)
   } catch (error) {
     throw error
   }
@@ -244,6 +300,7 @@ module.exports =  {
   update,
   detail,
   userMenu,
+  userApi,
   list,
   resetPwd,
   updateAvatar

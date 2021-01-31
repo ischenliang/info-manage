@@ -5,6 +5,8 @@ const Icon = require('./Icon')
 const IconProject = require('./IconProject')
 const Api = require('./Api')
 const ApiType = require('./ApiType')
+const Collect = require('./Collect')
+const CollectType = require('./CollectType')
 
 // 用户角色表
 User.belongsToMany(Role, { through: 'user_role', as:'ur' })
@@ -29,6 +31,11 @@ Api.belongsTo(ApiType, { foreignKey: 'tid', sourceKey: 'id' })
 Role.belongsToMany(Api, { through: 'role_api', as: 'ra' })
 Api.belongsToMany(Role, { through: 'role_api', as: 'ra' })
 
+// Collect 与 Collect_type 以及 User关联
+CollectType.hasMany(Collect, { foreignKey: 'tid', sourceKey: 'id' })
+Collect.belongsTo(CollectType, { foreignKey: 'tid', sourceKey: 'id' })
+Collect.belongsTo(User, { foreignKey: 'uid', sourceKey: 'id' })
+
 
 
 // 向外抛出所有的model：后续使用就只需要引入这一个 model 即可
@@ -39,5 +46,7 @@ module.exports = {
   Icon,
   IconProject,
   Api,
-  ApiType
+  ApiType,
+  Collect,
+  CollectType
 }

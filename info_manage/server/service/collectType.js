@@ -1,14 +1,15 @@
-const { ApiType, Api } = require('../models/Middle')
+const { CollectType, Collect } = require('../models/Middle')
 const { Op } = require("sequelize")
 const sequelize = require('../utils/seq')
 const moment = require('moment')
 
 // 新增
-async function add (obj) {
-  obj.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
-  obj.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
+async function add (collect_type) {
+  collect_type.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
+  collect_type.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
   try {
-    return await Api.create(obj)
+    // return await CollectType.create(collect_type)
+    return 'asdasd'
   } catch (error) {
     throw error
   }
@@ -17,17 +18,23 @@ async function add (obj) {
 // 删除
 /**
  * @param {*} id
- * 删除Api
- *  1.首先需要删除role_api表中的数据:
- *    role_api
- *  2.删除api
+ * 删除Api_type
+ *  1.首先重置api中关联到的数据:
  *    api
+ *  2.删除api_type
+ *    api_type
  */
 async function deleteById (id) {
   try {
-    // 删除role_api
-    await sequelize.query(`delete from role_api where apiId='${id}'`)
-    return await Api.destroy({
+    // 更新api
+    await Api.update({
+      tid: ''
+    },{
+      where: {
+        tid: id
+      }
+    })
+    return await ApiType.destroy({
       where: {
         id
       }
@@ -38,12 +45,12 @@ async function deleteById (id) {
 }
 
 // 修改
-async function update (obj) {
+async function update (api_type) {
   try {
-    obj.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
-    return await Api.update(obj, {
+    api_type.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
+    return await ApiType.update(api_type,{
       where: {
-        id: obj.id
+        id: api_type.id
       }
     })
   } catch (error) {
@@ -54,15 +61,10 @@ async function update (obj) {
 // 查询
 async function detail (id) {
   try {
-    return await Api.findOne({
+    return await ApiType.findOne({
       where: {
         id
-      },
-      include: [
-        {
-          model: ApiType
-        }
-      ]
+      }
     })
   } catch (error) {
     throw error
@@ -77,63 +79,33 @@ async function detail (id) {
  *  sort：排序字段 默认ctime
  *  order：排序方式 默认desc
  *  search: 搜索 默认%%
- *  type: 类型
- *  tid: 所属模块
+ *  status: 角色状态
  */
 async function list (query) {
   try {
     const limit = query.size ? parseInt(query.size) : 10
-    const { count, rows } = await Api.findAndCountAll({
+    const { count, rows } = await ApiType.findAndCountAll({
       where: {
         [Op.or]: [
           { name:  { [Op.like]: query.search ? `%${query.search}%` :　'%%' } },
           { remark:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
-          { path:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
           { ctime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
           { mtime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } }
         ],
-        type: {
-          [Op.like]: query.type ? `%${query.type}%` : '%%'
-        },
-        tid: {
-          [Op.like]: query.tid ? `%${query.tid}%` : '%%'
+        status: {
+          [Op.like]: query.status ? `%${JSON.parse(query.status) ? 1 : 0}%` : '%%'
         }
       },
       order: [
         [query.sort ? query.sort : 'ctime', query.order ? query.order : 'desc']
       ],
       limit: limit,
-      offset: query.page ? (parseInt(query.page) - 1) * limit : 0,
-      include: [
-        {
-          model: ApiType
-        }
-      ]
+      offset: query.page ? (parseInt(query.page) - 1) * limit : 0
     })
     return {
       total: count,
       data: rows
     }
-  } catch (error) {
-    throw error
-  }
-}
-
-/**
- * 根据ids递归出嵌套菜单
- * @param {*} ids 
- */
-async function getApiTree (ids) {
-  try {
-    // 获取所有数据
-    return await Api.findAll({
-      where: {
-        id: {
-          [Op.in]: ids
-        },
-      },
-      raw: true
-    })
   } catch (error) {
     throw error
   }
@@ -145,6 +117,5 @@ module.exports =  {
   deleteById,
   update,
   detail,
-  list,
-  getApiTree
+  list
 }

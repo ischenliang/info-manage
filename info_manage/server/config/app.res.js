@@ -8,5 +8,6 @@ module.exports = {
   LOGIN_SUCCESS: '登录成功',
   LOGIN_FAILURE: '登录失败',
   LOGIN_FAILURE_RES: '用户名或密码不正确',
-  PERMS_SUCCESS: '授权成功'
+  PERMS_SUCCESS: '授权成功',
+  401: '权限不足'
 }

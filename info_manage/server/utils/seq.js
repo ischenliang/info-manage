@@ -6,7 +6,7 @@ const conf = {
   port: config.mysql.port,
   dialect: config.mysql.dialect,
   define: {
-    timestamps: false
+    timestamps: false // 不自动创建createAt和updateAt时间字段
   },
   logging: sql => { // 不让sql语句在命令行终端输出
   }

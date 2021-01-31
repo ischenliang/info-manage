@@ -114,6 +114,10 @@ export default (config) => {
       })
     }
 
+    if (config.requireAuth) {
+      requestConfig.headers.Authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiOWY5ZWFkNzAtODMyMC00MWQ1LTljMzItODIyMjYyODY2MzkwIiwiaWF0IjoxNjEyMDg0MTI5LCJleHAiOjE2MTIxNzA1Mjl9.cFLR1N-W0M0v81_0XK9JTVkMBFr7uxwRcCFs2M3_Ik0'
+    }
+
     // 发送请求
     http(requestConfig).then(res => {
       if (res.data) {

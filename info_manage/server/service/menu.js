@@ -127,10 +127,23 @@ async function list (query) {
           required: false,
           model: Menu,
           as: 'children',
+          where: {
+            status: {
+              [Op.like]: query.status ? `%${JSON.parse(query.status) ? 1 : 0}%` : '%%'
+            }
+          },
           // all: true,
           // nested : true
           include: [
-            { required: false, model: Menu, as: 'children' }
+            {
+              required: false,
+              model: Menu,
+              where: {
+                status: {
+                  [Op.like]: query.status ? `%${JSON.parse(query.status) ? 1 : 0}%` : '%%'
+                }
+              },
+              as: 'children' }
           ]
         }
       ]

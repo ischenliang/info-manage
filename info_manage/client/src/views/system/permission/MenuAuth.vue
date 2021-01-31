@@ -49,7 +49,8 @@ export default {
         requireAuth: true,
         params: {
           page: this.list.page,
-          size: this.list.size
+          size: this.list.size,
+          status: true
         }
       }).then(res => {
         this.list.data = res.data.data

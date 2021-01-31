@@ -76,6 +76,9 @@ export default {
     submit (row) {
       this.$emit('update:icon', row.value)
       this.$emit('update:visible', false)
+      // 提交后应该将图标列表重置
+      this.name = ''
+      this.filterIcons()
     },
     filterIcons () {
       this.filters = this.icons.filter(item => {

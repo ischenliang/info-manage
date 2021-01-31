@@ -1,5 +1,5 @@
 const router = require('koa-router')()
-router.prefix('/api/api')
+router.prefix('/api/collect')
 const resConfig = require('../config/app.res')
 const { add, deleteById, update, detail, list } = require('../service/api')
 
@@ -68,7 +68,7 @@ router.get('/detail/:id', async(ctx, next) => {
     ctx.body = {
       code: 200,
       msg: resConfig[ctx.request.method],
-      data:  await detail(ctx.params.id)
+      data:  'asdasd'
     }
   } catch (error) {
     error.status = error.status ? error.status : 500
