@@ -17,76 +17,28 @@ const routes = [
     ]
   },
   {
-    path: '/system',
-    component: () => import('@/views/Layout'),
-    redirect: '/system/role',
-    children: [
-      {
-        path: 'role',
-        name: 'SystemRole',
-        component: () => import('@/views/system/role/List')
-      },
-      {
-        path: 'user',
-        name: 'SystemUser',
-        component: () => import('@/views/system/user/List')
-      },
-      {
-        path: 'menu',
-        name: 'SystemMenu',
-        component: () => import('@/views/system/menu/List')
-      },
-      {
-        path: 'api',
-        name: 'SystemApi',
-        component: () => import('@/views/Index'),
-        redirect: 'api/list',
-        children: [
-          {
-            path: 'list',
-            name: 'SystemApiList',
-            component: () => import('@/views/system/api/List')
-          },
-          {
-            path: 'type',
-            name: 'SystemApiType',
-            component: () => import('@/views/system/api/Type')
-          }
-        ]
-      },
-      {
-        path: 'permission/:id',
-        name: 'SystemPermission',
-        component: () => import('@/views/system/permission/List')
-      },
-      {
-        path: 'edit/:id',
-        name: 'SystemEdit',
-        component: () => import('@/views/system/permission/Edit')
-      }
-    ]
+    path: '/login',
+    component: () => import('@/views/Login'),
+    meta: {
+      title: 'login',
+      hidden: true
+    }
   },
   {
-    path: '/project',
-    component: () => import('@/views/Layout'),
-    children: [
-      {
-        path: '',
-        name: 'project',
-        component: () => import('@/views/project/List')
-      }
-    ]
+    path: '/401',
+    component: () => import('@/views/error-page/401'),
+    meta: {
+      title: '401',
+      hidden: true
+    }
   },
   {
-    path: '/test',
-    component: () => import('@/views/Layout'),
-    children: [
-      {
-        path: '',
-        name: 'test',
-        component: () => import('@/views/test/Test')
-      }
-    ]
+    path: '/404',
+    component: () => import('@/views/error-page/404'),
+    meta: {
+      title: '404',
+      hidden: true
+    }
   }
 ]
 

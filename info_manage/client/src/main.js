@@ -9,10 +9,12 @@ import config from './config/export_fields'
 import '@/assets/css/style.scss'
 import '@/assets/css/global.scss'
 import http from './api'
+import VueParticles from 'vue-particles'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = http
 Vue.prototype.$fields = config
+Vue.use(VueParticles)
 
 // 全局值空过滤器
 Vue.filter('valueEmpty', (value) => {
