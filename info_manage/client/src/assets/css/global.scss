@@ -27,3 +27,10 @@
     font-weight: bold;
   }
 }
+// 参考：https://www.cnblogs.com/chenfanga/p/11600251.html
+input:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px white inset !important;
+}  
+input:-webkit-autofill:focus {
+  box-shadow: 0 0 0px 1000px white inset !important;
+} 

@@ -78,7 +78,13 @@ const list = {
   // 接口详情 请求类型：get 请求地址：/api/detail
   GetApi: { method: 'get', url: '/api/detail' },
   // 删除接口 请求类型：delete 请求地址：/api/deleteById/:id
-  DeleteApi: { method: 'delete', url: '/api/deleteById' }
+  DeleteApi: { method: 'delete', url: '/api/deleteById' },
+
+  /**
+   * 公共接口
+  */
+  // 登录 请求类型：post 请求地址：/api/login
+  Login: { method: 'post', url: '/login' }
 }
 
 export default (config) => {

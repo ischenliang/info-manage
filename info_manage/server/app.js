@@ -27,7 +27,7 @@ const { userApi } = require('./service/user')
 const notauth = ['/api/login']
 app.use(async (ctx, next) => {
   try {
-    if (notauth.indexOf(ctx.request.url) !== -1) {
+    if (notauth.includes(ctx.request.url)) {
       await next()
     } else {
       if (ctx.request.headers.authorization === undefined) {
@@ -55,7 +55,7 @@ app.use(async (ctx, next) => {
  * 3. 根据角色获取对应的Api
 */
 app.use(async (ctx, next) => {
-  if (notauth.indexOf(ctx.request.url) !== -1) {
+  if (notauth.includes(ctx.request.url)) {
     await next()
   } else {
     // await next()
