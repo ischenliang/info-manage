@@ -6,10 +6,10 @@
       <div class="login-text">信息管理系统</div>
       <el-form :model="form" :rules="rules" ref="formRef">
         <el-form-item prop="username">
-          <el-input v-model="form.username" prefix-icon="el-icon-user"></el-input>
+          <el-input v-model="form.username" prefix-icon="el-icon-user" placeholder="账号"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="form.password" prefix-icon="el-icon-lock" show-password></el-input>
+          <el-input v-model="form.password" prefix-icon="el-icon-lock" show-password placeholder="密码"></el-input>
         </el-form-item>
         <el-form-item prop="password" style="margin-bottom: 5px;">
           <el-input v-model="form.password" prefix-icon="el-icon-lock" show-password></el-input>
