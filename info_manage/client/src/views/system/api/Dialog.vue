@@ -13,7 +13,7 @@
         <el-input v-model="form.path"></el-input>
       </el-form-item>
       <el-form-item label="权限标识" prop="perms">
-        <el-input v-model="form.perms"></el-input>
+        <el-input v-model="form.perms" placeholder="权限标识用于前台按钮级权限控制(请尽量不要做修改)"></el-input>
       </el-form-item>
       <div class="form-inline">
         <el-form-item label="接口类型" prop="type">

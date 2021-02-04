@@ -59,7 +59,7 @@ app.use(async (ctx, next) => {
     await next()
   } else {
     let url = ctx.request.url.split('?')[0]
-    const regx = ['detail', 'deleteById', 'userMenu', 'userApi']
+    const regx = ['detail', 'deleteById', 'userMenu', 'userApi', 'roleApi', 'roleMenu', 'resetPwd']
     regx.forEach(item => {
       if (url.indexOf(item) !== -1) {
         url = url.replace(new RegExp(`${item}\/.*`), `${item}/:id`)

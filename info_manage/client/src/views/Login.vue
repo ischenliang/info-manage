@@ -53,6 +53,14 @@ export default {
       expires: new Date(new Date().getTime() + 1000 * 60 * 60 * 24)
     }
   },
+  computed: {
+    path () {
+      if (this.$route.query.redirect) {
+        return this.$route.query.redirect
+      }
+      return '/'
+    }
+  },
   methods: {
     // 登录按钮点击
     login () {
@@ -78,7 +86,7 @@ export default {
               expires: this.expires,
               sameSite: 'lax'
             })
-            this.$router.push({ path: '/404' })
+            this.$router.push({ path: this.path })
             this.$notify.success(res.msg)
           }).catch(error => {
             this.$notify.error(error)

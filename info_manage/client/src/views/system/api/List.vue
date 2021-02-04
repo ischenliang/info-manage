@@ -27,20 +27,28 @@
         :data="list.data">
         <el-table-column type="selection" width="60" align="center"/>
         <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="120" align="center" sortable="custom"/>
-        <el-table-column v-if="show[1].value" label="备注" prop="remark" min-width="250" align="center" sortable="custom">
+        <el-table-column
+          v-if="show[1].value"
+          label="备注"
+          prop="remark"
+          min-width="250"
+          align="center"
+          sortable="custom"
+          :show-overflow-tooltip="true">
           <template v-slot="{ row }">{{ row.remark | valueEmpty }}</template>
         </el-table-column>
-        <el-table-column v-if="show[2].value" label="地址" prop="path" min-width="150" align="center" sortable="custom"/>
-        <el-table-column v-if="show[3].value" label="所属模块" prop="tid" min-width="100" align="center" sortable="custom">
+        <el-table-column v-if="show[2].value" label="地址" prop="path" min-width="160" align="center" sortable="custom"/>
+        <el-table-column v-if="show[3].value" label="权限标识" prop="perms" min-width="150" align="center" sortable="custom"/>
+        <el-table-column v-if="show[4].value" label="所属模块" prop="tid" min-width="120" align="center" sortable="custom">
           <template v-slot="{ row }">{{ row.api_type.name }}</template>
         </el-table-column>
-        <el-table-column v-if="show[4].value" label="类型" prop="type" min-width="80" align="center" sortable="custom">
+        <el-table-column v-if="show[5].value" label="类型" prop="type" min-width="100" align="center" sortable="custom">
           <template v-slot="{ row }">
              <el-tag :type="row.type | typeFormat" effect="dark" size="medium" style="width: 68px;">{{ row.type }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column v-if="show[5].value" label="创建时间" prop="ctime" min-width="170" align="center" sortable="custom"/>
-        <el-table-column v-if="show[6].value" label="修改时间" prop="mtime" min-width="170" align="center" sortable="custom"/>
+        <el-table-column v-if="show[6].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom"/>
+        <el-table-column v-if="show[7].value" label="修改时间" prop="mtime" min-width="160" align="center" sortable="custom"/>
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
             <el-button type="primary" size="mini" icon="el-icon-edit" title="编辑" @click="itemEdit(row)" />
@@ -70,6 +78,7 @@ export default {
         { label: '名称', disabled: true, value: true },
         { label: '备注', disabled: false, value: false },
         { label: '地址', disabled: true, value: true },
+        { label: '权限标识', disabled: false, value: true },
         { label: '类别', disabled: true, value: true },
         { label: '类型', disabled: true, value: true },
         { label: '创建时间', disabled: false, value: true },

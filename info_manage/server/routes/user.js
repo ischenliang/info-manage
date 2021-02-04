@@ -2,7 +2,7 @@ const router = require('koa-router')()
 const moment = require('moment')
 router.prefix('/api/user')
 const resConfig = require('../config/app.res')
-const { add, deleteById, update, detail, userMenu, list, resetPwd, updateAvatar, userApi } = require('../service/user')
+const { add, deleteById, update, detail, userMenu, list, updateAvatar, userApi } = require('../service/user')
 
 // 列表
 router.get('/list', async(ctx, next) => {
@@ -101,21 +101,6 @@ router.get('/userApi/:id', async(ctx, next) => {
       code: 200,
       msg: resConfig[ctx.request.method],
       data:  await userApi(ctx.params.id)
-    }
-  } catch (error) {
-    error.status = error.status ? error.status : 500
-    ctx.throw(error.status, error)
-  }
-})
-
-// 重置
-router.put('/resetPwd/:id', async(ctx, next) => {
-  try {
-    ctx.status = 200
-    ctx.body = {
-      code: 200,
-      msg: resConfig[ctx.request.method],
-      data:  await resetPwd(ctx.params.id)
     }
   } catch (error) {
     error.status = error.status ? error.status : 500

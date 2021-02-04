@@ -1,9 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Cookies from 'js-cookie'
-import http from '@/api'
-// import store from '@/store/index'
-// import { Message } from 'element-ui'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -127,13 +125,9 @@ router.beforeEach(async (to, from, next) => {
   // 判断登录状态
   if (token && uid) {
     // 获取用户菜单信息以及用户接口信息
-    http({
-      name: 'GetUserMenu',
-      requireAuth: true,
-      paths: [uid]
-    }).then(res => {
-      console.log(res)
-    })
+    store.dispatch('user/SET_UID', uid)
+    store.dispatch('user/SET_TOKEN', token)
+    store.dispatch('user/SET_USER')
     next()
   } else {
     const notauth = ['/login', '/404', '/401']

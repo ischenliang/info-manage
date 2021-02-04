@@ -258,24 +258,6 @@ async function list (query) {
 }
 
 /**
- * 重置用户密码
- * @param {*} id 
- */
-async function resetPwd (id) {
-  try {
-    return await User.update({
-      password: MD5('111111')
-    },{
-      where: {
-        id
-      }
-    })
-  } catch (error) {
-    throw error
-  }
-}
-
-/**
  * 更新用户头像
  * @param {*} id 
  */
@@ -302,6 +284,5 @@ module.exports =  {
   userMenu,
   userApi,
   list,
-  resetPwd,
   updateAvatar
 }

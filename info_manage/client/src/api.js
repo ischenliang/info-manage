@@ -54,6 +54,8 @@ const list = {
   DeleteUser: { method: 'delete', url: '/user/deleteById' },
   // 用户菜单 请求类型：get 请求地址：/user/userMenu/:id
   GetUserMenu: { method: 'get', url: '/user/userMenu' },
+  // 用户权限 请求类型：get 请求地址：/user/userApi/:id
+  GetUserApi: { method: 'get', url: '/user/userApi' },
 
   /**
    * 接口类别管理

@@ -35,7 +35,7 @@ export default {
 
 <style lang="scss">
   .permission-tabs {
-    flex: 1 1 auto;
+    height: 100%;
     box-shadow: 0 0 0 0 transparent !important;
     display: flex;
     flex-direction: column;
