@@ -2,7 +2,7 @@ const router = require('koa-router')()
 const moment = require('moment')
 router.prefix('/api/user')
 const resConfig = require('../config/app.res')
-const { add, deleteById, update, detail, userMenu, list, resetPwd, updateAvatar } = require('../service/user')
+const { add, deleteById, update, detail, userMenu, list, resetPwd, updateAvatar, userApi } = require('../service/user')
 
 // 列表
 router.get('/list', async(ctx, next) => {
@@ -86,6 +86,21 @@ router.get('/userMenu/:id', async(ctx, next) => {
       code: 200,
       msg: resConfig[ctx.request.method],
       data:  await userMenu(ctx.params.id)
+    }
+  } catch (error) {
+    error.status = error.status ? error.status : 500
+    ctx.throw(error.status, error)
+  }
+})
+
+// 用户所属角色的权限
+router.get('/userApi/:id', async(ctx, next) => {
+  try {
+    ctx.status = 200
+    ctx.body = {
+      code: 200,
+      msg: resConfig[ctx.request.method],
+      data:  await userApi(ctx.params.id)
     }
   } catch (error) {
     error.status = error.status ? error.status : 500

@@ -6,6 +6,7 @@ const seq = require('../utils/seq')
  * id: api主键 UUID
  * name：api名称 String
  * path：api路径 String
+ * perms：权限标识 String
  * type：api类型 String
  *    GET POST PUT DELETE
  * tid：api类别/api所属类别 UUID
@@ -30,6 +31,11 @@ const Api = seq.define('api', {
     type: DataTypes.STRING,
     allowNull: false,
     comment: '权限地址'
+  },
+  perms: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    comment: '权限标识'
   },
   type: {
     type: DataTypes.STRING,

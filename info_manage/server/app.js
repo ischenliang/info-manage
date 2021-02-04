@@ -58,13 +58,13 @@ app.use(async (ctx, next) => {
   if (notauth.includes(ctx.request.url)) {
     await next()
   } else {
-    // await next()
     let url = ctx.request.url.split('?')[0]
-    if (url.indexOf('detail') !== -1){
-      url = url.replace(/detail\/.*/, 'detail/:id')
-    } else if (url.indexOf('deleteById') !== -1) {
-      url = url.replace(/deleteById\/.*/, 'deleteById/:id')
-    }
+    const regx = ['detail', 'deleteById', 'userMenu', 'userApi']
+    regx.forEach(item => {
+      if (url.indexOf(item) !== -1) {
+        url = url.replace(new RegExp(`${item}\/.*`), `${item}/:id`)
+      }
+    })
     const apis = await userApi(ctx.uid)
     const index = apis.findIndex(item => item.path === url && item.type.toUpperCase() === ctx.request.method.toUpperCase())
     if (index !== -1) {

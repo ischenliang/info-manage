@@ -1,5 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Cookies from 'js-cookie'
+import http from '@/api'
+// import store from '@/store/index'
+// import { Message } from 'element-ui'
 
 Vue.use(VueRouter)
 
@@ -47,11 +51,103 @@ const routes = [
       title: 'Test',
       hidden: true
     }
+  },
+  {
+    path: '/system',
+    component: () => import('@/views/Layout'),
+    redirect: '/system/role',
+    children: [
+      {
+        path: 'role',
+        name: 'SystemRole',
+        component: () => import('@/views/system/role/List')
+      },
+      {
+        path: 'user',
+        name: 'SystemUser',
+        component: () => import('@/views/system/user/List')
+      },
+      {
+        path: 'menu',
+        name: 'SystemMenu',
+        component: () => import('@/views/system/menu/List')
+      },
+      {
+        path: 'api',
+        name: 'SystemApi',
+        component: () => import('@/views/Index'),
+        redirect: 'api/list',
+        children: [
+          {
+            path: 'list',
+            name: 'SystemApiList',
+            component: () => import('@/views/system/api/List')
+          },
+          {
+            path: 'type',
+            name: 'SystemApiType',
+            component: () => import('@/views/system/api/Type')
+          }
+        ]
+      },
+      {
+        path: 'permission/:id',
+        name: 'SystemPermission',
+        component: () => import('@/views/system/permission/List')
+      },
+      {
+        path: 'edit/:id',
+        name: 'SystemEdit',
+        component: () => import('@/views/system/permission/Edit')
+      }
+    ]
   }
 ]
 
 const router = new VueRouter({
   routes
+})
+
+/**
+ * 路由前置守卫
+ * 1. 从cookie中获取token和uid
+ * 2.判断cookie和uid是否存在：判断登录状态
+ *    存在：执行第三步
+ *    不存在：执行第四步
+ * 3.cookie和uid存在
+ * 4.cookie和uid都不存在
+ *  判断当前路由去往哪里：
+ *    登录页/login：**to.path === '/login'** 直接放行
+ *    其他页：**to.path !== '/login'** 拦截，让其跳转到登录界面，并且将to.path保存到redirect中
+*/
+router.beforeEach(async (to, from, next) => {
+  // 使用localStorage 还是使用 Cookies
+  const token = Cookies.get('token')
+  const uid = Cookies.get('uid')
+  // 判断登录状态
+  if (token && uid) {
+    // 获取用户菜单信息以及用户接口信息
+    http({
+      name: 'GetUserMenu',
+      requireAuth: true,
+      paths: [uid]
+    }).then(res => {
+      console.log(res)
+    })
+    next()
+  } else {
+    const notauth = ['/login', '/404', '/401']
+    if (notauth.includes(to.path)) {
+      next()
+    } else {
+      to.path === '/login' ? next({ path: '/login' }) : next({
+        path: '/login',
+        query: {
+          redirect: to.fullPath
+        }
+      })
+    }
+  }
 })
 
 export default router

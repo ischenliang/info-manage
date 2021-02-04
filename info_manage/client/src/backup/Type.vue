@@ -7,7 +7,11 @@
         <el-option label="禁用" :value="false" />
       </el-select>
       <div style="flex: auto;"></div>
-      <el-button type="primary" size="medium" @click="visible = true">新增</el-button>
+      <el-button
+        type="primary"
+        size="medium"
+        v-perms="'system:user:add'"
+        @click="visible = true">新增</el-button>
       <el-button type="danger" size="medium" @click="deleteSelected" :disabled="deleteDisabled">删除</el-button>
       <cDropdown :show.sync="show" />
     </div>

@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios'
+import Cookies from 'js-cookie'
 const http = axios.create({
   baseURL: 'http://127.0.0.1:3000/api/'
 })
@@ -51,6 +52,8 @@ const list = {
   UpdateUser: { method: 'put', url: '/user/update' },
   // 删除用户 请求类型：delete 请求地址：/user/deleteById/:id
   DeleteUser: { method: 'delete', url: '/user/deleteById' },
+  // 用户菜单 请求类型：get 请求地址：/user/userMenu/:id
+  GetUserMenu: { method: 'get', url: '/user/userMenu' },
 
   /**
    * 接口类别管理
@@ -121,7 +124,7 @@ export default (config) => {
     }
 
     if (config.requireAuth) {
-      requestConfig.headers.Authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiOWY5ZWFkNzAtODMyMC00MWQ1LTljMzItODIyMjYyODY2MzkwIiwiaWF0IjoxNjEyMTcxMjAzLCJleHAiOjE2MTIyNTc2MDN9.PcBD-Sl3iSmNssc56-ITv1XTOInGwLGhoBx4D-NJoGg'
+      requestConfig.headers.Authorization = Cookies.get('token')
     }
 
     // 发送请求

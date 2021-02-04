@@ -8,12 +8,13 @@
         <el-form-item prop="username">
           <el-input v-model="form.username" prefix-icon="el-icon-user" placeholder="账号"></el-input>
         </el-form-item>
-        <el-form-item prop="password">
+        <el-form-item prop="password" style="margin-bottom: 10px;">
           <el-input v-model="form.password" prefix-icon="el-icon-lock" show-password placeholder="密码"></el-input>
         </el-form-item>
-        <el-form-item prop="password" style="margin-bottom: 5px;">
+        <!-- 滑动验证 -->
+        <!-- <el-form-item prop="password" style="margin-bottom: 5px;">
           <el-input v-model="form.password" prefix-icon="el-icon-lock" show-password></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item prop="remember" style="text-align: left;margin-bottom: 10px;">
           <el-checkbox v-model="form.remember">记住密码</el-checkbox>
         </el-form-item>
@@ -48,7 +49,8 @@ export default {
         ]
       },
       // 按钮loading效果
-      loading: false
+      loading: false,
+      expires: new Date(new Date().getTime() + 1000 * 60 * 60 * 24)
     }
   },
   methods: {
@@ -68,8 +70,16 @@ export default {
             data: formData,
             requireAuth: false
           }).then(res => {
+            this.$Cookies.set('token', res.data.token, {
+              expires: this.expires,
+              sameSite: 'lax'
+            })
+            this.$Cookies.set('uid', res.data.user.id, {
+              expires: this.expires,
+              sameSite: 'lax'
+            })
+            this.$router.push({ path: '/404' })
             this.$notify.success(res.msg)
-            console.log(res)
           }).catch(error => {
             this.$notify.error(error)
           }).finally(() => {

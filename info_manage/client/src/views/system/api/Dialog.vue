@@ -12,6 +12,9 @@
       <el-form-item label="地址" prop="path">
         <el-input v-model="form.path"></el-input>
       </el-form-item>
+      <el-form-item label="权限标识" prop="perms">
+        <el-input v-model="form.perms"></el-input>
+      </el-form-item>
       <div class="form-inline">
         <el-form-item label="接口类型" prop="type">
           <el-select v-model="form.type" style="width: 100%;">
@@ -49,6 +52,7 @@ export default {
       form: {
         name: '',
         path: '',
+        perms: '',
         type: 'GET',
         tid: '',
         remark: ''
@@ -56,6 +60,7 @@ export default {
       rules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
         path: [{ required: true, message: '请输入地址', trigger: 'blur' }],
+        perms: [{ required: true, message: '请输入权限标识', trigger: 'blur' }],
         type: [{ required: true, message: '请选择接口类型', trigger: 'blur' }],
         tid: [{ required: true, message: '请选择类型', trigger: 'blur' }]
       },
