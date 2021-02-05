@@ -8,8 +8,8 @@ const seq = require('../utils/seq')
  * logo：logo String
  * repository：仓库地址 String
  * tag：标签 String
- * status：角色状态 Boolean
- * remark：角色备注 String
+ * status：状态 Boolean
+ * remark：备注 String
  * uid：用户id UUID 关联 User
  * tid：类型id UUID 关联 CollectType
  * ctime：角色创建时间 String
@@ -48,7 +48,7 @@ const Collect = seq.define('collect', {
     type: DataTypes.STRING,
     allowNull: true,
     defaultValue: '',
-    comment: '收藏标签'
+    comment: '收藏标签:使用,分隔'
   },
   remark: {
     type: DataTypes.TEXT,

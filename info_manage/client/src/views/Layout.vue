@@ -1,6 +1,7 @@
 <template>
   <div class="app-wrapper">
-    <div class="sidebar-container has-logo">
+    <!-- <div class="sidebar-container has-logo"> -->
+    <div class="sidebar-container">
       <div class="sidebar-logo-container">
         <label>个人信息管理系统</label>
       </div>

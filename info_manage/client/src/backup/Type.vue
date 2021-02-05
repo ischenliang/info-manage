@@ -6,13 +6,21 @@
         <el-option label="启用" :value="true" />
         <el-option label="禁用" :value="false" />
       </el-select>
-      <div style="flex: auto;"></div>
+      <c-flex-auto />
       <el-button
         type="primary"
         size="medium"
         v-perms="'system:user:add'"
-        @click="visible = true">新增</el-button>
-      <el-button type="danger" size="medium" @click="deleteSelected" :disabled="deleteDisabled">删除</el-button>
+        @click="visible = true">
+        新增
+      </el-button>
+      <el-button
+        type="danger"
+        size="medium"
+        @click="deleteSelected"
+        :disabled="deleteDisabled">
+        删除
+      </el-button>
       <cDropdown :show.sync="show" />
     </div>
     <div class="table">
@@ -31,8 +39,18 @@
         <el-table-column v-if="show[1].value" label="占位2" prop="prop" min-width="60" align="center" sortable="custom"/>
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
-            <el-button type="primary" size="mini" icon="el-icon-edit" title="编辑" @click="itemEdit(row)" />
-            <el-button type="danger" size="mini" icon="el-icon-delete" title="删除" @click="itemDelete(row)" />
+            <el-button
+              type="primary"
+              size="mini"
+              icon="el-icon-edit"
+              title="编辑"
+              @click="itemEdit(row)" />
+            <el-button
+              type="danger"
+              size="mini"
+              icon="el-icon-delete"
+              title="删除"
+              @click="itemDelete(row)" />
           </template>
         </el-table-column>
       </el-table>
