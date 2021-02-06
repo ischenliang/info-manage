@@ -2,7 +2,7 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 const http = axios.create({
-  baseURL: 'http://127.0.0.1:3000/api/'
+  baseURL: 'http://192.168.0.107:3000/api/'
 })
 
 // 定义所有的请求

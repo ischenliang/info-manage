@@ -2,6 +2,7 @@ const { CollectType, Collect } = require('../models/Middle')
 const { Op } = require("sequelize")
 const sequelize = require('../utils/seq')
 const moment = require('moment')
+const { model } = require('../utils/seq')
 
 // 新增
 async function add (collect) {
@@ -34,12 +35,12 @@ async function deleteById (id, uid) {
 }
 
 // 修改
-async function update (collect_type, uid) {
+async function update (collect, uid) {
   try {
-    collect_type.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
-    return await CollectType.update(collect_type, {
+    collect.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
+    return await Collect.update(collect, {
       where: {
-        id: collect_type.id,
+        id: collect.id,
         uid
       }
     })
@@ -51,11 +52,16 @@ async function update (collect_type, uid) {
 // 查询
 async function detail (id, uid) {
   try {
-    return await CollectType.findOne({
+    return await Collect.findOne({
       where: {
         id,
         uid
-      }
+      },
+      include: [
+        {
+          model: CollectType
+        }
+      ]
     })
   } catch (error) {
     throw error
@@ -70,12 +76,11 @@ async function detail (id, uid) {
  *  sort：排序字段 默认ctime
  *  order：排序方式 默认desc
  *  search: 搜索 默认%%
- *  status: 角色状态
  */
 async function list (query, uid) {
   try {
     const limit = query.size ? parseInt(query.size) : 10
-    const { count, rows } = await CollectType.findAndCountAll({
+    const { count, rows } = await Collect.findAndCountAll({
       where: {
         [Op.or]: [
           { name:  { [Op.like]: query.search ? `%${query.search}%` :　'%%' } },
@@ -83,16 +88,21 @@ async function list (query, uid) {
           { ctime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
           { mtime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } }
         ],
-        status: {
-          [Op.like]: query.status ? `%${JSON.parse(query.status) ? 1 : 0}%` : '%%'
-        },
         uid
       },
       order: [
         [query.sort ? query.sort : 'ctime', query.order ? query.order : 'desc']
       ],
       limit: limit,
-      offset: query.page ? (parseInt(query.page) - 1) * limit : 0
+      offset: query.page ? (parseInt(query.page) - 1) * limit : 0,
+      include: {
+        model: CollectType,
+        where: {
+          name: {
+            [Op.like]: query.type ? `%${query.type}%` : '%%'
+          }
+        }
+      }
     })
     return {
       total: count,

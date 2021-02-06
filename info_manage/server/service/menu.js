@@ -146,7 +146,8 @@ async function list (query) {
               as: 'children' }
           ]
         }
-      ]
+      ],
+      distinct: true
     })
     return {
       total: count,

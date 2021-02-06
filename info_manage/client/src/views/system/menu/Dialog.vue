@@ -4,6 +4,7 @@
     :visible.sync="visible"
     :close-on-click-modal="false"
     :before-close="close"
+    :append-to-body="true"
     :destroy-on-close="true">
     <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="top">
       <div class="form-inline">

@@ -7,6 +7,8 @@ const Api = require('./Api')
 const ApiType = require('./ApiType')
 const Collect = require('./Collect')
 const CollectType = require('./CollectType')
+const Account = require('./Account')
+const AccountTag = require('./AccountTag')
 
 // 用户角色表
 User.belongsToMany(Role, { through: 'user_role', as:'ur' })
@@ -35,6 +37,11 @@ Api.belongsToMany(Role, { through: 'role_api', as: 'ra' })
 CollectType.hasMany(Collect, { foreignKey: 'tid', sourceKey: 'id' })
 Collect.belongsTo(CollectType, { foreignKey: 'tid', sourceKey: 'id' })
 Collect.belongsTo(User, { foreignKey: 'uid', sourceKey: 'id' })
+
+// Account、AccountTag 与 User关联
+// 一个用户用于：多个Account和AccountTag
+User.hasMany(AccountTag, { foreignKey: 'uid', sourceKey: 'id' })
+User.hasMany(Account, { foreignKey: 'uid', sourceKey: 'id' })
 
 
 

@@ -8,7 +8,6 @@ const seq = require('../utils/seq')
  * logo：logo String
  * repository：仓库地址 String
  * tag：标签 String
- * status：状态 Boolean
  * remark：备注 String
  * uid：用户id UUID 关联 User
  * tid：类型id UUID 关联 CollectType
