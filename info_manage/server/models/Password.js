@@ -3,17 +3,20 @@ const moment = require('moment')
 const seq = require('../utils/seq')
 
 /**
- * 账目分类表
+ * 密码管理表
  * id: 主键 UUID
  * name：名称 String
- * icon：图标 String
- * order：顺序 Integer 后端直接定义
- * type：类别 TinyInteger 1收入/0支出
+ * url：网址 String
+ * badge：名称徽标
+ * type：类别 TinyInteger 1网站/0软件
+ * account：账号 String
+ * password：登录密码 String(密码不能暴露出来：应该在查看的时候校验当前用户的登录密码(类似于gitee))
+ * remark：备注 String
  * uid：用户 UUID
  * ctime：api创建时间 String
  * mtime：api更新时间 String
  */
-const AccountTag = seq.define('account_tag', {
+const Password = seq.define('password', {
   id: {
     type: DataTypes.UUID,
     allowNull: false,
@@ -26,22 +29,36 @@ const AccountTag = seq.define('account_tag', {
     allowNull: false,
     comment: '名称'
   },
-  icon: {
+  url: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: '网址'
+  },
+  badge: {
     type: DataTypes.STRING,
     allowNull: false,
-    comment: '图标'
-  },
-  order: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 1,
-    comment: '顺序'
+    comment: '徽标'
   },
   type: {
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 1,
-    comment: '类型：1收入/0支出'
+    comment: '类型：1网站/0软件'
+  },
+  account: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    comment: '账号'
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    comment: '密码'
+  },
+  remark: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: '备注'
   },
   uid: {
     type: DataTypes.UUID,
@@ -64,4 +81,4 @@ const AccountTag = seq.define('account_tag', {
   freezeTableName: true
 })
 
-module.exports = AccountTag
+module.exports = Password

@@ -2,7 +2,7 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 const http = axios.create({
-  baseURL: 'http://192.168.0.107:3000/api/'
+  baseURL: 'http://localhost:3000/api/'
 })
 
 // 定义所有的请求
@@ -84,6 +84,12 @@ const list = {
   GetApi: { method: 'get', url: '/api/detail' },
   // 删除接口 请求类型：delete 请求地址：/api/deleteById/:id
   DeleteApi: { method: 'delete', url: '/api/deleteById' },
+
+  /**
+   * 收藏类别管理
+  */
+  // 收藏类别列表 请求类型：get 请求地址：/ctype/list
+  GetCollectTypes: { method: 'get', url: '/ctype/list' },
 
   /**
    * 公共接口

@@ -106,7 +106,8 @@ async function list (query) {
       offset: query.page ? (parseInt(query.page) - 1) * limit : 0,
       include: [
         {
-          model: ApiType
+          model: ApiType,
+          required: false
         }
       ]
     })

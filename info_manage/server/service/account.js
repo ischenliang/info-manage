@@ -1,33 +1,41 @@
-const { ApiType, Api } = require('../models/Middle')
+const { Account } = require('../models/Middle')
 const { Op } = require("sequelize")
 const sequelize = require('../utils/seq')
 const moment = require('moment')
 
 // 新增
-async function add (api_type) {
-  api_type.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
-  api_type.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
+async function add (account) {
+  account.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
+  account.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
   try {
-    return await ApiType.create(api_type)
+    return await Account.create(account)
   } catch (error) {
     throw error
   }
 }
 
 /**
- * 删除：自动
+ * 删除
  * @param {*} id
- * 删除Api_type
- *  1.首先重置api中关联到的数据:
- *    api
- *  2.删除api_type
- *    api_type
+ *  1.首先重置collect_type中关联到的数据:
+ *    collect
+ *  2.删除collect_type
+ *    collect_type：需要注意的是需要将uid带上，否则有可能其他人删除了别人的数据
  */
-async function deleteById (id) {
+async function deleteById (id, uid) {
   try {
-    return await ApiType.destroy({
+    // 更新api
+    await Collect.update({
+      tid: ''
+    },{
       where: {
-        id
+        tid: id
+      }
+    })
+    return await CollectType.destroy({
+      where: {
+        id,
+        uid
       }
     })
   } catch (error) {
@@ -36,12 +44,13 @@ async function deleteById (id) {
 }
 
 // 修改
-async function update (api_type) {
+async function update (collect_type, uid) {
   try {
-    api_type.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
-    return await ApiType.update(api_type,{
+    collect_type.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
+    return await CollectType.update(collect_type, {
       where: {
-        id: api_type.id
+        id: collect_type.id,
+        uid
       }
     })
   } catch (error) {
@@ -50,11 +59,12 @@ async function update (api_type) {
 }
 
 // 查询
-async function detail (id) {
+async function detail (id, uid) {
   try {
-    return await ApiType.findOne({
+    return await CollectType.findOne({
       where: {
-        id
+        id,
+        uid
       }
     })
   } catch (error) {
@@ -72,10 +82,10 @@ async function detail (id) {
  *  search: 搜索 默认%%
  *  status: 角色状态
  */
-async function list (query) {
+async function list (query, uid) {
   try {
     const limit = query.size ? parseInt(query.size) : 10
-    const { count, rows } = await ApiType.findAndCountAll({
+    const { count, rows } = await CollectType.findAndCountAll({
       where: {
         [Op.or]: [
           { name:  { [Op.like]: query.search ? `%${query.search}%` :　'%%' } },
@@ -85,7 +95,8 @@ async function list (query) {
         ],
         status: {
           [Op.like]: query.status ? `%${JSON.parse(query.status) ? 1 : 0}%` : '%%'
-        }
+        },
+        uid
       },
       order: [
         [query.sort ? query.sort : 'ctime', query.order ? query.order : 'desc']

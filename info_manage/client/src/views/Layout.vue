@@ -55,6 +55,20 @@
             <i class="el-icon-s-grid"></i>
             <span slot="title">项目管理</span>
           </el-menu-item>
+          <el-submenu index="/collect">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span slot="title">收藏管理</span>
+            </template>
+            <el-menu-item index="/collect/list">
+              <i class="el-icon-s-operation"></i>
+              <span>收藏列表</span>
+            </el-menu-item>
+            <el-menu-item index="/collect/ctype">
+              <i class="el-icon-s-operation"></i>
+              <span>类别管理</span>
+            </el-menu-item>
+          </el-submenu>
         </el-menu>
        </div>
     </div>

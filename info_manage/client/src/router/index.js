@@ -99,6 +99,23 @@ const routes = [
         component: () => import('@/views/system/permission/Edit')
       }
     ]
+  },
+  {
+    path: '/collect',
+    component: () => import('@/views/Layout'),
+    redirect: '/collect/list',
+    children: [
+      {
+        path: 'list',
+        name: 'CollectList',
+        component: () => import('@/views/collect/list/List')
+      },
+      {
+        path: 'ctype',
+        name: 'CollectType',
+        component: () => import('@/views/collect/type/List')
+      }
+    ]
   }
 ]
 

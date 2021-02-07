@@ -9,6 +9,7 @@ const Collect = require('./Collect')
 const CollectType = require('./CollectType')
 const Account = require('./Account')
 const AccountTag = require('./AccountTag')
+const Password = require('./Password')
 
 // 用户角色表
 User.belongsToMany(Role, { through: 'user_role', as:'ur' })
@@ -43,6 +44,10 @@ Collect.belongsTo(User, { foreignKey: 'uid', sourceKey: 'id' })
 User.hasMany(AccountTag, { foreignKey: 'uid', sourceKey: 'id' })
 User.hasMany(Account, { foreignKey: 'uid', sourceKey: 'id' })
 
+// Password 与 User 关联
+User.hasMany(Password, { foreignKey: 'uid', sourceKey: 'id' })
+
+
 
 
 // 向外抛出所有的model：后续使用就只需要引入这一个 model 即可
@@ -55,5 +60,8 @@ module.exports = {
   Api,
   ApiType,
   Collect,
-  CollectType
+  CollectType,
+  Account,
+  AccountTag,
+  Password
 }

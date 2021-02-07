@@ -21,7 +21,7 @@ Vue.use(VueParticles)
 // 全局指令：按钮级权限指令控制
 Vue.directive('perms', {
   inserted: (el, binding, vnode) => {
-    console.log(el)
+    // console.log(el)
     // const perm = binding.value
     // // 判断是否拥有该类别的大权限
     // if (store.getters.permission[perm.category] === undefined) {
