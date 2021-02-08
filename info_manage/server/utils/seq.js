@@ -9,6 +9,7 @@ const conf = {
     timestamps: false // 不自动创建createAt和updateAt时间字段
   },
   logging: sql => { // 不让sql语句在命令行终端输出
+    // console.log(sql)
   }
 }
 const seq = new Sequelize(config.mysql.database, config.mysql.user, config.mysql.password, conf)

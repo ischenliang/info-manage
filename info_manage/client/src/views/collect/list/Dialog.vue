@@ -6,12 +6,14 @@
     :before-close="close"
     :destroy-on-close="true">
     <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="top">
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="form.name"></el-input>
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-switch v-model="form.status"></el-switch>
-      </el-form-item>
+      <div class="form-inline">
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="类别" prop="tid">
+          <el-input v-model="form.tid"></el-input>
+        </el-form-item>
+      </div>
       <el-form-item label="备注" prop="remark">
         <el-input v-model="form.remark" type="textarea" :rows="2"></el-input>
       </el-form-item>
@@ -36,9 +38,14 @@ export default {
     return {
       form: {
         name: '',
-        status: true,
+        tid: '',
+        url: '',
+        logo: '',
+        repository: '',
+        tag: '',
         remark: ''
       },
+      types: [],
       rules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }]
       }
@@ -107,9 +114,19 @@ export default {
     if (this.id !== '') {
       this.listGet()
     } else {
-      // 这里面对一些不同的需求做判断，如：
-      // 新增时：密码不填 修改时：密码不必填
-      // this.$set(this.rules, 'password', [{ required: true, message: '请输入用户密码', trigger: 'blur' }])
+      this.$http({
+        name: 'GetCollectTypes',
+        requireAuth: true,
+        params: {
+          status: true,
+          page: 1,
+          size: 10000
+        }
+      }).then(res => {
+        this.types = res.data.data
+      }).catch(error => {
+        this.$notify.error(error)
+      })
     }
   }
 }

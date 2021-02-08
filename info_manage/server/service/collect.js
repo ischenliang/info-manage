@@ -95,14 +95,13 @@ async function list (query, uid) {
       ],
       limit: limit,
       offset: query.page ? (parseInt(query.page) - 1) * limit : 0,
-      include: {
+      include: [{
         model: CollectType,
         where: {
-          name: {
-            [Op.like]: query.type ? `%${query.type}%` : '%%'
-          }
+          uid,
+          name: { [Op.like]: query.type ? `%${query.type}%` : '%%' }
         }
-      }
+      }]
     })
     return {
       total: count,

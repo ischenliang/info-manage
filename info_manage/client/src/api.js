@@ -90,6 +90,28 @@ const list = {
   */
   // 收藏类别列表 请求类型：get 请求地址：/ctype/list
   GetCollectTypes: { method: 'get', url: '/ctype/list' },
+  // 更新收藏类别 请求类型：put 请求地址：/ctype/update
+  UpdateCollectType: { method: 'put', url: '/ctype/update' },
+  // 删除收藏类别 请求类型：delete 请求地址：/ctype/deleteById/:id
+  DeleteCollectType: { method: 'delete', url: '/ctype/deleteById' },
+  // 收藏类别详情 请求类型：get 请求地址：/ctype/detail/:id
+  GetCollectType: { method: 'get', url: '/ctype/detail' },
+  // 新增收藏类别 请求类型：post 请求地址：/ctype/add
+  AddCollectType: { method: 'post', url: '/ctype/add' },
+
+  /**
+   * 收藏管理
+  */
+  // 收藏列表 请求类型：get 请求地址：/collect/list
+  GetCollects: { method: 'get', url: '/collect/list' },
+  // 更新收藏 请求类型：put 请求地址：/collect/update
+  UpdateCollect: { method: 'put', url: '/collect/update' },
+  // 删除收藏 请求类型：delete 请求地址：/collect/deleteById/:id
+  DeleteCollect: { method: 'delete', url: '/collect/deleteById' },
+  // 收藏详情 请求类型：get 请求地址：/collect/detail/:id
+  GetCollect: { method: 'get', url: '/collect/detail' },
+  // 新增收藏 请求类型：post 请求地址：/collect/add
+  AddCollect: { method: 'post', url: '/collect/add' },
 
   /**
    * 公共接口

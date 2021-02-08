@@ -60,6 +60,7 @@ import {
   Collapse,
   CollapseItem,
   Radio,
+  Link,
   Popover
 } from 'element-ui'
 
@@ -120,6 +121,7 @@ Vue.use(Slider)
 Vue.use(Collapse)
 Vue.use(CollapseItem)
 Vue.use(Radio)
+Vue.use(Link)
 Vue.use(Popover)
 // 将Message挂在到Vue原型链上,使得每个Vue的实例都能访问
 Vue.prototype.$message = {
