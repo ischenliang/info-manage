@@ -160,16 +160,4 @@ export default {
 </script>
 
 <style lang="scss">
-.form-inline{
-  display: flex;
-  .el-form-item{
-    flex: 1;
-    &:first-child{
-      margin-right: 10px;
-    }
-    &:last-child{
-      margin-left: 10px;
-    }
-  }
-}
 </style>

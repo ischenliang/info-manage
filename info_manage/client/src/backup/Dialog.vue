@@ -14,7 +14,7 @@
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button type="primary" size="medium" @click="submit">确定</el-button>
+      <el-button type="primary" size="medium" @click="submit" :loading="loading">确定</el-button>
       <el-button type="danger" size="medium" @click="close">取消</el-button>
     </span>
   </el-dialog>
@@ -37,7 +37,8 @@ export default {
       },
       rules: {
         prop1: [{ required: true, message: '请输入prop1', trigger: 'blur' }]
-      }
+      },
+      loading: false
     }
   },
   methods: {
@@ -57,6 +58,8 @@ export default {
         this.$notify.success(res.msg)
       }).catch(error => {
         this.$notify.error(error)
+      }).finally(() => {
+        this.loading = false
       })
     },
     // 编辑提交
@@ -71,12 +74,15 @@ export default {
         this.$notify.success(res.msg)
       }).catch(error => {
         this.$notify.error(error)
+      }).finally(() => {
+        this.loading = false
       })
     },
     // 提交中间件
     submit () {
       this.$refs.form.validate(valid => {
         if (valid) {
+          this.loading = true
           if (this.id === '' || this.id === undefined) {
             this.addSubmit()
           } else {
@@ -111,16 +117,4 @@ export default {
 </script>
 
 <style lang="scss">
-.form-inline{
-  display: flex;
-  .el-form-item{
-    flex: 1;
-    &:first-child{
-      margin-right: 10px;
-    }
-    &:last-child{
-      margin-left: 10px;
-    }
-  }
-}
 </style>
