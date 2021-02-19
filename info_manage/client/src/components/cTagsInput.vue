@@ -28,8 +28,7 @@ export default {
     },
     defaultList: {
       type: Array,
-      default: null,
-      required: true
+      default: null
     },
     placeholder: {
       type: String,
@@ -72,9 +71,14 @@ export default {
   },
   mounted () {
     this.$nextTick(() => {
-      this.list = this.defaultList
       this.$refs.Tagsinput.focus()
     })
+  },
+  // 解决props传值给data时-props有值但data却是空的问题
+  watch: {
+    defaultList (val) {
+      this.list = val
+    }
   }
 }
 </script>

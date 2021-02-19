@@ -9,6 +9,11 @@
       <el-button
         type="primary"
         size="medium"
+        :icon="showTale ? 'el-icon-tickets' : 'el-icon-menu'"
+        @click="showTale = !showTale">{{showTale ? '表格' : '列表'}}</el-button>
+      <el-button
+        type="primary"
+        size="medium"
         v-perms="'system:user:add'"
         @click="visible = true">
         新增
@@ -29,6 +34,7 @@
         stripe
         ref="table"
         border
+        v-if="showTale"
         v-loading="list.loading"
         @sort-change="sortChange"
         @selection-change="selectChange"
@@ -56,11 +62,13 @@
         <el-table-column v-if="show[4].value" label="仓库" prop="repository" min-width="150" align="center" sortable="custom">
           <template slot-scope="scope">
             <el-link
+              v-if="scope.row.repository"
               :type="setLink(scope.row, scope.$index).type"
               :href="setLink(scope.row, scope.$index).repository"
               target="_blank">
               {{ setLink(scope.row, scope.$index).repository }}
             </el-link>
+            <template v-else>-</template>
           </template>
         </el-table-column>
         <el-table-column v-if="show[5].value" label="标签" prop="tag" min-width="100" align="center" sortable="custom"/>
@@ -84,6 +92,9 @@
           </template>
         </el-table-column>
       </el-table>
+      <div v-else style="min-width: 1050px;height: 100%;overflow: auto;background: red;">
+        asdasdasd
+      </div>
     </div>
     <cPagination
       :total="list.total"
@@ -129,7 +140,8 @@ export default {
         selected: []
       },
       id: '',
-      visible: false
+      visible: false,
+      showTale: true
     }
   },
   computed: {
@@ -213,7 +225,7 @@ export default {
     itemDelete (row) {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.$http({
-          name: 'DeleteCollectType',
+          name: 'DeleteCollect',
           requireAuth: true,
           paths: [row.id]
         }).then(res => {
@@ -230,7 +242,7 @@ export default {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.list.selected.forEach((item, index) => {
           this.$http({
-            name: 'DeleteCollectType',
+            name: 'DeleteCollect',
             requireAuth: true,
             paths: [item]
           }).then(res => {
@@ -278,7 +290,7 @@ export default {
   beforeUpdate () {
     this.$nextTick(() => {
       // 在数据加载完，重新渲染表格
-      this.$refs.table.doLayout()
+      if (this.showTale) this.$refs.table.doLayout()
     })
   }
 }

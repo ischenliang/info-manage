@@ -24,7 +24,8 @@
       </el-form-item>
       <el-form-item label="图标" prop="logo">
         <el-input v-model="form.logo" placeholder="请输入内容">
-          <template slot="prepend">{{prefix}}</template>
+          <template slot="prepend">{{ prefix }}</template>
+          <template slot="append">{{ '?' + suffix }}</template>
         </el-input>
       </el-form-item>
       <el-form-item label="标签" prop="tag" class="form-item-tags">
@@ -74,6 +75,7 @@ export default {
         logo: [{ required: true, message: '请输入图标', trigger: 'blur' }]
       },
       prefix: 'https://badgen.net/badge/icon/',
+      suffix: 'label',
       loading: false
     }
   },
@@ -86,7 +88,7 @@ export default {
     addSubmit () {
       const data = JSON.parse(JSON.stringify(this.form))
       data.tag = data.tag.join(',')
-      data.logo = this.prefix + data.logo
+      data.logo = this.prefix + data.logo + '?' + this.suffix
       this.$http({
         name: 'AddCollect',
         requireAuth: true,
@@ -105,11 +107,11 @@ export default {
     editSubmit () {
       const data = JSON.parse(JSON.stringify(this.form))
       data.tag = data.tag.join(',')
-      data.logo = this.prefix + data.logo
+      data.logo = this.prefix + data.logo + '?' + this.suffix
       this.$http({
         name: 'UpdateCollect',
         requireAuth: true,
-        data: this.form
+        data: data
       }).then(res => {
         this.$emit('submit')
         this.close()
@@ -142,6 +144,7 @@ export default {
         paths: [this.id]
       }).then(res => {
         res.data.logo = res.data.logo.replace(new RegExp(this.prefix), '')
+        res.data.logo = res.data.logo.replace(new RegExp('\\?' + this.suffix), '')
         res.data.tag = res.data.tag.split(',')
         this.form = res.data
       }).catch(error => {
@@ -152,21 +155,20 @@ export default {
   created () {
     if (this.id !== '') {
       this.listGet()
-    } else {
-      this.$http({
-        name: 'GetCollectTypes',
-        requireAuth: true,
-        params: {
-          status: true,
-          page: 1,
-          size: 10000
-        }
-      }).then(res => {
-        this.types = res.data.data
-      }).catch(error => {
-        this.$notify.error(error)
-      })
     }
+    this.$http({
+      name: 'GetCollectTypes',
+      requireAuth: true,
+      params: {
+        status: true,
+        page: 1,
+        size: 10000
+      }
+    }).then(res => {
+      this.types = res.data.data
+    }).catch(error => {
+      this.$notify.error(error)
+    })
   }
 }
 </script>
