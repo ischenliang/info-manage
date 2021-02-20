@@ -8,8 +8,9 @@ const seq = require('../utils/seq')
  * type：类型 Integer 1收入/0支出
  * tag：分类 JSON：{ name: '餐饮', icon: 'iconfont-canyin' }
  * pay：支付方式 String
+ * money：付款金额
  * ptime：支付时间 String
- * location：定位 JSON
+ * location：定位 JSON { code: [1001, 1002, 1003], city: ['四川省', '成都市', '青羊区'] }
  * remark：备注 TEXT
  * uid：用户 UUID
  * template：模板 Boolean false
@@ -40,6 +41,12 @@ const Account = seq.define('account', {
     allowNull: false,
     defaultValue: '支付宝',
     comment: '支付方式'
+  },
+  money: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+    defaultValue: 0.0,
+    comment: '付款金额'
   },
   ptime: {
     type: DataTypes.STRING,

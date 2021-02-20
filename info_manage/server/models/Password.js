@@ -7,8 +7,7 @@ const seq = require('../utils/seq')
  * id: 主键 UUID
  * name：名称 String
  * url：网址 String
- * badge：名称徽标
- * type：类别 TinyInteger 1网站/0软件
+ * type：类别 Integer 1网站/0软件
  * account：账号 String
  * password：登录密码 String(密码不能暴露出来：应该在查看的时候校验当前用户的登录密码(类似于gitee))
  * remark：备注 String
@@ -33,11 +32,6 @@ const Password = seq.define('password', {
     type: DataTypes.STRING,
     allowNull: true,
     comment: '网址'
-  },
-  badge: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    comment: '徽标'
   },
   type: {
     type: DataTypes.INTEGER,
