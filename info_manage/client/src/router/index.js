@@ -116,6 +116,23 @@ const routes = [
         component: () => import('@/views/collect/type/List')
       }
     ]
+  },
+  {
+    path: '/account',
+    component: () => import('@/views/Layout'),
+    redirect: '/account/list',
+    children: [
+      {
+        path: 'list',
+        name: 'AccountList',
+        component: () => import('@/views/account/list/List')
+      },
+      {
+        path: 'type',
+        name: 'AccountType',
+        component: () => import('@/views/account/type/List')
+      }
+    ]
   }
 ]
 

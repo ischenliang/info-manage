@@ -32,5 +32,9 @@ module.exports = {
     // 将文件写入到指定的位置
     render.pipe(upStream)
     return origin + '/avatar/' + `${uid}.${suffix}`
+  },
+  // 判断文件是否存在
+  exists: (path) => {
+    return fs.existsSync(path.join(__dirname, '../resource/', resource.uid))
   }
 }

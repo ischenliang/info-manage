@@ -10,6 +10,8 @@ const CollectType = require('./CollectType')
 const Account = require('./Account')
 const AccountTag = require('./AccountTag')
 const Password = require('./Password')
+const Memory = require('./Memory')
+const Resource = require('./Resource')
 
 // 用户角色表
 User.belongsToMany(Role, { through: 'user_role', as:'ur' })
@@ -46,7 +48,16 @@ User.hasMany(Account, { foreignKey: 'uid', sourceKey: 'id' })
 
 // Password 与 User 关联
 User.hasMany(Password, { foreignKey: 'uid', sourceKey: 'id' })
+Password.belongsTo(User, { foreignKey: 'uid', sourceKey: 'id' })
 
+// Memory 与 User 关联
+User.hasMany(Memory, { foreignKey: 'uid', sourceKey: 'id' })
+Memory.belongsTo(User, { foreignKey: 'uid', sourceKey: 'id' })
+
+// File 与 User 关联
+User.hasMany(Resource, { foreignKey: 'uid', sourceKey: 'id' })
+Resource.belongsTo(User, { foreignKey: 'uid', sourceKey: 'id' })
+Resource.hasMany(Resource, { as: 'children', foreignKey: 'pid', through: null })
 
 
 
@@ -63,5 +74,7 @@ module.exports = {
   CollectType,
   Account,
   AccountTag,
-  Password
+  Password,
+  Memory,
+  Resource
 }

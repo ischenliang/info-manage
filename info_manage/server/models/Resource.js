@@ -3,19 +3,20 @@ const moment = require('moment')
 const seq = require('../utils/seq')
 
 /**
- * 密码管理表
+ * 文件资源表
  * id: 主键 UUID
- * name：名称 String
- * type：类别 Integer 1网站/0软件
- * url：网址 String 软件时：不必填写
- * account：账号 String
- * password：登录密码 String(密码不能暴露出来：应该在查看的时候校验当前用户的登录密码(类似于gitee))
- * remark：备注 String，如果有支付密码填写到备注里
+ * name：文件名称 String
+ * is_dir：是否目录 Boolean true文件夹/false文件
+ * size：文件大小 Integer
+ * path：文件位置 String
+ * extension：文件扩展名 String
+ * share：是否共享 JSON { is_share: false, }
+ * pid：上级目录id
  * uid：用户 UUID
  * ctime：api创建时间 String
  * mtime：api更新时间 String
  */
-const Password = seq.define('password', {
+const File = seq.define('resource', {
   id: {
     type: DataTypes.UUID,
     allowNull: false,
@@ -26,38 +27,46 @@ const Password = seq.define('password', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
-    comment: '名称'
+    comment: '文件名称'
   },
-  url: {
+  is_dir: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+    comment: '是否目录'
+  },
+  size: {
+    type: DataTypes.BIGINT,
+    allowNull: true,
+    defaultValue: 0,
+    comment: '文件大小'
+  },
+  path: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: '',
+    comment: '文件位置'
+  },
+  extension: {
     type: DataTypes.STRING,
     allowNull: true,
-    comment: '网址'
+    comment: '文件扩展名'
   },
-  type: {
-    type: DataTypes.INTEGER,
+  share: {
+    type: DataTypes.JSON,
     allowNull: false,
-    defaultValue: 1,
-    comment: '类型：1网站/0软件'
-  },
-  account: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    comment: '账号'
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    comment: '密码'
-  },
-  remark: {
-    type: DataTypes.STRING,
-    allowNull: true,
-    comment: '备注'
+    defaultValue: { 'is_share': false, path: '' },
+    comment: '文件共享'
   },
   uid: {
     type: DataTypes.UUID,
     allowNull: false,
     comment: '用户'
+  },
+  pid: {
+    type: DataTypes.UUID,
+    allowNull: true,
+    comment: '上级菜单id'
   },
   ctime: {
     type: DataTypes.STRING,
@@ -75,4 +84,4 @@ const Password = seq.define('password', {
   freezeTableName: true
 })
 
-module.exports = Password
+module.exports = File

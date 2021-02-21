@@ -3,19 +3,16 @@ const moment = require('moment')
 const seq = require('../utils/seq')
 
 /**
- * 密码管理表
+ * 账目表
  * id: 主键 UUID
  * name：名称 String
- * type：类别 Integer 1网站/0软件
- * url：网址 String 软件时：不必填写
- * account：账号 String
- * password：登录密码 String(密码不能暴露出来：应该在查看的时候校验当前用户的登录密码(类似于gitee))
- * remark：备注 String，如果有支付密码填写到备注里
+ * content：内容 Text
+ * tag：标签 String，使用`,`分隔
  * uid：用户 UUID
  * ctime：api创建时间 String
  * mtime：api更新时间 String
  */
-const Password = seq.define('password', {
+const Memory = seq.define('memory', {
   id: {
     type: DataTypes.UUID,
     allowNull: false,
@@ -26,33 +23,17 @@ const Password = seq.define('password', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
-    comment: '名称'
+    comment: '备忘录名称'
   },
-  url: {
-    type: DataTypes.STRING,
-    allowNull: true,
-    comment: '网址'
-  },
-  type: {
-    type: DataTypes.INTEGER,
+  content: {
+    type: DataTypes.TEXT,
     allowNull: false,
-    defaultValue: 1,
-    comment: '类型：1网站/0软件'
+    comment: '备忘录内容'
   },
-  account: {
+  tag: {
     type: DataTypes.STRING,
     allowNull: false,
-    comment: '账号'
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    comment: '密码'
-  },
-  remark: {
-    type: DataTypes.STRING,
-    allowNull: true,
-    comment: '备注'
+    comment: '备忘录标签'
   },
   uid: {
     type: DataTypes.UUID,
@@ -75,4 +56,4 @@ const Password = seq.define('password', {
   freezeTableName: true
 })
 
-module.exports = Password
+module.exports = Memory
