@@ -158,32 +158,20 @@ async function detail (id, uid) {
 async function list (query, uid) {
   try {
     const limit = query.size ? parseInt(query.size) : 10
-    const { count, rows } = await Account.findAndCountAll({
+    const pid = query.pid ? query.pid : null
+    const { count, rows } = await Resource.findAndCountAll({
       where: {
         [Op.or]: [
-          { remark:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
+          { name:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
+          { path:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
           { ctime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
           { mtime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } }
         ],
-        ptime: {
-          [Op.between]: [
-            query.start ? query.start : await Account.min('ptime', { where: { uid } }),
-            query.end ? query.end : await Account.max('ptime', { where: { uid } })
-          ]
-        },
-        pay: {
-          [Op.like]: query.pay ? `%${query.pay}%` : '%%'
-        },
-        template: {
-          [Op.like]: query.template ? `%${JSON.parse(query.template) ? 1 : 0}%` : '%%'
-        },
-        type: {
-          [Op.like]: query.type ? `%${JSON.parse(query.type) ? 1 : 0}%` : '%%'
-        },
+        pid,
         uid
       },
       order: [
-        [query.sort ? query.sort : 'ptime', query.order ? query.order : 'desc']
+        [query.sort ? query.sort : 'ctime', query.order ? query.order : 'desc']
       ],
       limit: limit,
       offset: query.page ? (parseInt(query.page) - 1) * limit : 0
@@ -197,11 +185,78 @@ async function list (query, uid) {
   }
 }
 
+/**
+ * 移动到
+ * 原理：实际上和文件重名是一样的道理，所以就是用文件重名方法实现文件移动
+ * id：移动到指定的文件/文件夹
+ * filelist：需要移动的文件/文件夹 []
+ */
+async function move (id, filelist, uid) {
+  try {
+    // 需要移动的文件列表
+    const list = await Resource.findAll({
+      where: {
+        id: {
+          [Op.in]: filelist
+        },
+        uid
+      },
+      raw: true
+    })
+    const target = await Resource.findOne({
+      where: {
+        id,
+        uid
+      },
+      raw: true
+    })
+    // target.path：newPath
+    // item.path：oldPath
+    list.forEach(async item => {
+      // 移动
+      const oldPath = path.join(__dirname, '..', item.path)
+      const newPath = path.join(__dirname, '..', target.path, item.name)
+      fs.renameSync(oldPath, newPath)
+      // 更新数据库
+      item.path = newPath.replace(path.join(__dirname, '..'), '')
+      item.pid = id
+      item.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
+      await Resource.update(item, {
+        where: {
+          id: item.id,
+          uid
+        }
+      })
+    })
+    return await Resource.findAll({
+      where: {
+        id: {
+          [Op.in]: filelist
+        },
+        uid
+      }
+    })
+  } catch (error) {
+    throw error
+  }
+}
+
+/**
+ * 复制到
+ * 将指定文件/文件夹复制到指定目录
+ * id：移动到指定的文件/文件夹
+ * filelist：需要移动的文件/文件夹 []
+ */
+async function copy (id, filelist, uid) {
+}
+
 
 module.exports =  {
   add,
   deleteById,
   update,
   detail,
-  list
+  list,
+  move,
+  copy
 }

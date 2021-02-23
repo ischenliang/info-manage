@@ -9,5 +9,7 @@ module.exports = {
   LOGIN_FAILURE: '登录失败',
   LOGIN_FAILURE_RES: '用户名或密码不正确',
   PERMS_SUCCESS: '授权成功',
-  401: '权限不足'
+  401: '权限不足',
+  MOVE_SUCCESS: '移动成功',
+  COPY_SUCCESS: '复制成功'
 }
