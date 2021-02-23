@@ -1,58 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>定位</title>
-    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.js"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/axios@0.19.2/dist/axios.js"></script>
+  <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.js"></script>
 </head>
-<body style="margin:0px;padding: 0px">
-  <div id="mapContainer"></div>
-  <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=1fbad47733a9f2ca9b53ec30bb6d4376"></script>
-<script type="text/javascript">
-    var map = new AMap.Map('mapContainer', {
-       resizeEnable: true
+<body>
+  <button id="btn">下载文件</button>
+  <script>
+    $("#btn").click(function () {
+      axios({
+        url: 'http://localhost:3000/api/test/download',
+        responseType: 'blob',
+        method: 'get',
+      }).then(function (res) {
+        // handle success
+        // navigator.msSaveBlob(res.data, 'xxx.xlsx')
+        console.log(res);
+        let url = window.URL.createObjectURL(res.data);
+        let link = document.createElement('a');
+        link.style.display = 'none';
+        link.href = url;
+        link.setAttribute('download', 'xxx.xlsx');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }).catch(function (error) {
+        // handle error
+        console.log(error);
+      }).finally(function () {
+        // always executed
+      })
     })
-    
-    map.plugin('AMap.Geolocation', function() {
-        var geolocation = new AMap.Geolocation({
-            // 是否使用高精度定位，默认：true
-            enableHighAccuracy: true,
-            // 设置定位超时时间，默认：无穷大
-            timeout: 10000,
-            // 定位按钮的停靠位置的偏移量，默认：Pixel(10, 20)
-            buttonOffset: new AMap.Pixel(10, 20),
-            //  定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-            zoomToAccuracy: true,     
-            //  定位按钮的排放位置,  RB表示右下
-            buttonPosition: 'RB'
-         })
-        // 获取当前位置信息
-        geolocation.getCurrentPosition();
-        // 监听获取位置信息成功的回调函数
-        AMap.event.addListener(geolocation, 'complete', onComplete);
-        // 监听获取位置信息错误的回调函数
-        // AMap.event.addListener(geolocation, 'error', onError);
-    
-        function onComplete (data) {
-            // data是具体的定位信息
-            // addComp = data.addressComponent;
-            // 获取信息中的省市区并放入到输入框中
-            console.log(data)
-            // $("#fsenderAddress").val(addComp.province+"-"+addComp.city+"-"+addComp.district).trigger("change");
-            // $("#fsenderCountyCode").val(addComp.adcode);
-            // let fsenderMsg = {
-            //     'fsenderAddress':$("#fsenderAddress").val(),
-            //     'fsenderCountyCode':$("#fsenderCountyCode").val()
-            // }
-            // window.sessionStorage.setItem('fsendMsg', JSON.stringify(fsenderMsg));
-        }
-        
-        function onError (error) {
-            // 定位出错
-            console.log(error)
-        }
-    })
-</script>
+  </script>
 </body>
 </html>

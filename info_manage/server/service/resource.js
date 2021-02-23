@@ -1,6 +1,7 @@
 const { Resource, Account } = require('../models/Middle')
 const { Op } = require("sequelize")
 const sequelize = require('../utils/seq')
+const util = require('../utils/util')
 const moment = require('moment')
 const fs = require('fs')
 // 删除文件/非空文件夹/空文件夹
@@ -46,7 +47,7 @@ async function add (resource) {
         resource.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
         return await Resource.create(resource)
       }
-      return `${resource.name} 目录已存在`
+      throw new Error(`${resource.name} 目录已存在`)
     } else {
       dir = path.join(__dirname, '../resource/', resource.uid, resource.name)
       // 判断文件/文件夹已存在
@@ -59,7 +60,7 @@ async function add (resource) {
         resource.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
         return await Resource.create(resource)
       }
-      return `${resource.name} 目录已存在`
+      throw new Error(`${resource.name} 目录已存在`)
     }
   } catch (error) {
     throw error
@@ -81,24 +82,43 @@ async function deleteById (id, uid) {
       raw: true
     })
     // 排除没有数据的时候
-    if (!resource) return '资源不存在'
-    // 2. 删除本地文件
-    // const res = fs.unlinkSync(path.join(__dirname, '../resource/123/1.txt'))
-    // console.log(res)
-    rimraf.sync(path.join(__dirname, '../resource/123'))
+    if (!resource) util.sendError(404, '资源Not Found')
+    // 删除本地文件数据
+    // 然后删除数据库数据：包括删除当前这条数据以及所有子数据
+    rimraf.sync(path.join(__dirname, '..', resource.path))
+    await Resource.destroy({
+      where: {
+        pid: resource.id,
+        uid
+      }
+    })
+    await Resource.destroy({
+      where: {
+        id,
+        uid
+      }
+    })
     return resource
   } catch (error) {
     throw error
   }
 }
 
-// 修改
-async function update (account, uid) {
+/**
+ * 更新
+ * 1. 更新本地文件
+ * 2. 更新数据库数据
+ */
+async function update (resource, uid) {
   try {
-    account.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
-    return await Account.update(account, {
+    resource.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
+    const oldPath = path.join(__dirname, '..', resource.path)
+    const newPath = path.join(__dirname, '..', resource.path.substring(0, resource.path.lastIndexOf('\\')), resource.name)
+    resource.path = newPath.replace(path.join(__dirname, '..'), '')
+    fs.renameSync(oldPath, newPath)
+    return await Resource.update(resource, {
       where: {
-        id: account.id,
+        id: resource.id,
         uid
       }
     })
@@ -110,7 +130,7 @@ async function update (account, uid) {
 // 查询
 async function detail (id, uid) {
   try {
-    return await Account.findOne({
+    return await Resource.findOne({
       where: {
         id,
         uid

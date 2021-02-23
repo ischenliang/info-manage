@@ -36,5 +36,10 @@ module.exports = {
   // 判断文件是否存在
   exists: (path) => {
     return fs.existsSync(path.join(__dirname, '../resource/', resource.uid))
+  },
+  sendError (code, msg) {
+    const error = new Error(msg)
+    error.status = code
+    throw error
   }
 }
