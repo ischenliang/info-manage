@@ -7,6 +7,7 @@ const fs = require('fs')
 // 删除文件/非空文件夹/空文件夹
 const rimraf = require('rimraf')
 const path = require('path')
+const fse = require('fs-extra')
 
 
 /**
@@ -244,10 +245,86 @@ async function move (id, filelist, uid) {
 /**
  * 复制到
  * 将指定文件/文件夹复制到指定目录
+ * 1. 复制文件
  * id：移动到指定的文件/文件夹
  * filelist：需要移动的文件/文件夹 []
+ * 2. 数据库新增数据
  */
 async function copy (id, filelist, uid) {
+  // 需要移动的文件列表
+  const list = await Resource.findAll({
+    where: {
+      id: {
+        [Op.in]: filelist
+      },
+      uid
+    },
+    raw: true
+  })
+  const target = await Resource.findOne({
+    where: {
+      id,
+      uid
+    },
+    raw: true
+  })
+  list.forEach(async item => {
+    // item：当前需要复制的元素
+    // id：当前需要移动到的父级id
+    // path：当前需要移动到的父级位置
+    await recursion(item, target.id, target.path)
+    // 新增数据：需要判断嵌套的数据
+  })
+  return list
+}
+/**
+ * @param {*} data 数据
+ * @param {*} pid 上级目录id
+ * @param {*} ppath 上级目录位置
+ * 思路：
+ *  1. 创建第一层数据
+ *  2. 更具查询pid为当前这项id的数据
+ *  3. 判断查询的数据是否有
+ *    有：遍历递归
+ *    无：
+ */
+async function recursion (data, pid, ppath) {
+  // 先复制第一层同时数据库里创建数据
+  const oldResource = JSON.parse(JSON.stringify(data))
+  const newResource = setResource(data, pid, ppath)
+  const list = await Resource.findAll({
+    where: {
+      pid: oldResource.id
+    },
+    raw: true
+  })
+  if (list.length) {
+    list.forEach(async item => {
+      const oldPath = path.join(__dirname, '..', item.path)
+      const newPath = path.join(__dirname, '..', newResource.path, data.name)
+      console.log(oldPath)
+      console.log(newPath)
+      // delete item.id
+      // item.pid = pid
+      // item.path = ppath + '\\' + item.name
+      // item.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
+      // item.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
+      // fse.copySync(oldPath, newPath)
+      // const tmp = await Resource.create(item)
+      // if (item.is_dir === 1) {
+      //   recursion(tmp, tmp.id, newPath.replace(path.join(__dirname, '..'), ''))
+      // }
+    })
+  }
+}
+
+async function setResource (resource, pid, ppath) {
+  delete resource.id
+  resource.pid = pid
+  resource.path = ppath + '\\' + resource.name
+  resource.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
+  resource.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
+  return await Resource.create(resource)
 }
 
 

@@ -1,7 +1,7 @@
 const router = require('koa-router')()
 router.prefix('/api/resource')
 const resConfig = require('../config/app.res')
-const { add, deleteById, update, detail, list, move } = require('../service/resource')
+const { add, deleteById, update, detail, list, move, copy } = require('../service/resource')
 
 // 新增
 router.post('/add', async(ctx, next) => {
@@ -93,7 +93,6 @@ router.post('/move', async(ctx, next) => {
   }
 })
 
-
 // 复制
 router.post('/copy', async(ctx, next) => {
   try {
@@ -101,7 +100,7 @@ router.post('/copy', async(ctx, next) => {
     ctx.body = {
       code: 200,
       msg: resConfig['COPY_SUCCESS'],
-      data: await move(ctx.query, ctx.uid)
+      data: await copy(ctx.query.id, ctx.request.body, ctx.uid)
     }
   } catch (error) {
     ctx.throw(error.status, error)
