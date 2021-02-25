@@ -116,6 +116,8 @@ const list = {
   /**
    * 资源管理
   */
+  // 资源列表 请求类型：get 请求地址：/resource/list
+  GetResources: { method: 'get', url: '/resource/list' },
   // 上传资源 请求类型：post 请求地址：/resource/upload
   UploadResource: { method: 'post', url: '/resource/upload' },
 

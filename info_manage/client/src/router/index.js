@@ -133,6 +133,18 @@ const routes = [
         component: () => import('@/views/account/type/List')
       }
     ]
+  },
+  {
+    path: '/resource',
+    component: () => import('@/views/Layout'),
+    redirect: '/resource/list',
+    children: [
+      {
+        path: 'list',
+        name: 'ResourceList',
+        component: () => import('@/views/resource/List')
+      }
+    ]
   }
 ]
 

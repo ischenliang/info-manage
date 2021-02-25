@@ -187,7 +187,7 @@ async function list (query, uid) {
 }
 
 /**
- * 移动到(只能移动文件)
+ * 移动到
  * 原理：实际上和文件重名是一样的道理，所以就是用文件重名方法实现文件移动
  * id：移动到指定的文件/文件夹
  * filelist：需要移动的文件/文件夹 []
@@ -211,6 +211,8 @@ async function move (id, filelist, uid) {
       },
       raw: true
     })
+    // target.path：newPath
+    // item.path：oldPath
     list.forEach(async item => {
       // 移动
       const oldPath = path.join(__dirname, '..', item.path)
@@ -240,7 +242,6 @@ async function move (id, filelist, uid) {
   }
 }
 
-
 /**
  * 复制到
  * 将指定文件/文件夹复制到指定目录
@@ -250,35 +251,31 @@ async function move (id, filelist, uid) {
  * 2. 数据库新增数据
  */
 async function copy (id, filelist, uid) {
-  try {
-    // 需要移动的文件列表
-    const list = await Resource.findAll({
-      where: {
-        id: {
-          [Op.in]: filelist
-        },
-        uid
+  // 需要移动的文件列表
+  const list = await Resource.findAll({
+    where: {
+      id: {
+        [Op.in]: filelist
       },
-      raw: true
-    })
-    const target = await Resource.findOne({
-      where: {
-        id,
-        uid
-      },
-      raw: true
-    })
-    list.forEach(async item => {
-      // item：当前需要复制的元素
-      // id：当前需要移动到的父级id
-      // path：当前需要移动到的父级位置
-      await recursion(item, target.id, target.path)
-      // 新增数据：需要判断嵌套的数据
-    })
-    return list
-  } catch (error) {
-    throw error
-  }
+      uid
+    },
+    raw: true
+  })
+  const target = await Resource.findOne({
+    where: {
+      id,
+      uid
+    },
+    raw: true
+  })
+  list.forEach(async item => {
+    // item：当前需要复制的元素
+    // id：当前需要移动到的父级id
+    // path：当前需要移动到的父级位置
+    await recursion(item, target.id, target.path)
+    // 新增数据：需要判断嵌套的数据
+  })
+  return list
 }
 /**
  * @param {*} data 数据
@@ -335,57 +332,53 @@ async function setResource (resource, pid, ppath) {
 
 // 文件上传
 async function upload (files, pid, uid) {
-  try {
-    const parent = await Resource.findOne({
+  const parent = await Resource.findOne({
+    where: {
+      id: pid,
+      uid
+    },
+    raw: true
+  })
+  files.forEach(async item => {
+    // 根据名称判断是否已经存在，如果已经存在则是更新
+    const resource = util.upload(parent.path, item)
+    const tmp = await Resource.findOne({
       where: {
-        id: pid,
-        uid
+        pid: pid,
+        path: resource.path,
+        name: resource.name,
+        extension: resource.extension,
+        uid: uid
       },
       raw: true
     })
-    files.forEach(async item => {
-      // 根据名称判断是否已经存在，如果已经存在则是更新
-      const resource = util.upload(parent.path, item)
-      const tmp = await Resource.findOne({
+    if (tmp) {
+      await Resource.update({
+        size: resource.size,
+        mtime: moment().format('YYYY-MM-DD HH:mm:ss')
+      },{
         where: {
-          pid: pid,
-          path: resource.path,
           name: resource.name,
+          path: resource.path,
           extension: resource.extension,
-          uid: uid
-        },
-        raw: true
+          pid: pid,
+          uid
+        }
       })
-      if (tmp) {
-        await Resource.update({
-          size: resource.size,
-          mtime: moment().format('YYYY-MM-DD HH:mm:ss')
-        },{
-          where: {
-            name: resource.name,
-            path: resource.path,
-            extension: resource.extension,
-            pid: pid,
-            uid
-          }
-        })
-      } else {
-        await Resource.create({
-          name: resource.name,
-          size: resource.size,
-          path: resource.path,
-          extension: resource.extension,
-          pid: pid,
-          uid: uid,
-          ctime: moment().format('YYYY-MM-DD HH:mm:ss'),
-          mtime: moment().format('YYYY-MM-DD HH:mm:ss')
-        })
-      }
-    })
-    return '文件上传成功'
-  } catch (error) {
-    throw error
-  }
+    } else {
+      await Resource.create({
+        name: resource.name,
+        size: resource.size,
+        path: resource.path,
+        extension: resource.extension,
+        pid: pid,
+        uid: uid,
+        ctime: moment().format('YYYY-MM-DD HH:mm:ss'),
+        mtime: moment().format('YYYY-MM-DD HH:mm:ss')
+      })
+    }
+  })
+  return '文件上传成功'
 }
 
 

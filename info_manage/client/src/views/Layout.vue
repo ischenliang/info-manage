@@ -83,6 +83,10 @@
               <span>类别管理</span>
             </el-menu-item>
           </el-submenu>
+          <el-menu-item index="/resource/list">
+            <i class="el-icon-s-operation"></i>
+            <span>文件管理</span>
+          </el-menu-item>
         </el-menu>
        </div>
     </div>

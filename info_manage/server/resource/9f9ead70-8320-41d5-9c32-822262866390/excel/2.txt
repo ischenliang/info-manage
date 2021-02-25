@@ -1,0 +1,42 @@
+{
+  "schema": {
+    "type": "object",
+    "required": [],
+    "properties": {
+      "object_1614257472199x0": {
+        "title": "Object",
+        "type": "object",
+        "required": [],
+        "properties": {
+          "string_1614257473935x0": {
+            "title": "输入框",
+            "type": "string",
+            "ui:options": {
+              "placeholder": "请输入"
+            }
+          }
+        },
+        "ui:order": [
+          "string_1614257473935x0"
+        ]
+      },
+      "number_1614257492235x0": {
+        "title": "数字输入框",
+        "type": "number",
+        "multipleOf": 1
+      }
+    },
+    "ui:order": [
+      "object_1614257472199x0",
+      "number_1614257492235x0"
+    ]
+  },
+  "uiSchema": {},
+  "formFooter": {
+    "show": false
+  },
+  "formProps": {
+    "labelWidth": "100px",
+    "labelSuffix": "："
+  }
+}
