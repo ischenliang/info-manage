@@ -11,5 +11,6 @@ module.exports = {
   PERMS_SUCCESS: '授权成功',
   401: '权限不足',
   MOVE_SUCCESS: '移动成功',
-  COPY_SUCCESS: '复制成功'
+  COPY_SUCCESS: '复制成功',
+  UPLOAD_SUCCESS: '上传成功'
 }

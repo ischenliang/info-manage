@@ -1,5 +1,5 @@
-// const fs = require('fs')
-const fs = require('fs-extra')
+const fs = require('fs')
+// const fs = require('fs-extra')
 const path = require('path')
 
 try {
@@ -12,7 +12,10 @@ try {
   // fs-extra
   // 复制文件/目录
   // fs.copySync(path.join(__dirname, '/public/test'), path.join(__dirname, '/resource/aaa'))
-  fs.removeSync(path.join(__dirname, '/public/test'))
+  // fs.removeSync(path.join(__dirname, '/public/test'))
+
+  const info = fs.statSync(path.join(__dirname, '/demo2.txt'))
+  console.log("文件大小：" + info.size)
 } catch (error) {
   console.log(error) 
 }

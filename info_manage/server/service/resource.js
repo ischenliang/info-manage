@@ -291,7 +291,8 @@ async function copy (id, filelist, uid) {
 async function recursion (data, pid, ppath) {
   // 先复制第一层同时数据库里创建数据
   const oldResource = JSON.parse(JSON.stringify(data))
-  const newResource = setResource(data, pid, ppath)
+  const newResource = await setResource(data, pid, ppath)
+  fse.copySync(path.join(__dirname, '..', oldResource.path), path.join(__dirname, '..', newResource.path))
   const list = await Resource.findAll({
     where: {
       pid: oldResource.id
@@ -301,30 +302,47 @@ async function recursion (data, pid, ppath) {
   if (list.length) {
     list.forEach(async item => {
       const oldPath = path.join(__dirname, '..', item.path)
-      const newPath = path.join(__dirname, '..', newResource.path, data.name)
-      console.log(oldPath)
-      console.log(newPath)
-      // delete item.id
-      // item.pid = pid
-      // item.path = ppath + '\\' + item.name
-      // item.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
-      // item.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
-      // fse.copySync(oldPath, newPath)
-      // const tmp = await Resource.create(item)
-      // if (item.is_dir === 1) {
-      //   recursion(tmp, tmp.id, newPath.replace(path.join(__dirname, '..'), ''))
-      // }
+      const newPath = path.join(__dirname, '..', newResource.path, item.name)
+      fse.copySync(oldPath, newPath)
+      // 是目录，重新递归
+      if (item.is_dir === 1) {
+        recursion(item, newResource.id, newResource.path)
+      } else {
+        // 不是目录创建目录
+        await setResource(item, newResource.id, newResource.path)
+      }
     })
   }
 }
-
+// 递归复制
 async function setResource (resource, pid, ppath) {
   delete resource.id
   resource.pid = pid
   resource.path = ppath + '\\' + resource.name
   resource.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
   resource.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
-  return await Resource.create(resource)
+  const newResource =  await Resource.create(resource)
+  return await Resource.findOne({
+    where: {
+      id: newResource.id
+    },
+    raw: true
+  })
+}
+
+// 文件上传
+async function upload (files, pid, uid) {
+  const parent = await Resource.findOne({
+    where: {
+      id: pid,
+      uid
+    },
+    raw: true
+  })
+  files.forEach(item => {
+    console.log(util.upload(parent.path, item))
+  })
+  return 'asdasd'
 }
 
 
@@ -335,5 +353,6 @@ module.exports =  {
   detail,
   list,
   move,
-  copy
+  copy,
+  upload
 }

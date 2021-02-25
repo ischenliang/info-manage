@@ -114,6 +114,12 @@ const list = {
   AddCollect: { method: 'post', url: '/collect/add' },
 
   /**
+   * 资源管理
+  */
+  // 上传资源 请求类型：post 请求地址：/resource/upload
+  UploadResource: { method: 'post', url: '/resource/upload' },
+
+  /**
    * 公共接口
   */
   // 登录 请求类型：post 请求地址：/api/login
@@ -134,12 +140,14 @@ export default (config) => {
       headers: config.headers ? config.headers : {}
     }
 
-    if (method === 'get' || method === 'delete') {
-      requestConfig.params = config.params
-    }
-    if (method === 'post' || method === 'put') {
-      requestConfig.data = config.data
-    }
+    // if (method === 'get' || method === 'delete') {
+    //   requestConfig.params = config.params
+    // }
+    // if (method === 'post' || method === 'put') {
+    //   requestConfig.data = config.data
+    // }
+    requestConfig.params = config.params
+    requestConfig.data = config.data
 
     // 处理paths参数
     if (config.paths) {
