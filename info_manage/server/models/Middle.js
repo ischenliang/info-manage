@@ -11,7 +11,6 @@ const Account = require('./Account')
 const AccountTag = require('./AccountTag')
 const Password = require('./Password')
 const Memory = require('./Memory')
-const Resource = require('./Resource')
 
 // 用户角色表
 User.belongsToMany(Role, { through: 'user_role', as:'ur' })
@@ -54,11 +53,6 @@ Password.belongsTo(User, { foreignKey: 'uid', sourceKey: 'id' })
 User.hasMany(Memory, { foreignKey: 'uid', sourceKey: 'id' })
 Memory.belongsTo(User, { foreignKey: 'uid', sourceKey: 'id' })
 
-// File 与 User 关联
-User.hasMany(Resource, { foreignKey: 'uid', sourceKey: 'id' })
-Resource.belongsTo(User, { foreignKey: 'uid', sourceKey: 'id' })
-Resource.hasMany(Resource, { as: 'children', foreignKey: 'pid', through: null })
-
 
 
 // 向外抛出所有的model：后续使用就只需要引入这一个 model 即可
@@ -75,6 +69,5 @@ module.exports = {
   Account,
   AccountTag,
   Password,
-  Memory,
-  Resource
+  Memory
 }

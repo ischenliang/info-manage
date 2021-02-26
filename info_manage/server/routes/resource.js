@@ -5,14 +5,12 @@ const { add, deleteById, update, detail, list, move, copy, upload } = require('.
 
 // 新增
 router.post('/add', async(ctx, next) => {
-  const resource = ctx.request.body
-  resource.uid = ctx.uid
   try {
     ctx.status = 200
     ctx.body = {
       code: 200,
       msg: resConfig[ctx.request.method],
-      data: await add(resource)
+      data: await add(ctx.query.path, ctx.request.body, ctx.uid)
     }
   } catch (error) {
     error.status = error.status ? error.status : 500
@@ -21,13 +19,13 @@ router.post('/add', async(ctx, next) => {
 })
 
 // 删除
-router.delete('/deleteById/:id', async(ctx, next) => {
+router.delete('/delete', async(ctx, next) => {
   try {
     ctx.status = 200
     ctx.body = {
       code: 200,
       msg: resConfig[ctx.request.method],
-      data: await deleteById(ctx.params.id, ctx.uid)
+      data: await deleteById(ctx.query.path, ctx.uid)
     }
   } catch (error) {
     error.status = error.status ? error.status : 500
@@ -42,7 +40,7 @@ router.put('/update', async(ctx, next) => {
     ctx.body = {
       code: 200,
       msg: resConfig[ctx.request.method],
-      data: await update(ctx.request.body, ctx.uid)
+      data: await update(ctx.query.path, ctx.request.body, ctx.uid)
     }
   } catch (error) {
     error.status = error.status ? error.status : 500
@@ -51,13 +49,13 @@ router.put('/update', async(ctx, next) => {
 })
 
 // 查询
-router.get('/detail/:id', async(ctx, next) => {
+router.get('/info', async(ctx, next) => {
   try {
     ctx.status = 200
     ctx.body = {
       code: 200,
       msg: resConfig[ctx.request.method],
-      data:  await detail(ctx.params.id, ctx.uid)
+      data:  await detail(ctx.query.path, ctx.uid)
     }
   } catch (error) {
     error.status = error.status ? error.status : 500
@@ -72,7 +70,7 @@ router.get('/list', async(ctx, next) => {
     ctx.body = {
       code: 200,
       msg: resConfig[ctx.request.method],
-      data: await list(ctx.query, ctx.uid)
+      data: await list(ctx.query.path, ctx.uid)
     }
   } catch (error) {
     ctx.throw(error.status, error)
@@ -86,7 +84,7 @@ router.post('/move', async(ctx, next) => {
     ctx.body = {
       code: 200,
       msg: resConfig['MOVE_SUCCESS'],
-      data: await move(ctx.query.id, ctx.request.body, ctx.uid)
+      data: await move(ctx.query.path, ctx.request.body, ctx.uid)
     }
   } catch (error) {
     ctx.throw(error.status, error)
@@ -100,7 +98,7 @@ router.post('/copy', async(ctx, next) => {
     ctx.body = {
       code: 200,
       msg: resConfig['COPY_SUCCESS'],
-      data: await copy(ctx.query.id, ctx.request.body, ctx.uid)
+      data: await copy(ctx.query.path, ctx.request.body, ctx.uid)
     }
   } catch (error) {
     ctx.throw(error.status, error)
@@ -114,7 +112,7 @@ router.post('/upload', async(ctx, next) => {
     ctx.body = {
       code: 200,
       msg: resConfig['UPLOAD_SUCCESS'],
-      data: await upload(ctx.request.files.files, ctx.query.pid, ctx.uid)
+      data: await upload(ctx.request.files.files, ctx.query.path, ctx.uid)
     }
   } catch (error) {
     ctx.throw(error.status, error)
