@@ -143,6 +143,11 @@ const routes = [
         path: 'list',
         name: 'ResourceList',
         component: () => import('@/views/resource/List')
+      },
+      {
+        path: 'upload',
+        name: 'ResourceUpload',
+        component: () => import('@/views/resource/Upload')
       }
     ]
   }

@@ -1,16 +1,13 @@
 <template>
   <el-dialog
-    :title="id === '' ? '新增' : '编辑'"
+    :title="name === '' ? '新增' : '编辑'"
     :visible.sync="visible"
     :close-on-click-modal="false"
     :before-close="close"
     :destroy-on-close="true">
     <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="top">
-      <el-form-item label="prop1" prop="prop1">
-        <el-input v-model="form.prop1"></el-input>
-      </el-form-item>
-      <el-form-item label="prop2" prop="prop2">
-        <el-input v-model="form.prop2"></el-input>
+      <el-form-item label="文件夹名称" prop="name">
+        <el-input v-model="form.name" placeholder="请输入文件夹名称"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -24,7 +21,7 @@
 export default {
   props: {
     visible: Boolean,
-    id: {
+    name: {
       type: String,
       default: ''
     }
@@ -32,26 +29,36 @@ export default {
   data () {
     return {
       form: {
-        prop1: '',
-        prop2: ''
+        name: ''
       },
       rules: {
-        prop1: [{ required: true, message: '请输入prop1', trigger: 'blur' }]
+        name: [{ required: true, message: '请输入名称', trigger: 'blur' }]
       },
       loading: false
+    }
+  },
+  computed: {
+    path () {
+      return this.$route.query.path ? this.$route.query.path : '/'
     }
   },
   methods: {
     close () {
       this.$emit('update:visible', false)
-      this.$emit('update:id', '')
+      this.$emit('update:name', '')
     },
     // 新增提交
     addSubmit () {
       this.$http({
-        name: 'AddUser',
+        name: 'AddResource',
         requireAuth: true,
-        data: this.form
+        data: this.form.name,
+        params: {
+          path: this.path
+        },
+        headers: {
+          'Content-Type': 'text/plain'
+        }
       }).then(res => {
         this.$emit('submit')
         this.close()
@@ -65,9 +72,15 @@ export default {
     // 编辑提交
     editSubmit () {
       this.$http({
-        name: 'UpdateUser',
+        name: 'UpdateResource',
         requireAuth: true,
-        data: this.form
+        data: this.form.name,
+        params: {
+          path: this.name
+        },
+        headers: {
+          'Content-Type': 'text/plain'
+        }
       }).then(res => {
         this.$emit('submit')
         this.close()
@@ -83,7 +96,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true
-          if (this.id === '' || this.id === undefined) {
+          if (this.name === '' || this.name === undefined) {
             this.addSubmit()
           } else {
             this.editSubmit()
@@ -95,17 +108,20 @@ export default {
     listGet () {
       // 获取数据....
       this.$http({
-        name: 'GetUser',
+        name: 'GetResource',
         requireAuth: true,
-        paths: [this.id]
+        params: {
+          path: this.name
+        }
       }).then(res => {
+        this.form = res.data
       }).catch(error => {
         this.$notify.error(error)
       })
     }
   },
   created () {
-    if (this.id !== '') {
+    if (this.name !== '') {
       this.listGet()
     } else {
       // 这里面对一些不同的需求做判断，如：

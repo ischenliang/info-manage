@@ -4,6 +4,13 @@
       <el-input v-model="list.filters.search" placeholder="请输入内容" suffix-icon="el-icon-search" @input="listGet"/>
       <c-flex-auto />
       <el-button
+        type="warning"
+        size="medium"
+        v-perms="'system:resource:upload'"
+        @click="$router.push({ path: '/resource/upload', query: { path: list.filters.path } })">
+        上传
+      </el-button>
+      <el-button
         type="primary"
         size="medium"
         v-perms="'system:user:add'"
@@ -19,6 +26,19 @@
       </el-button>
       <cDropdown :show.sync="show" />
     </div>
+    <div class="my-breadcrumb" v-if="breadcrumbs.length > 1">
+      <el-breadcrumb separator=">">
+        <template v-for="(item, index) in breadcrumbs">
+          <el-breadcrumb-item
+            v-if="index < (breadcrumbs.length - 1)"
+            :key="index"
+            :to="{ path: '/resource/list', query: { path: setQueryPath(index) } }">
+            {{ item }}
+          </el-breadcrumb-item>
+          <el-breadcrumb-item v-else :key="index">{{ item }}</el-breadcrumb-item>
+        </template>
+      </el-breadcrumb>
+    </div>
     <div class="table">
       <el-table
         style="width: 100%;"
@@ -26,21 +46,47 @@
         stripe
         ref="table"
         v-loading="list.loading"
-        @sort-change="sortChange"
         @selection-change="selectChange"
-        :data="list.data">
-        <el-table-column type="selection" width="60" align="center"/>
-        <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="60" align="left" sortable="custom">
-          <template v-slot="{ row }">{{ row.name }}</template>
+        @row-click="rowClick"
+        :data="list.data"
+        :row-style="rowStyle">
+        <el-table-column type="selection" label="选择" width="60" align="center"/>
+        <el-table-column label="图标" prop="extension" width="57" align="center">
+          <template v-slot="{ row }">
+            <img :src="setImg(row.extension, row.type)" alt="" style="width: 35px;height: 35px;" />
+          </template>
         </el-table-column>
-        <el-table-column v-if="show[1].value" label="大小" prop="size" min-width="60" align="left" sortable="custom"/>
-        <el-table-column v-if="show[1].value" label="类型" prop="extension" min-width="60" align="left" sortable="custom">
-          <template v-slot="{ row }">{{ row.extension === null ? '文件夹' : row.extension }}</template>
+        <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="200" align="center">
+          <template v-slot="{ row }">
+            <template v-if="row.editable">
+              <div style="display: flex;">
+                <el-input v-model="row.name" size="small" style="flex: 1 1 auto;" />
+                <el-button type="success" icon="el-icon-check" size="mini" plain style="margin-left: 5px;"/>
+                <el-button type="danger" icon="el-icon-close" size="mini" plain style="margin-left: 5px;"/>
+              </div>
+            </template>
+            <template v-else>{{ row.name }}</template>
+          </template>
         </el-table-column>
-        <el-table-column v-if="show[1].value" label="创建时间" prop="ctime" min-width="170" align="left" sortable="custom"/>
-        <el-table-column v-if="show[1].value" label="修改时间" prop="mtime" min-width="170" align="left" sortable="custom"/>
+        <el-table-column v-if="show[1].value" label="路径" prop="path" min-width="150" align="center"/>
+        <el-table-column v-if="show[2].value" label="大小" prop="size" width="80" align="center"/>
+        <el-table-column v-if="show[3].value" label="类型" prop="extension" width="80" align="center">
+          <template v-slot="{ row }">{{ row.extension === '' ? '-' : row.extension }}</template>
+        </el-table-column>
+        <el-table-column v-if="show[4].value" label="创建时间" prop="ctime" width="170" align="center"/>
+        <el-table-column v-if="show[5].value" label="修改时间" prop="mtime" width="170" align="center"/>
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
+            <el-dropdown style="margin-right: 10px;" trigger="click" @command="handleCommand">
+              <el-button type="primary" size="mini">
+                <i class="el-icon-more"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item :command="() => moveFile(row)">移动到</el-dropdown-item>
+                <el-dropdown-item :command="() => copyFile(row)">复制到</el-dropdown-item>
+                <el-dropdown-item :command="() => itemEdit(row)">重命名</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
             <el-button
               type="primary"
               size="mini"
@@ -57,41 +103,37 @@
         </el-table-column>
       </el-table>
     </div>
-    <cPagination
-      :total="list.total"
-      :page.sync="list.page"
-      :size.sync="list.size"
-      @change="listGet" />
-    <com-dialog v-if="visible" :visible.sync="visible" @submit="listGet" :id.sync="id" />
+    <com-dialog v-if="visible" :visible.sync="visible" @submit="listGet" :name.sync="name" />
   </div>
 </template>
 
 <script>
 import ComDialog from './Dialog'
 export default {
+  name: 'ResourceList',
   components: {
     ComDialog
   },
   data () {
     return {
       show: [
-        { label: '角色名称', disabled: true, value: true },
-        { label: '图标', disabled: true, value: true }
+        { label: '名称', disabled: true, value: true },
+        { label: '路径', disabled: false, value: true },
+        { label: '大小', disabled: true, value: true },
+        { label: '类型', disabled: true, value: true },
+        { label: '创建时间', disabled: false, value: true },
+        { label: '修改时间', disabled: false, value: true }
       ],
       list: {
-        page: 1,
-        size: 10,
-        total: 0,
         loading: false,
         filters: {
-          search: '',
-          sort: '',
-          order: ''
+          path: this.$route.query.path === undefined ? '/' : this.$route.query.path
         },
         selected: []
       },
-      id: '',
-      visible: false
+      name: '',
+      visible: false,
+      breadcrumbs: []
     }
   },
   computed: {
@@ -111,48 +153,47 @@ export default {
         name: 'GetResources',
         requireAuth: true,
         params: {
-          page: this.list.page,
-          size: this.list.size,
-          search: this.list.filters.search,
-          sort: this.list.filters.sort,
-          order: this.list.filters.order
+          path: this.list.filters.path
         }
       }).then(res => {
-        this.list.total = res.data.total
-        this.list.data = res.data.data
+        this.list.data = res.data
+        this.list.data.forEach(item => this.$set(item, 'editable', false))
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
         this.list.loading = false
       })
     },
-    // 排序回调
-    sortChange (row) {
-      if (row.order) {
-        this.list.filters.sort = row.prop
-        this.list.filters.order = row.order.replace(/ending$/, '')
-      } else {
-        this.list.filters.sort = ''
-        this.list.filters.order = ''
-      }
-      this.listGet()
-    },
     // 选择回调
     selectChange (rows) {
-      this.list.selected = rows.map(item => item.id)
+      this.list.selected = rows.map(item => item.path)
+    },
+    // 设置表格行样式
+    rowStyle () {
+      return {
+        cursor: 'pointer'
+      }
+    },
+    // 行被点击
+    rowClick (row, column) {
+      if (column.label !== '选择' && column.label !== '操作' && row.type === 'folder') {
+        this.$router.push({ path: '/resource/list', query: { path: row.path } })
+      }
     },
     // 更改
     itemEdit (row) {
-      this.id = row.id
+      this.name = row.path
       this.visible = true
     },
     // 删除
     itemDelete (row) {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.$http({
-          name: 'DeleteMenu',
+          name: 'DeleteResource',
           requireAuth: true,
-          paths: [row.id]
+          params: {
+            path: row.path
+          }
         }).then(res => {
           this.$notify.success(res.msg)
         }).catch(error => {
@@ -167,9 +208,11 @@ export default {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.list.selected.forEach((item, index) => {
           this.$http({
-            name: 'DeleteMenu',
+            name: 'DeleteResource',
             requireAuth: true,
-            paths: [item]
+            params: {
+              path: item
+            }
           }).then(res => {
             if (index === this.list.selected.length - 1) {
               this.$notify.success(res.msg)
@@ -182,10 +225,49 @@ export default {
           })
         })
       }).catch(() => {})
+    },
+    // 设置文件图标
+    setImg (extension, type) {
+      switch (type) {
+        case 'folder':
+          return require('@/assets/icon/folder.png')
+        case 'file':
+          if (extension !== '') {
+            return require(`@/assets/icon/${extension}.png`)
+          } else {
+            return require('@/assets/icon/folder.png')
+          }
+      }
+    },
+    // 设置面包屑的query参数
+    setQueryPath (index) {
+      const tmp = JSON.parse(JSON.stringify(this.breadcrumbs))
+      if (index === 0) {
+        return '/'
+      } else {
+        return '/' + tmp.slice(1).slice(0, index).join('/')
+      }
+    },
+    // dropdown指令调用回调：传入方法，然后直接调用
+    handleCommand (func) {
+      func()
+    },
+    // 移动文件
+    moveFile () {
+      console.log('移动......')
+    },
+    // 移动文件
+    copyFile () {
+      console.log('复制......')
     }
   },
   created () {
     this.listGet()
+    if (this.$route.query.path === undefined || this.$route.query.path === '/') {
+      this.breadcrumbs = ['全部文件']
+    } else {
+      this.breadcrumbs = [...['全部文件'], ...this.$route.query.path.split('/').slice(1)]
+    }
   },
   // 解决：el-table抖动问题
   beforeUpdate () {
@@ -193,10 +275,35 @@ export default {
       // 在数据加载完，重新渲染表格
       this.$refs.table.doLayout()
     })
+  },
+  watch: {
+    $route (val) {
+      if (val.query.path === undefined || val.query.path === '/') {
+        this.list.filters.path = '/'
+        this.breadcrumbs = ['全部文件']
+      } else {
+        this.list.filters.path = val.query.path
+        this.breadcrumbs = [...['全部文件'], ...val.query.path.split('/').slice(1)]
+      }
+      this.listGet()
+    }
   }
 }
 </script>
 
-<style>
-
+<style lang="scss">
+  .my-breadcrumb {
+    min-height: 20px;
+    margin-bottom: 5px;
+    .el-breadcrumb {
+      line-height: 20px !important;
+      font-size: 12px !important;
+      .el-breadcrumb__inner {
+        color: #666 !important;
+      }
+      .el-breadcrumb__inner a,.el-breadcrumb__inner.is-link{
+        color: #09aaff !important;
+      }
+    }
+  }
 </style>

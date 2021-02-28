@@ -118,6 +118,14 @@ const list = {
   */
   // 资源列表 请求类型：get 请求地址：/resource/list
   GetResources: { method: 'get', url: '/resource/list' },
+  // 新增资源 请求类型：post 请求地址：/resource/add
+  AddResource: { method: 'post', url: '/resource/add' },
+  // 更新资源 请求类型：put 请求地址：/resource/update
+  UpdateResource: { method: 'put', url: '/resource/update' },
+  // 更新资源 请求类型：get 请求地址：/resource/info
+  GetResource: { method: 'get', url: '/resource/info' },
+  // 删除资源 请求类型：delete 请求地址：/resource/delete
+  DeleteResource: { method: 'delete', url: '/resource/delete' },
   // 上传资源 请求类型：post 请求地址：/resource/upload
   UploadResource: { method: 'post', url: '/resource/upload' },
 

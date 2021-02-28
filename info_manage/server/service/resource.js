@@ -98,10 +98,10 @@ async function list (parent, uid) {
       const info = fse.statSync(path.join(__dirname, '../resource', uid, parent, item))
       const suffix = item.split('.')
       res.push({
-        name: parent.substring(parent.lastIndexOf('/') + 1),
+        name: item,
         type: info.isDirectory() ? 'folder' : 'file',
         size: info.size,
-        path: path.join('/', parent, item),
+        path: (path.join('/', parent, item)).replace(/\\/g, '/'),
         extension: suffix.length > 1 ? suffix.pop() : '',
         ctime: moment(info.ctimeMs).format('YYYY-MM-DD HH:mm:ss'),
         mtime: moment(info.mtimeMs).format('YYYY-MM-DD HH:mm:ss')
@@ -172,11 +172,27 @@ async function copy (targetPath, filelist, uid) {
 // 文件上传
 async function upload (files, parent, uid) {
   try {
-    const res = []
-    files.forEach(item => {
-      const file = util.upload(path.join('/resource', uid, parent), item)
+    // 需要判断是否上传的多个文件
+    if (files.length) {
+      const res = []
+      files.forEach(item => {
+        const file = util.upload(path.join('/resource', uid, parent), item)
+        const info = fse.statSync(path.join(__dirname, '..', file.path))
+        res.push({
+          name: file.name,
+          type: info.isDirectory() ? 'folder' : 'file',
+          size: info.size,
+          path: path.join('/', parent, file.name),
+          extension: file.extension,
+          ctime: moment(info.ctimeMs).format('YYYY-MM-DD HH:mm:ss'),
+          mtime: moment(info.mtimeMs).format('YYYY-MM-DD HH:mm:ss')
+        })
+      })
+      return res
+    } else {
+      const file = util.upload(path.join('/resource', uid, parent), files)
       const info = fse.statSync(path.join(__dirname, '..', file.path))
-      res.push({
+      return {
         name: file.name,
         type: info.isDirectory() ? 'folder' : 'file',
         size: info.size,
@@ -184,9 +200,8 @@ async function upload (files, parent, uid) {
         extension: file.extension,
         ctime: moment(info.ctimeMs).format('YYYY-MM-DD HH:mm:ss'),
         mtime: moment(info.mtimeMs).format('YYYY-MM-DD HH:mm:ss')
-      })
-    })
-    return res
+      }
+    }
   } catch (error) {
     throw error
   }
