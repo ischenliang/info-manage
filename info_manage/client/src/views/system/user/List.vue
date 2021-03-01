@@ -25,19 +25,19 @@
         @selection-change="selectChange"
         :data="list.data">
         <el-table-column type="selection" width="60" align="center"/>
-        <el-table-column v-if="show[0].value" prop="username" label="用户名称" width="200" align="center" sortable="custom" />
+        <el-table-column v-if="show[0].value" prop="username" label="用户名称" width="120" align="center" sortable="custom" />
         <el-table-column v-if="show[1].value" prop="avatar" label="用户头像" min-width="120" align="center" sortable="custom">
           <template v-slot="{ row }">
             <el-avatar :src="row.avatar" size="medium"></el-avatar>
           </template>
         </el-table-column>
         <el-table-column v-if="show[2].value" prop="nickname" label="用户昵称" min-width="120" align="center" sortable="custom" />
-        <el-table-column v-if="show[3].value" prop="status" label="状态" min-width="120" align="center" sortable="custom">
+        <el-table-column v-if="show[3].value" prop="status" label="状态" min-width="100" align="center" sortable="custom">
           <template v-slot="{ row }">
             <el-switch v-model="row.status" @change="updateRow(row)"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column v-if="show[4].value" prop="ur" label="用户角色" min-width="170" align="center" sortable="custom">
+        <el-table-column v-if="show[4].value" prop="ur" label="用户角色" min-width="120" align="center" sortable="custom">
           <template v-slot="{ row }">
             {{ formatRole(row.ur) }}
           </template>

@@ -1,12 +1,12 @@
 <template>
   <div class="app-page">
-    asdasdas
+    备忘录列表
   </div>
 </template>
 
 <script>
 export default {
-  name: 'AccountType'
+  name: 'MemoryList'
 }
 </script>
 

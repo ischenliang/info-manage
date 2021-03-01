@@ -7,7 +7,7 @@
         type="warning"
         size="medium"
         v-perms="'system:resource:upload'"
-        @click="$router.push({ path: '/resource/upload', query: { path: list.filters.path } })">
+        @click="$router.push({ path: '/info/resource/upload', query: { path: list.filters.path } })">
         上传
       </el-button>
       <el-button
@@ -51,12 +51,12 @@
         :data="list.data"
         :row-style="rowStyle">
         <el-table-column type="selection" label="选择" width="60" align="center"/>
-        <el-table-column label="图标" prop="extension" width="57" align="center">
+        <el-table-column label="类型" prop="extension" width="100" align="center">
           <template v-slot="{ row }">
             <img :src="setImg(row.extension, row.type)" alt="" style="width: 35px;height: 35px;" />
           </template>
         </el-table-column>
-        <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="200" align="center">
+        <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="160" align="center">
           <template v-slot="{ row }">
             <template v-if="row.editable">
               <div style="display: flex;">
@@ -68,14 +68,24 @@
             <template v-else>{{ row.name }}</template>
           </template>
         </el-table-column>
-        <el-table-column v-if="show[1].value" label="路径" prop="path" min-width="150" align="center"/>
+        <el-table-column v-if="show[1].value" label="路径" prop="path" min-width="160" align="center"/>
         <el-table-column v-if="show[2].value" label="大小" prop="size" width="80" align="center"/>
-        <el-table-column v-if="show[3].value" label="类型" prop="extension" width="80" align="center">
+        <el-table-column v-if="show[3].value" label="扩展名" prop="extension" width="80" align="center">
           <template v-slot="{ row }">{{ row.extension === '' ? '-' : row.extension }}</template>
         </el-table-column>
         <el-table-column v-if="show[4].value" label="创建时间" prop="ctime" width="170" align="center"/>
         <el-table-column v-if="show[5].value" label="修改时间" prop="mtime" width="170" align="center"/>
-        <el-table-column label="操作" width="220" align="center">
+        <el-table-column prop="download" label="下载"  width="80" align="center">
+          <template v-slot="{ row }">
+            <el-button
+              type="primary"
+              size="mini"
+              icon="el-icon-download"
+              title="下载"
+              @click="itemDownload(row)" />
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="80" align="center">
           <template v-slot="{ row }">
             <el-dropdown style="margin-right: 10px;" trigger="click" @command="handleCommand">
               <el-button type="primary" size="mini">
@@ -85,20 +95,9 @@
                 <el-dropdown-item :command="() => moveFile(row)">移动到</el-dropdown-item>
                 <el-dropdown-item :command="() => copyFile(row)">复制到</el-dropdown-item>
                 <el-dropdown-item :command="() => itemEdit(row)">重命名</el-dropdown-item>
+                <el-dropdown-item :command="() => itemDelete(row)">删除</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-            <el-button
-              type="primary"
-              size="mini"
-              icon="el-icon-edit"
-              title="编辑"
-              @click="itemEdit(row)" />
-            <el-button
-              type="danger"
-              size="mini"
-              icon="el-icon-delete"
-              title="删除"
-              @click="itemDelete(row)" />
           </template>
         </el-table-column>
       </el-table>
@@ -121,7 +120,7 @@ export default {
         { label: '路径', disabled: false, value: true },
         { label: '大小', disabled: true, value: true },
         { label: '类型', disabled: true, value: true },
-        { label: '创建时间', disabled: false, value: true },
+        { label: '创建时间', disabled: false, value: false },
         { label: '修改时间', disabled: false, value: true }
       ],
       list: {
@@ -176,7 +175,7 @@ export default {
     },
     // 行被点击
     rowClick (row, column) {
-      if (column.label !== '选择' && column.label !== '操作' && row.type === 'folder') {
+      if (column.label !== '选择' && column.label !== '操作' && column.label !== '下载' && row.type === 'folder') {
         this.$router.push({ path: '/resource/list', query: { path: row.path } })
       }
     },
@@ -184,6 +183,11 @@ export default {
     itemEdit (row) {
       this.name = row.path
       this.visible = true
+    },
+    // 下载
+    itemDownload (row) {
+      // 文件夹时:下载成zip包
+      // 文件就直接下载文件
     },
     // 删除
     itemDelete (row) {

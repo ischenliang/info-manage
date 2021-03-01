@@ -8,6 +8,7 @@ import cDragVerify from './cDragVerify.vue'
 import cFlexAuto from './cFlexAuto.vue'
 import cTagsInput from './cTagsInput.vue'
 import cForkMe from './cForkMe.vue'
+import cResources from './cResources.vue'
 
 // 使用开发插件的形式全局使用公用的components
 export default {
@@ -23,7 +24,8 @@ export default {
         cDragVerify,
         cFlexAuto,
         cTagsInput,
-        cForkMe
+        cForkMe,
+        cResources
       }
     })
   }

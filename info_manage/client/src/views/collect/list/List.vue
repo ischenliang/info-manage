@@ -108,7 +108,7 @@
 <script>
 import ComDialog from './Dialog'
 export default {
-  name: 'CollectList',
+  name: 'Collect',
   components: {
     ComDialog
   },

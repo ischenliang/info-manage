@@ -73,20 +73,7 @@ const routes = [
       {
         path: 'api',
         name: 'SystemApi',
-        component: () => import('@/views/Index'),
-        redirect: 'api/list',
-        children: [
-          {
-            path: 'list',
-            name: 'SystemApiList',
-            component: () => import('@/views/system/api/List')
-          },
-          {
-            path: 'type',
-            name: 'SystemApiType',
-            component: () => import('@/views/system/api/Type')
-          }
-        ]
+        component: () => import('@/views/system/api/List')
       },
       {
         path: 'permission/:id',
@@ -108,46 +95,47 @@ const routes = [
       {
         path: 'list',
         name: 'CollectList',
-        component: () => import('@/views/collect/list/List')
-      },
-      {
-        path: 'ctype',
-        name: 'CollectType',
-        component: () => import('@/views/collect/type/List')
+        component: () => import('@/views/collect/List')
       }
     ]
   },
   {
-    path: '/account',
+    path: '/info',
     component: () => import('@/views/Layout'),
-    redirect: '/account/list',
+    redirect: '/info/resource',
     children: [
       {
-        path: 'list',
+        path: 'resource',
+        name: 'Resource',
+        redirect: 'resource/list',
+        component: () => import('@/views/Index'),
+        children: [
+          {
+            path: 'list',
+            name: 'ResourceList',
+            component: () => import('@/views/info/resource/List')
+          },
+          {
+            path: 'upload',
+            name: 'ResourceUpload',
+            component: () => import('@/views/info/resource/Upload')
+          }
+        ]
+      },
+      {
+        path: 'password',
+        name: 'PasswordList',
+        component: () => import('@/views/info/password/List')
+      },
+      {
+        path: 'account',
         name: 'AccountList',
-        component: () => import('@/views/account/list/List')
+        component: () => import('@/views/info/account/List')
       },
       {
-        path: 'type',
-        name: 'AccountType',
-        component: () => import('@/views/account/type/List')
-      }
-    ]
-  },
-  {
-    path: '/resource',
-    component: () => import('@/views/Layout'),
-    redirect: '/resource/list',
-    children: [
-      {
-        path: 'list',
-        name: 'ResourceList',
-        component: () => import('@/views/resource/List')
-      },
-      {
-        path: 'upload',
-        name: 'ResourceUpload',
-        component: () => import('@/views/resource/Upload')
+        path: 'memory',
+        name: 'MemoryList',
+        component: () => import('@/views/info/memory/List')
       }
     ]
   }

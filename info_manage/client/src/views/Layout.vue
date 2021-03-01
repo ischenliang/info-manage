@@ -18,6 +18,36 @@
             <i class="el-icon-s-home"></i>
             <span slot="title">首页</span>
           </el-menu-item>
+          <el-menu-item index="/project">
+            <i class="el-icon-s-grid"></i>
+            <span slot="title">项目管理</span>
+          </el-menu-item>
+          <el-menu-item index="/collect">
+            <i class="el-icon-star-on"></i>
+            <span>收藏管理</span>
+          </el-menu-item>
+          <el-submenu index="/info">
+            <template slot="title">
+              <i class="el-icon-takeaway-box"></i>
+              <span slot="title">信息管理</span>
+            </template>
+            <el-menu-item index="/info/resource/list">
+              <i class="el-icon-folder"></i>
+              <span>文件管理</span>
+            </el-menu-item>
+            <el-menu-item index="/info/password">
+              <i class="el-icon-lock"></i>
+              <span>密码管理</span>
+            </el-menu-item>
+            <el-menu-item index="/info/memory">
+              <i class="el-icon-document"></i>
+              <span>备忘录管理</span>
+            </el-menu-item>
+            <el-menu-item index="/info/account">
+              <i class="el-icon-s-marketing"></i>
+              <span>账目管理</span>
+            </el-menu-item>
+          </el-submenu>
           <el-submenu index="/system">
             <template slot="title">
               <i class="el-icon-setting"></i>
@@ -35,58 +65,11 @@
               <i class="el-icon-user"></i>
               <span>用户管理</span>
             </el-menu-item>
-            <!-- 第三层嵌套 -->
-            <el-submenu index="/system/api">
-              <template slot="title">
-                <i class="el-icon-location"></i>
-                <span slot="title">接口管理</span>
-              </template>
-              <el-menu-item index="/system/api/list">
-                <i class="el-icon-s-operation"></i>
-                <span>接口列表</span>
-              </el-menu-item>
-              <el-menu-item index="/system/api/type">
-                <i class="el-icon-s-operation"></i>
-                <span>类别管理</span>
-              </el-menu-item>
-            </el-submenu>
-          </el-submenu>
-          <el-menu-item index="/project">
-            <i class="el-icon-s-grid"></i>
-            <span slot="title">项目管理</span>
-          </el-menu-item>
-          <el-submenu index="/collect">
-            <template slot="title">
+            <el-menu-item index="/system/api">
               <i class="el-icon-location"></i>
-              <span slot="title">收藏管理</span>
-            </template>
-            <el-menu-item index="/collect/list">
-              <i class="el-icon-s-operation"></i>
-              <span>收藏列表</span>
-            </el-menu-item>
-            <el-menu-item index="/collect/ctype">
-              <i class="el-icon-s-operation"></i>
-              <span>类别管理</span>
+              <span>接口管理</span>
             </el-menu-item>
           </el-submenu>
-          <el-submenu index="/account">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span slot="title">账目管理</span>
-            </template>
-            <el-menu-item index="/account/list">
-              <i class="el-icon-s-operation"></i>
-              <span>账目列表</span>
-            </el-menu-item>
-            <el-menu-item index="/account/type">
-              <i class="el-icon-s-operation"></i>
-              <span>类别管理</span>
-            </el-menu-item>
-          </el-submenu>
-          <el-menu-item index="/resource/list">
-            <i class="el-icon-s-operation"></i>
-            <span>文件管理</span>
-          </el-menu-item>
         </el-menu>
        </div>
     </div>

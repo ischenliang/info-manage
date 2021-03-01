@@ -81,7 +81,7 @@ async function detail (id, uid) {
  *  sort：排序字段 默认ctime
  *  order：排序方式 默认desc
  *  search: 搜索 默认%%
- *  status: 角色状态
+ *  type: 类别
  */
 async function list (query, uid) {
   try {
@@ -94,7 +94,10 @@ async function list (query, uid) {
           { ctime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
           { mtime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } }
         ],
-        uid
+        uid,
+        type: {
+          [Op.like]: query.type ? `%${JSON.parse(query.type) ? 1 : 0}%` : '%%'
+        }
       },
       order: [
         [query.sort ? query.sort : 'order', query.order ? query.order : 'asc']

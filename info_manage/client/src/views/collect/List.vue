@@ -1,10 +1,10 @@
 <template>
   <div class="app-page">
     <el-tabs v-model="active" type="border-card" class="info-tabs">
-      <el-tab-pane label="接口列表" name="first">
-        <api v-if="active === 'first'" />
+      <el-tab-pane label="收藏列表" name="first">
+        <collect v-if="active === 'first'" />
       </el-tab-pane>
-      <el-tab-pane label="接口类别" name="second">
+      <el-tab-pane label="收藏类别" name="second">
         <type v-if="active === 'second'" />
       </el-tab-pane>
     </el-tabs>
@@ -12,12 +12,12 @@
 </template>
 
 <script>
-import Api from './api/List'
+import Collect from './list/List'
 import Type from './type/List'
 export default {
-  name: 'AccountList',
+  name: 'CollectList',
   components: {
-    Api,
+    Collect,
     Type
   },
   data () {

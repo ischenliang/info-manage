@@ -130,6 +130,12 @@ const list = {
   UploadResource: { method: 'post', url: '/resource/upload' },
 
   /**
+   * 账目类别管理
+  */
+  // 账目类别列表 请求类型：get 请求地址：/accountTag/list
+  GetAccountTags: { method: 'get', url: '/accountTag/list' },
+
+  /**
    * 公共接口
   */
   // 登录 请求类型：post 请求地址：/api/login

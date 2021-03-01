@@ -1,12 +1,12 @@
 <template>
-  <div class="app-page">
-    asdasdas
+  <div class="app-page" style="padding: 0;">
+    账目可视化
   </div>
 </template>
 
 <script>
 export default {
-  name: 'AccountList'
+  name: 'AccountChart'
 }
 </script>
 

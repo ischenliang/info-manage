@@ -1,24 +1,29 @@
 <template>
   <div class="app-page">
     <el-tabs v-model="active" type="border-card" class="info-tabs">
-      <el-tab-pane label="接口列表" name="first">
-        <api v-if="active === 'first'" />
+      <el-tab-pane label="账目列表" name="first">
+        <account v-if="active === 'first'" />
       </el-tab-pane>
-      <el-tab-pane label="接口类别" name="second">
+      <el-tab-pane label="账目类别" name="second">
         <type v-if="active === 'second'" />
+      </el-tab-pane>
+      <el-tab-pane label="账目可视化" name="third">
+        <chart v-if="active === 'third'" />
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import Api from './api/List'
-import Type from './type/List'
+import Account from './account/List'
+import Type from './type/Type'
+import Chart from './chart/Chart'
 export default {
   name: 'AccountList',
   components: {
-    Api,
-    Type
+    Account,
+    Type,
+    Chart
   },
   data () {
     return {
@@ -40,8 +45,8 @@ export default {
   .el-tabs__content{
     flex: 1 1 auto;
     .el-tab-pane{
-      width: 100%;
       height: 100%;
+      flex: 1 1 auto !important;
     }
   }
 }

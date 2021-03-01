@@ -35,15 +35,8 @@
         @selection-change="selectChange"
         :data="list.data">
         <el-table-column type="selection" width="60" align="center"/>
-        <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="120" align="center" sortable="custom"/>
-        <el-table-column v-if="show[1].value" label="状态" prop="status" min-width="120" align="center" sortable="custom">
-          <template v-slot="{ row }">
-            <el-switch v-model="row.status" @change="updateRow(row)"></el-switch>
-          </template>
-        </el-table-column>
-        <el-table-column v-if="show[2].value" label="备注" prop="remark" min-width="200" align="center" sortable="custom"/>
-        <el-table-column v-if="show[3].value" label="创建时间" prop="ctime" min-width="170" align="center" sortable="custom"/>
-        <el-table-column v-if="show[4].value" label="更新时间" prop="mtime" min-width="170" align="center" sortable="custom"/>
+        <el-table-column v-if="show[0].value" label="占位1" prop="prop" min-width="60" align="center" sortable="custom"/>
+        <el-table-column v-if="show[1].value" label="占位2" prop="prop" min-width="60" align="center" sortable="custom"/>
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
             <el-button
@@ -67,25 +60,22 @@
       :page.sync="list.page"
       :size.sync="list.size"
       @change="listGet" />
-    <com-dialog v-if="visible" :visible.sync="visible" @submit="listGet" :id.sync="id" />
+    <!-- <com-dialog v-if="visible" :visible.sync="visible" @submit="listGet" :id.sync="id" /> -->
   </div>
 </template>
 
 <script>
-import ComDialog from './Dialog'
+// import ComDialog from './TypeDialog'
 export default {
-  name: 'CollectType',
+  name: 'InfoAccountList',
   components: {
-    ComDialog
+    // ComDialog
   },
   data () {
     return {
       show: [
-        { label: '名称', disabled: true, value: true },
-        { label: '状态', disabled: true, value: true },
-        { label: '备注', disabled: false, value: true },
-        { label: '创建时间', disabled: false, value: true },
-        { label: '更新时间', disabled: false, value: true }
+        { label: '角色名称', disabled: true, value: true },
+        { label: '图标', disabled: true, value: true }
       ],
       list: {
         page: 1,
@@ -118,7 +108,7 @@ export default {
     listGet () {
       this.list.loading = true
       this.$http({
-        name: 'GetCollectTypes',
+        name: 'GetApiTypes',
         requireAuth: true,
         params: {
           page: this.list.page,
@@ -152,19 +142,6 @@ export default {
     selectChange (rows) {
       this.list.selected = rows.map(item => item.id)
     },
-    // 更新
-    updateRow (row) {
-      this.$http({
-        name: 'UpdateCollectType',
-        requireAuth: true,
-        data: row
-      }).then(res => {
-        this.listGet()
-        this.$notify.success(res.msg)
-      }).catch(error => {
-        this.$notify.error(error)
-      })
-    },
     // 更改
     itemEdit (row) {
       this.id = row.id
@@ -174,7 +151,7 @@ export default {
     itemDelete (row) {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.$http({
-          name: 'DeleteCollectType',
+          name: 'DeleteMenu',
           requireAuth: true,
           paths: [row.id]
         }).then(res => {
@@ -191,7 +168,7 @@ export default {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.list.selected.forEach((item, index) => {
           this.$http({
-            name: 'DeleteCollectType',
+            name: 'DeleteMenu',
             requireAuth: true,
             paths: [item]
           }).then(res => {
