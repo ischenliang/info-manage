@@ -1,5 +1,5 @@
 <template>
-  <div class="app-page">
+  <div class="app-page" style="padding: 0;">
     <div class="toolbar">
       <el-input v-model="list.filters.search" placeholder="请输入内容" suffix-icon="el-icon-search" @input="listGet"/>
       <el-select v-model="list.filters.type" clearable filterable @change="listGet">

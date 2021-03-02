@@ -33,12 +33,29 @@ async function add (account_tag) {
  */
 async function deleteById (id, uid) {
   try {
-    return await AccountTag.destroy({
+    // 删除时需要将在他后面的顺序都更改了
+    const tmp = await AccountTag.findOne({
       where: {
         id,
         uid
+      },
+      raw: true
+    })
+    await AccountTag.update({
+      where: {
+        uid,
+        order: {
+          [Op.gt]: tmp.order
+        }
       }
     })
+    return tmp
+    // return await AccountTag.destroy({
+    //   where: {
+    //     id,
+    //     uid
+    //   }
+    // })
   } catch (error) {
     throw error
   }

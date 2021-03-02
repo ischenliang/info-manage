@@ -100,6 +100,18 @@ const routes = [
     ]
   },
   {
+    path: '/project',
+    component: () => import('@/views/Layout'),
+    redirect: '/project/list',
+    children: [
+      {
+        path: 'list',
+        name: 'ProjectList',
+        component: () => import('@/views/project/List')
+      }
+    ]
+  },
+  {
     path: '/info',
     component: () => import('@/views/Layout'),
     redirect: '/info/resource',

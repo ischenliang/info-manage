@@ -121,16 +121,16 @@
       :page.sync="list.page"
       :size.sync="list.size"
       @change="listGet" />
-    <!-- <com-dialog v-if="visible" :visible.sync="visible" @submit="listGet" :id.sync="id" /> -->
+    <com-dialog v-if="visible" :visible.sync="visible" @submit="listGet" :id.sync="id" />
   </div>
 </template>
 
 <script>
-// import ComDialog from './TypeDialog'
+import ComDialog from './Dialog'
 export default {
   name: 'InfoAccountType',
   components: {
-    // ComDialog
+    ComDialog
   },
   data () {
     return {
@@ -211,12 +211,24 @@ export default {
     // 移动
     itemMove (row, option) {
       console.log(option)
+      this.$http({
+        name: 'MoveAccountTag',
+        requireAuth: true,
+        paths: [row.id],
+        params: {
+          option
+        }
+      }).then(res => {
+        this.listGet()
+      }).catch(error => {
+        this.$notify.error(error)
+      })
     },
     // 删除
     itemDelete (row) {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.$http({
-          name: 'DeleteMenu',
+          name: 'DeleteAccountTag',
           requireAuth: true,
           paths: [row.id]
         }).then(res => {
@@ -233,7 +245,7 @@ export default {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.list.selected.forEach((item, index) => {
           this.$http({
-            name: 'DeleteMenu',
+            name: 'DeleteAccountTag',
             requireAuth: true,
             paths: [item]
           }).then(res => {

@@ -134,6 +134,18 @@ const list = {
   */
   // 账目类别列表 请求类型：get 请求地址：/accountTag/list
   GetAccountTags: { method: 'get', url: '/accountTag/list' },
+  // 新增账目类别 请求类型：post 请求地址：/accountTag/add
+  AddAccountTag: { method: 'post', url: '/accountTag/add' },
+  // 账目类别详情 请求类型：get 请求地址：/accountTag/detail
+  GetAccountTag: { method: 'get', url: '/accountTag/detail' },
+  // 更新账目类别 请求类型：put 请求地址：/accountTag/update
+  UpdateccountTag: { method: 'put', url: '/accountTag/update' },
+  // 删除账目类别 请求类型：delete 请求地址：/accountTag/deleteById
+  DeleteAccountTag: { method: 'delete', url: '/accountTag/deleteById' },
+  // 移动账目类别顺序 请求类型：get 请求地址：/accountTag/moveOrder
+  MoveAccountTag: { method: 'get', url: '/accountTag/moveOrder' },
+  // 重置账目类别顺序 请求类型：put 请求地址：/accountTag/resetOrder
+  ResetAccountTag: { method: 'put', url: '/accountTag/resetOrder' },
 
   /**
    * 公共接口
