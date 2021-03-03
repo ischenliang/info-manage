@@ -60,16 +60,16 @@
       :page.sync="list.page"
       :size.sync="list.size"
       @change="listGet" />
-    <!-- <com-dialog v-if="visible" :visible.sync="visible" @submit="listGet" :id.sync="id" /> -->
+    <com-dialog v-if="visible" :visible.sync="visible" @submit="listGet" :id.sync="id" />
   </div>
 </template>
 
 <script>
-// import ComDialog from './TypeDialog'
+import ComDialog from './Dialog'
 export default {
   name: 'InfoAccountList',
   components: {
-    // ComDialog
+    ComDialog
   },
   data () {
     return {

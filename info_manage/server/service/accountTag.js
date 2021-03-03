@@ -1,7 +1,8 @@
 const { AccountTag } = require('../models/Middle')
-const { Op } = require("sequelize")
+const { Op, Sequelize } = require("sequelize")
 const sequelize = require('../utils/seq')
 const moment = require('moment')
+const seq = require('../utils/seq')
 
 /**
  * 新增
@@ -41,21 +42,18 @@ async function deleteById (id, uid) {
       },
       raw: true
     })
-    await AccountTag.update({
+    // 更新，条件当前用户的数据，并且order大于当前这一项的order
+    await seq.query(`
+      update account_tag as a
+      set a.order = a.order - 1
+      where a.uid='${uid}'
+      and a.order > ${tmp.order}`)
+    return await AccountTag.destroy({
       where: {
-        uid,
-        order: {
-          [Op.gt]: tmp.order
-        }
+        id,
+        uid
       }
     })
-    return tmp
-    // return await AccountTag.destroy({
-    //   where: {
-    //     id,
-    //     uid
-    //   }
-    // })
   } catch (error) {
     throw error
   }
