@@ -252,3 +252,6 @@ Vue.prototype.$alert = {
     })
   }
 }
+Vue.prototype.$prompt = function (message = '提示信息', title = '提示', options) {
+  return MessageBox.prompt(message, title, options)
+}

@@ -24,6 +24,20 @@
         :disabled="deleteDisabled">
         删除
       </el-button>
+      <el-button
+        type="success"
+        size="medium"
+        @click="moveVisible = true"
+        :disabled="moveDisabled">
+        移动
+      </el-button>
+      <el-button
+        type="success"
+        size="medium"
+        @click="copyVisible = true"
+        :disabled="copyDisabled">
+        复制
+      </el-button>
       <cDropdown :show.sync="show" />
     </div>
     <div class="my-breadcrumb" v-if="breadcrumbs.length > 1">
@@ -32,7 +46,7 @@
           <el-breadcrumb-item
             v-if="index < (breadcrumbs.length - 1)"
             :key="index"
-            :to="{ path: '/resource/list', query: { path: setQueryPath(index) } }">
+            :to="{ path: '/info/resource/list', query: { path: setQueryPath(index) } }">
             {{ item }}
           </el-breadcrumb-item>
           <el-breadcrumb-item v-else :key="index">{{ item }}</el-breadcrumb-item>
@@ -103,6 +117,8 @@
       </el-table>
     </div>
     <com-dialog v-if="visible" :visible.sync="visible" @submit="listGet" :name.sync="name" />
+    <c-resources v-if="moveVisible" :visible.sync="moveVisible" :title="'移动到'" @submit="moveSubmit" />
+    <c-resources v-if="copyVisible" :visible.sync="copyVisible" :title="'复制到'" @submit="copySubmit" />
   </div>
 </template>
 
@@ -131,17 +147,22 @@ export default {
         selected: []
       },
       name: '',
+      breadcrumbs: [],
       visible: false,
-      breadcrumbs: []
+      moveVisible: false,
+      copyVisible: false,
+      current: []
     }
   },
   computed: {
     deleteDisabled: function () {
-      if (this.list.selected.length > 0) {
-        return false
-      } else {
-        return true
-      }
+      return !this.list.selected.length
+    },
+    moveDisabled () {
+      return !this.current.length
+    },
+    copyDisabled () {
+      return !this.current.length
     }
   },
   methods: {
@@ -166,6 +187,7 @@ export default {
     // 选择回调
     selectChange (rows) {
       this.list.selected = rows.map(item => item.path)
+      this.current = rows.map(item => item.path)
     },
     // 设置表格行样式
     rowStyle () {
@@ -176,13 +198,20 @@ export default {
     // 行被点击
     rowClick (row, column) {
       if (column.label !== '选择' && column.label !== '操作' && column.label !== '下载' && row.type === 'folder') {
-        this.$router.push({ path: '/resource/list', query: { path: row.path } })
+        this.$router.push({ path: '/info/resource/list', query: { path: row.path } })
       }
     },
     // 更改
     itemEdit (row) {
-      this.name = row.path
-      this.visible = true
+      // this.name = row.path
+      // this.visible = true
+      this.$prompt('文件名称', '文件重命名', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputValue: row.name
+      }).then(({ value }) => {
+        console.log(value)
+      }).catch(() => {})
     },
     // 下载
     itemDownload (row) {
@@ -237,7 +266,11 @@ export default {
           return require('@/assets/icon/folder.png')
         case 'file':
           if (extension !== '') {
-            return require(`@/assets/icon/${extension}.png`)
+            try {
+              return require(`@/assets/icon/${extension}.png`)
+            } catch (error) {
+              return require('@/assets/icon/file.png')
+            }
           } else {
             return require('@/assets/icon/folder.png')
           }
@@ -257,12 +290,46 @@ export default {
       func()
     },
     // 移动文件
-    moveFile () {
-      console.log('移动......')
+    moveFile (row) {
+      this.moveVisible = true
+      this.current = [row.path]
     },
-    // 移动文件
-    copyFile () {
-      console.log('复制......')
+    // 移动回调
+    moveSubmit (path) {
+      this.$http({
+        name: 'MoveResource',
+        requireAuth: true,
+        params: {
+          path: path
+        },
+        data: this.current
+      }).then(res => {
+        this.$notify.success(res.msg)
+        this.listGet()
+      }).catch(error => {
+        this.$notify.error(error)
+      })
+    },
+    // 复制文件
+    copyFile (row) {
+      this.copyVisible = true
+      this.current = [row.path]
+    },
+    // 复制回调
+    copySubmit (path) {
+      this.$http({
+        name: 'CopyResource',
+        requireAuth: true,
+        params: {
+          path: path
+        },
+        data: this.current
+      }).then(res => {
+        this.$notify.success(res.msg)
+        this.listGet()
+      }).catch(error => {
+        this.$notify.error(error)
+      })
     }
   },
   created () {

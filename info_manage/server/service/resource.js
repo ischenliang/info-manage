@@ -176,32 +176,12 @@ async function upload (files, parent, uid) {
     if (files.length) {
       const res = []
       files.forEach(item => {
-        const file = util.upload(path.join('/resource', uid, parent), item)
-        const info = fse.statSync(path.join(__dirname, '..', file.path))
-        res.push({
-          name: file.name,
-          type: info.isDirectory() ? 'folder' : 'file',
-          size: info.size,
-          path: path.join('/', parent, file.name),
-          extension: file.extension,
-          ctime: moment(info.ctimeMs).format('YYYY-MM-DD HH:mm:ss'),
-          mtime: moment(info.mtimeMs).format('YYYY-MM-DD HH:mm:ss')
-        })
+        util.upload(path.join('/resource', uid, parent), item)
       })
-      return res
     } else {
-      const file = util.upload(path.join('/resource', uid, parent), files)
-      const info = fse.statSync(path.join(__dirname, '..', file.path))
-      return {
-        name: file.name,
-        type: info.isDirectory() ? 'folder' : 'file',
-        size: info.size,
-        path: path.join('/', parent, file.name),
-        extension: file.extension,
-        ctime: moment(info.ctimeMs).format('YYYY-MM-DD HH:mm:ss'),
-        mtime: moment(info.mtimeMs).format('YYYY-MM-DD HH:mm:ss')
-      }
+      util.upload(path.join('/resource', uid, parent), files)
     }
+    return '上传成功'
   } catch (error) {
     throw error
   }

@@ -128,6 +128,10 @@ const list = {
   DeleteResource: { method: 'delete', url: '/resource/delete' },
   // 上传资源 请求类型：post 请求地址：/resource/upload
   UploadResource: { method: 'post', url: '/resource/upload' },
+  // 移动资源 请求类型：post 请求地址：/resource/move
+  MoveResource: { method: 'post', url: '/resource/move' },
+  // 复制资源 请求类型：post 请求地址：/resource/copy
+  CopyResource: { method: 'post', url: '/resource/copy' },
 
   /**
    * 账目类别管理

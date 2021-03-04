@@ -24,6 +24,7 @@
         plain
         icon="el-icon-folder-add"
         @click="addFolder"
+        :loading="loading"
         style="float: left;">新建文件夹</el-button>
       <el-button type="primary" size="medium" @click="submit">确定</el-button>
       <el-button type="danger" size="medium" @click="close">取消</el-button>
@@ -53,8 +54,10 @@ export default {
         isLeaf: 'leaf'
       },
       current: null,
+      currentNode: null,
       rootNode: null,
-      rootResolve: null
+      rootResolve: null,
+      loading: false
     }
   },
   methods: {
@@ -92,33 +95,49 @@ export default {
       }
     },
     // 节点被点击
-    nodeClick (data) {
+    nodeClick (data, node) {
       this.current = data
+      this.currentNode = node
     },
     // 新增文件夹
     addFolder () {
-      console.log(this.rootNode.childNodes)
-      console.log(this.rootResolve)
-      // this.$http({
-      //   name: 'AddResource',
-      //   requireAuth: true,
-      //   data: this.form.name,
-      //   params: {
-      //     path: this.path
-      //   },
-      //   headers: {
-      //     'Content-Type': 'text/plain'
-      //   }
-      // }).then(res => {
-      //   this.$notify.success(res.msg)
-      // }).catch(error => {
-      //   this.$notify.error(error)
-      // }).finally(() => {
-      //   this.loading = false
-      // })
+      this.$prompt('文件夹名称', '新建文件夹', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputValue: '新建文件夹'
+        // inputPattern: /^[\u4e00-\u9fa5]{0,}$/, // 中文校验
+        // inputErrorMessage: '请输入中文'
+      }).then(({ value }) => {
+        this.loading = true
+        this.$http({
+          name: 'AddResource',
+          requireAuth: true,
+          data: value,
+          params: {
+            path: this.current === null ? '/' : this.current.path
+          },
+          headers: {
+            'Content-Type': 'text/plain'
+          }
+        }).then(async res => {
+          if (this.current === null) {
+            // 设置loaded为false；模拟一次节点展开事件，加载重命名后的新数据
+            this.currentNode.loaded = false
+            this.currentNode.expand()
+          } else {
+            // this.rootResolve(await this.listGet())
+          }
+        }).catch(error => {
+          this.$notify.error(error)
+        }).finally(() => {
+          this.loading = false
+        })
+      }).catch(() => {})
     },
     // 提交
     submit () {
+      this.$emit('submit', this.current.path)
+      this.close()
     }
   },
   created () {
