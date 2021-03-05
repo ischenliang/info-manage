@@ -33,8 +33,8 @@
             <el-switch v-model="row.status" @change="updateRow(row)"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column v-if="show[4].value" prop="ctime" label="创建时间" width="170" align="center" sortable="custom" />
-        <el-table-column v-if="show[5].value" prop="mtime" label="修改时间" width="170" align="center" sortable="custom" />
+        <el-table-column v-if="show[4].value" prop="ctime" label="创建时间" width="160" align="center" sortable="custom" />
+        <el-table-column v-if="show[5].value" prop="mtime" label="修改时间" width="160" align="center" sortable="custom" />
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
             <el-button type="success" size="mini" icon="el-icon-lock" title="授权" @click="itemAuth(row)" />

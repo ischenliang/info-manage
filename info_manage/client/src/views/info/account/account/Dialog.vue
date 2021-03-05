@@ -6,26 +6,36 @@
     :before-close="close"
     :destroy-on-close="true">
     <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="top">
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="form.name"></el-input>
+      <el-form-item label="金额" prop="money">
+        <el-input v-model="form.money"></el-input>
       </el-form-item>
-      <el-form-item label="图标" prop="icon">
-        <el-input v-model="form.icon"  v-popover:popover_icon></el-input>
-        <el-popover
-          ref="popover_icon"
-          placement="bottom-start"
-          width="560"
-          trigger="focus"
-          :offset="0"
-          v-model="popover.icon">
-          <c-popicon :icon.sync="form.icon" :visible.sync="popover.icon" />
-        </el-popover>
+      <div class="form-inline">
+        <el-form-item label="支付方式" prop="pay">
+          <el-select v-model="form.pay" style="width: 100%;" filterable>
+            <el-option label="支付宝" value="支付宝" />
+            <el-option label="微信" value="微信" />
+            <el-option label="银行卡" value="银行卡" />
+            <el-option label="现金" value="现金" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="付款时间" prop="ptime">
+          <el-date-picker v-model="form.ptime" type="datetime" placeholder="选择付款时间" style="width: 100%;" format="yyyy-MM-DD HH:mm:ss" @change="timeFormat" />
+        </el-form-item>
+      </div>
+      <el-form-item label="标签" prop="tag">
+        <el-input v-model="form.tag"></el-input>
+      </el-form-item>
+      <el-form-item label="位置" prop="location">
+        <el-input v-model="form.location"></el-input>
       </el-form-item>
       <el-form-item label="类别" prop="type">
         <el-select v-model="form.type" style="width: 100%;">
-          <el-option label="支出" :value="0" />
-          <el-option label="收入" :value="1" />
+          <el-option label="支出" value="支出" />
+          <el-option label="收入" value="收入" />
         </el-select>
+      </el-form-item>
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model="form.remark" type="textarea"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -47,9 +57,12 @@ export default {
   data () {
     return {
       form: {
-        name: '',
-        icon: '',
-        type: 0
+        money: '',
+        pay: '',
+        type: 0,
+        ptime: '',
+        tag: '',
+        location: ''
       },
       rules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
@@ -123,9 +136,13 @@ export default {
       }).catch(error => {
         this.$notify.error(error)
       })
+    },
+    timeFormat (val) {
+      this.form.ptime = this.$moment(val).format('yyyy-MM-DD HH:mm:ss')
     }
   },
   created () {
+    console.log(require('@/assets/json/pca-code.json'))
     if (this.id !== '') {
       this.listGet()
     } else {

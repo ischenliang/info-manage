@@ -14,8 +14,10 @@ const seq = require('../utils/seq')
 async function add (account_tag) {
   // 获取当前用户已创建的accountTag中的order最大值
   const res = await AccountTag.max('order', { where: { uid: account_tag.uid } })
-  if (res !== NaN) {
+  if (!isNaN(res)) {
     account_tag.order = res + 1
+  } else {
+    account_tag.order = 1
   }
   account_tag.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
   account_tag.mtime = moment().format('YYYY-MM-DD HH:mm:ss')

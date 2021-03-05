@@ -105,8 +105,6 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         inputValue: '新建文件夹'
-        // inputPattern: /^[\u4e00-\u9fa5]{0,}$/, // 中文校验
-        // inputErrorMessage: '请输入中文'
       }).then(({ value }) => {
         this.loading = true
         this.$http({
@@ -120,12 +118,13 @@ export default {
             'Content-Type': 'text/plain'
           }
         }).then(async res => {
-          if (this.current === null) {
+          if (this.current !== null) {
             // 设置loaded为false；模拟一次节点展开事件，加载重命名后的新数据
             this.currentNode.loaded = false
             this.currentNode.expand()
           } else {
-            // this.rootResolve(await this.listGet())
+            this.rootNode.childNodes = []
+            this.loadNode(this.rootNode, this.rootResolve)
           }
         }).catch(error => {
           this.$notify.error(error)

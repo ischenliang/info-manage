@@ -35,8 +35,27 @@
         @selection-change="selectChange"
         :data="list.data">
         <el-table-column type="selection" width="60" align="center"/>
-        <el-table-column v-if="show[0].value" label="占位1" prop="prop" min-width="60" align="center" sortable="custom"/>
-        <el-table-column v-if="show[1].value" label="占位2" prop="prop" min-width="60" align="center" sortable="custom"/>
+        <el-table-column v-if="show[0].value" label="金额(元)" prop="money" min-width="100" align="center" sortable="custom"/>
+        <el-table-column v-if="show[1].value" label="支付方式" prop="pay" min-width="110" align="center" sortable="custom"/>
+        <el-table-column v-if="show[2].value" label="付款时间" prop="ptime" min-width="160" align="center" sortable="custom"/>
+        <el-table-column v-if="show[3].value" label="标签" prop="tag" min-width="100" align="center" sortable="custom">
+          <template v-slot="{ row }">
+            <i :class="row.tag.icon"></i>
+            <span>{{ row.tag.name }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="show[4].value" label="位置" prop="location" min-width="150" align="center" sortable="custom">
+          <template v-slot="{ row }">{{ row.location.city.join('') }}</template>
+        </el-table-column>
+        <el-table-column v-if="show[5].value" label="类别" prop="type" min-width="80" align="center" sortable="custom">
+          <template v-slot="{ row }">
+            <el-tag v-if="row.type === 0" type="success">收入</el-tag>
+            <el-tag v-else type="danger">支出</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="show[6].value" label="备注" prop="remark" min-width="150" align="center" sortable="custom" />
+        <el-table-column v-if="show[7].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom" />
+        <el-table-column v-if="show[8].value" label="修改时间" prop="mtime" min-width="160" align="center" sortable="custom" />
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
             <el-button
@@ -74,8 +93,15 @@ export default {
   data () {
     return {
       show: [
-        { label: '角色名称', disabled: true, value: true },
-        { label: '图标', disabled: true, value: true }
+        { label: '金额(元)', disabled: true, value: true },
+        { label: '支付方式', disabled: true, value: true },
+        { label: '付款时间', disabled: true, value: true },
+        { label: '标签', disabled: false, value: true },
+        { label: '位置', disabled: false, value: true },
+        { label: '类别', disabled: false, value: true },
+        { label: '备注', disabled: false, value: false },
+        { label: '创建时间', disabled: false, value: false },
+        { label: '修改时间', disabled: false, value: false }
       ],
       list: {
         page: 1,
@@ -108,7 +134,7 @@ export default {
     listGet () {
       this.list.loading = true
       this.$http({
-        name: 'GetApiTypes',
+        name: 'GetAccounts',
         requireAuth: true,
         params: {
           page: this.list.page,

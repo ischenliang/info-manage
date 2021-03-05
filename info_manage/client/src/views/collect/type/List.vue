@@ -42,8 +42,8 @@
           </template>
         </el-table-column>
         <el-table-column v-if="show[2].value" label="备注" prop="remark" min-width="200" align="center" sortable="custom"/>
-        <el-table-column v-if="show[3].value" label="创建时间" prop="ctime" min-width="170" align="center" sortable="custom"/>
-        <el-table-column v-if="show[4].value" label="更新时间" prop="mtime" min-width="170" align="center" sortable="custom"/>
+        <el-table-column v-if="show[3].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom"/>
+        <el-table-column v-if="show[4].value" label="更新时间" prop="mtime" min-width="160" align="center" sortable="custom"/>
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
             <el-button

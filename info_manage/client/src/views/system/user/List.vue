@@ -42,7 +42,7 @@
             {{ formatRole(row.ur) }}
           </template>
         </el-table-column>
-        <el-table-column v-if="show[5].value" prop="ctime" label="创建时间" min-width="170" align="center" sortable="custom" />
+        <el-table-column v-if="show[5].value" prop="ctime" label="创建时间" min-width="160" align="center" sortable="custom" />
         <el-table-column v-if="show[6].value" prop="remark" label="备注" min-width="200" align="center" sortable="custom" />
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">

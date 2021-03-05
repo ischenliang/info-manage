@@ -87,8 +87,8 @@
         <el-table-column v-if="show[3].value" label="扩展名" prop="extension" width="80" align="center">
           <template v-slot="{ row }">{{ row.extension === '' ? '-' : row.extension }}</template>
         </el-table-column>
-        <el-table-column v-if="show[4].value" label="创建时间" prop="ctime" width="170" align="center"/>
-        <el-table-column v-if="show[5].value" label="修改时间" prop="mtime" width="170" align="center"/>
+        <el-table-column v-if="show[4].value" label="创建时间" prop="ctime" width="160" align="center"/>
+        <el-table-column v-if="show[5].value" label="修改时间" prop="mtime" width="160" align="center"/>
         <el-table-column prop="download" label="下载"  width="80" align="center">
           <template v-slot="{ row }">
             <el-button

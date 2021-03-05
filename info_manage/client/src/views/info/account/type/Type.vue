@@ -54,14 +54,14 @@
           </template>
         </el-table-column>
         <el-table-column
-          v-if="show[1].value"
+          v-if="show[2].value"
           label="顺序"
           prop="order"
           min-width="80"
           align="center"
           sortable="custom" />
         <el-table-column
-          v-if="show[1].value"
+          v-if="show[3].value"
           label="类型"
           prop="order"
           min-width="80"
@@ -73,17 +73,17 @@
           </template>
         </el-table-column>
         <el-table-column
-          v-if="show[1].value"
+          v-if="show[4].value"
           label="创建时间"
           prop="ctime"
-          min-width="170"
+          min-width="160"
           align="center"
           sortable="custom" />
         <el-table-column
-          v-if="show[1].value"
+          v-if="show[5].value"
           label="修改时间"
           prop="mtime"
-          min-width="170"
+          min-width="160"
           align="center"
           sortable="custom" />
         <el-table-column label="操作" width="230" align="center">
@@ -135,8 +135,12 @@ export default {
   data () {
     return {
       show: [
-        { label: '角色名称', disabled: true, value: true },
-        { label: '图标', disabled: true, value: true }
+        { label: '名称', disabled: true, value: true },
+        { label: '图标', disabled: true, value: true },
+        { label: '顺序', disabled: true, value: true },
+        { label: '类型', disabled: true, value: true },
+        { label: '创建时间', disabled: false, value: true },
+        { label: '修改时间', disabled: false, value: true }
       ],
       list: {
         page: 1,

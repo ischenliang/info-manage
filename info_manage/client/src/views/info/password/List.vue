@@ -35,8 +35,36 @@
         @selection-change="selectChange"
         :data="list.data">
         <el-table-column type="selection" width="60" align="center"/>
-        <el-table-column v-if="show[0].value" label="占位1" prop="prop" min-width="60" align="center" sortable="custom"/>
-        <el-table-column v-if="show[1].value" label="占位2" prop="prop" min-width="60" align="center" sortable="custom"/>
+        <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="100" align="center" sortable="custom"/>
+        <el-table-column v-if="show[1].value" label="网址" prop="url" min-width="150" align="center" sortable="custom"/>
+        <el-table-column v-if="show[2].value" label="类别" prop="type" min-width="80" align="center" sortable="custom">
+          <template v-slot="{ row }">
+            <el-tag type="success">{{ row.type === 1 ? '网站' : '软件' }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="show[3].value" label="账号" prop="account" min-width="150" align="center" sortable="custom">
+          <template v-slot="{ row }">
+            {{row.account}}
+            <c-toggle-copy
+              :copy.sync="row.accountCopy"
+              :text="row.account"
+              :key="row.id + 'copy' + '-account'" />
+          </template>
+        </el-table-column>
+        <el-table-column v-if="show[4].value" label="密码" prop="password" min-width="200" align="center" sortable="custom">
+          <template v-slot="{ row }">
+            {{ row.password | passwordFormat(row.look) }}
+            <c-toggle-look :look.sync="row.look" :key="row.id + 'look'" />
+            <c-toggle-copy
+              :copy.sync="row.passwordCopy"
+              :text="row.password"
+              style="margin-left: 5px;"
+              :key="row.id + 'copy'" />
+          </template>
+        </el-table-column>
+        <el-table-column v-if="show[5].value" label="备注" prop="remark" min-width="150" align="center" sortable="custom" />
+        <el-table-column v-if="show[6].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom" />
+        <el-table-column v-if="show[7].value" label="修改时间" prop="mtime" min-width="160" align="center" sortable="custom" />
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
             <el-button
@@ -74,8 +102,14 @@ export default {
   data () {
     return {
       show: [
-        { label: '角色名称', disabled: true, value: true },
-        { label: '图标', disabled: true, value: true }
+        { label: '名称', disabled: true, value: true },
+        { label: '网址', disabled: true, value: true },
+        { label: '类别', disabled: true, value: true },
+        { label: '账号', disabled: true, value: true },
+        { label: '密码', disabled: false, value: true },
+        { label: '备注', disabled: false, value: false },
+        { label: '创建时间', disabled: false, value: false },
+        { label: '修改时间', disabled: false, value: true }
       ],
       list: {
         page: 1,
@@ -103,12 +137,20 @@ export default {
       }
     }
   },
+  filters: {
+    passwordFormat (password, look) {
+      if (look) {
+        return password
+      }
+      return password.replace(/[A-Za-z0-9-_@#*\\$!^&*\\(\\)+=;'"\\.,`~]/g, '*')
+    }
+  },
   methods: {
     // 获取数据
     listGet () {
       this.list.loading = true
       this.$http({
-        name: 'GetApiTypes',
+        name: 'GetPasswords',
         requireAuth: true,
         params: {
           page: this.list.page,
@@ -121,6 +163,11 @@ export default {
       }).then(res => {
         this.list.total = res.data.total
         this.list.data = res.data.data
+        this.list.data.forEach(item => {
+          this.$set(item, 'look', false)
+          this.$set(item, 'accountCopy', false)
+          this.$set(item, 'passwordCopy', false)
+        })
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {

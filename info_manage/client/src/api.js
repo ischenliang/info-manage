@@ -152,6 +152,18 @@ const list = {
   ResetAccountTag: { method: 'put', url: '/accountTag/resetOrder' },
 
   /**
+   * 账目管理
+  */
+  // 账目列表 请求类型：get 请求地址：/account/list
+  GetAccounts: { method: 'get', url: '/account/list' },
+
+  /**
+   * 密码管理
+  */
+  // 密码列表 请求类型：get 请求地址：/password/list
+  GetPasswords: { method: 'get', url: '/password/list' },
+
+  /**
    * 公共接口
   */
   // 登录 请求类型：post 请求地址：/api/login

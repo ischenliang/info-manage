@@ -11,11 +11,13 @@ import '@/assets/css/global.scss'
 import http from './api'
 import VueParticles from 'vue-particles'
 import Cookies from 'js-cookie'
+import moment from 'moment'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = http
 Vue.prototype.$fields = config
 Vue.prototype.$Cookies = Cookies
+Vue.prototype.$moment = moment
 Vue.use(VueParticles)
 
 // 全局指令：按钮级权限指令控制

@@ -73,8 +73,8 @@
         </el-table-column>
         <el-table-column v-if="show[5].value" label="标签" prop="tag" min-width="100" align="center" sortable="custom"/>
         <el-table-column v-if="show[6].value" label="备注" prop="remark" min-width="200" align="center" sortable="custom"/>
-        <el-table-column v-if="show[7].value" label="创建时间" prop="ctime" min-width="170" align="center" sortable="custom"/>
-        <el-table-column v-if="show[8].value" label="更新时间" prop="mtime" min-width="170" align="center" sortable="custom"/>
+        <el-table-column v-if="show[7].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom"/>
+        <el-table-column v-if="show[8].value" label="更新时间" prop="mtime" min-width="160" align="center" sortable="custom"/>
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
             <el-button

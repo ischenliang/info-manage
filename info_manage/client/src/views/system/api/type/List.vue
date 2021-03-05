@@ -31,8 +31,8 @@
             <el-switch v-model="row.status" @change="updateRow(row)"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column v-if="show[3].value" label="创建时间" prop="ctime" min-width="170" align="center" sortable="custom"/>
-        <el-table-column v-if="show[4].value" label="修改时间" prop="mtime" min-width="170" align="center" sortable="custom"/>
+        <el-table-column v-if="show[3].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom"/>
+        <el-table-column v-if="show[4].value" label="修改时间" prop="mtime" min-width="160" align="center" sortable="custom"/>
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
             <el-button type="primary" size="mini" icon="el-icon-edit" title="编辑" @click="itemEdit(row)" />

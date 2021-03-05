@@ -9,6 +9,8 @@ import cFlexAuto from './cFlexAuto.vue'
 import cTagsInput from './cTagsInput.vue'
 import cForkMe from './cForkMe.vue'
 import cResources from './cResources.vue'
+import cToggleLook from './cToggleLook.vue'
+import cToggleCopy from './cToggleCopy.vue'
 
 // 使用开发插件的形式全局使用公用的components
 export default {
@@ -25,7 +27,9 @@ export default {
         cFlexAuto,
         cTagsInput,
         cForkMe,
-        cResources
+        cResources,
+        cToggleLook,
+        cToggleCopy
       }
     })
   }
