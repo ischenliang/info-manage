@@ -35,13 +35,13 @@
         <el-table-column type="selection" width="60" align="center"/>
         <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="100" align="center" sortable="custom"/>
         <el-table-column v-if="show[1].value" label="标签" prop="tag" min-width="150" align="center" sortable="custom"/>
-        <el-table-column v-if="show[1].value" label="内容" prop="content" min-width="150" align="center" sortable="custom">
+        <el-table-column v-if="show[2].value" label="内容" prop="content" min-width="200" align="center" sortable="custom">
           <template v-slot="{ row }">
             <div class="over-ellipsis" style="max-height: 42px;line-clamp: 2;">{{ row.content }}</div>
           </template>
         </el-table-column>
-        <el-table-column v-if="show[1].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom" />
-        <el-table-column v-if="show[1].value" label="修改时间" prop="mtime" min-width="160" align="center" sortable="custom" />
+        <el-table-column v-if="show[3].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom" />
+        <el-table-column v-if="show[4].value" label="修改时间" prop="mtime" min-width="160" align="center" sortable="custom" />
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
             <el-button
@@ -70,16 +70,15 @@
 </template>
 
 <script>
-// import ComDialog from './TypeDialog'
 export default {
-  components: {
-    // ComDialog
-  },
   data () {
     return {
       show: [
-        { label: '角色名称', disabled: true, value: true },
-        { label: '图标', disabled: true, value: true }
+        { label: '名称', disabled: true, value: true },
+        { label: '标签', disabled: true, value: true },
+        { label: '内容', disabled: true, value: true },
+        { label: '创建时间', disabled: false, value: false },
+        { label: '修改时间', disabled: false, value: true }
       ],
       list: {
         page: 1,
