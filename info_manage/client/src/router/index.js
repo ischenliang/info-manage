@@ -159,6 +159,11 @@ const routes = [
             path: 'add',
             name: 'MemoryAdd',
             component: () => import('@/views/info/memory/Dialog')
+          },
+          {
+            path: 'edit/:id',
+            name: 'MemoryEdit',
+            component: () => import('@/views/info/memory/Dialog')
           }
         ]
       }

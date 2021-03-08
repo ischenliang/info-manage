@@ -1,17 +1,34 @@
 <template>
   <div class="app-page">
     <div class="toolbar">
+      <el-page-header
+        @back="$router.push({ path: '/info/memory/list' })"
+        :content="id === '' ? '新增备忘录' : '更新备忘录'" />
       <c-flex-auto />
-      <el-button type="success" size="medium">保存</el-button>
+      <el-button
+        type="success"
+        size="medium"
+        @click="submit"
+        :loading="loading">保存</el-button>
       <el-button type="danger" size="medium">取消</el-button>
     </div>
     <div class="table" style="padding: 10px 20px;">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="top">
-        <el-form-item label="名称" prop="name">
-          <el-input v-model="form.name"/>
-        </el-form-item>
-        <el-form-item label="标签" prop="tag">
-          <el-input v-model="form.tag"/>
+        <div class="form-inline">
+          <el-form-item label="名称" prop="name">
+            <el-input v-model="form.name"/>
+          </el-form-item>
+          <el-form-item label="重要性" prop="priority">
+            <el-rate v-model="form.priority" show-text />
+          </el-form-item>
+        </div>
+        <el-form-item label="标签" prop="tag" class="form-item-tags">
+          <c-tags-input
+            v-model="form.tag"
+            :repeat="false"
+            :type="'warning'"
+            :theme="'dark'"
+            :placeholder="'按enter键创建'" />
         </el-form-item>
         <el-form-item label="内容" prop="content">
           <quill-editor
@@ -33,7 +50,8 @@ export default {
     return {
       form: {
         name: '',
-        tag: '',
+        tag: [],
+        priority: 0,
         content: ''
       },
       editorOption: {
@@ -58,14 +76,76 @@ export default {
         // }
       },
       rules: {
-        name: [{ required: true, message: '请输入名称', trigger: 'blur' }]
-      }
+        name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        tag: [{ required: true, message: '请输入标签', trigger: 'blur' }],
+        priority: [{ required: true, message: '请选择重要性', trigger: 'blur' }]
+      },
+      loading: false
+    }
+  },
+  computed: {
+    id () {
+      return this.$route.params.id ? this.$route.params.id : ''
     }
   },
   methods: {
     onEditorChange ({ editor, html, text }) {
-      console.log(html)
       this.content = html
+      console.log(text)
+    },
+    // 新增提交
+    addSubmit () {
+      const data = JSON.parse(JSON.stringify(this.form))
+      data.tag = data.tag.join(',')
+      this.$http({
+        name: 'AddMemory',
+        requireAuth: true,
+        data: data
+      }).then(res => {
+        this.$notify.success(res.msg)
+        this.$router.push({ path: '/info/memory/list' })
+      }).catch(error => {
+        this.$notify.error(error)
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    // 编辑提交
+    editSubmit () {
+      const tag = this.tags.find(item => {
+        return item.id === this.form.tag
+      })
+      const account = JSON.parse(JSON.stringify(this.form))
+      account.tag = {
+        name: tag.name,
+        icon: tag.icon
+      }
+      this.$http({
+        name: 'UpdateAccount',
+        requireAuth: true,
+        data: account
+      }).then(res => {
+        this.$emit('submit')
+        this.close()
+        this.$notify.success(res.msg)
+      }).catch(error => {
+        this.$notify.error(error)
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    // 提交
+    submit () {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.loading = true
+          if (this.id === '' || this.id === undefined) {
+            this.addSubmit()
+          } else {
+            this.editSubmit()
+          }
+        }
+      })
     }
   }
 }
@@ -79,5 +159,10 @@ export default {
     right: 4px;
     top: 0;
     position: absolute !important;
+  }
+  .form-item-tags {
+    .el-form-item__content {
+      line-height: 0 !important;
+    }
   }
 </style>

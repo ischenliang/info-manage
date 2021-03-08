@@ -6,8 +6,10 @@ const seq = require('../utils/seq')
  * 账目表
  * id: 主键 UUID
  * name：名称 String
- * content：内容 Text
+ * text：内容 TEXT
+ * content：内容 Text(html)
  * tag：标签 String，使用`,`分隔
+ * priority：重要性 float
  * uid：用户 UUID
  * ctime：api创建时间 String
  * mtime：api更新时间 String
@@ -25,10 +27,21 @@ const Memory = seq.define('memory', {
     allowNull: false,
     comment: '备忘录名称'
   },
-  content: {
+  text: {
     type: DataTypes.TEXT,
     allowNull: false,
     comment: '备忘录内容'
+  },
+  content: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+    comment: '备忘录内容(html)'
+  },
+  priority: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+    defaultValue: 0,
+    comment: '重要性'
   },
   tag: {
     type: DataTypes.STRING,

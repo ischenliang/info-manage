@@ -62,7 +62,8 @@ import {
   Radio,
   Link,
   Popover,
-  Cascader
+  Cascader,
+  Rate
 } from 'element-ui'
 
 Vue.use(Button)
@@ -125,6 +126,7 @@ Vue.use(Radio)
 Vue.use(Link)
 Vue.use(Popover)
 Vue.use(Cascader)
+Vue.use(Rate)
 // 将Message挂在到Vue原型链上,使得每个Vue的实例都能访问
 Vue.prototype.$message = {
   success: function (message = '成功的提示消息', duration = 1000, showClose = false) {

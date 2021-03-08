@@ -184,6 +184,8 @@ const list = {
   */
   // 备忘录列表 请求类型：get 请求地址：/memory/list
   GetMemories: { method: 'get', url: '/memory/list' },
+  // 新增备忘录 请求类型：post 请求地址：/memory/add
+  AddMemory: { method: 'post', url: '/memory/add' },
 
   /**
    * 公共接口
