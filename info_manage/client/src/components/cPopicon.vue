@@ -22,53 +22,16 @@
 export default {
   props: {
     icon: String,
-    visible: Boolean
+    visible: Boolean,
+    type: {
+      type: String,
+      default: 'menu'
+    }
   },
   data () {
     return {
       name: '',
-      icons: [
-        { name: '定位信息', value: 'el-icon-location-information' },
-        { name: '删除', value: 'el-icon-delete' },
-        { name: '首页', value: 'el-icon-s-home' },
-        { name: '日期', value: 'el-icon-date' },
-        { name: '权限', value: 'el-icon-lock' },
-        { name: '文件夹(关闭)', value: 'el-icon-folder' },
-        { name: '文件夹(打开)', value: 'el-icon-folder-opened' },
-        { name: '设置', value: 'el-icon-setting' },
-        { name: '图片(实心)', value: 'el-icon-picture' },
-        { name: '图片(空心)', value: 'el-icon-picture-outline' },
-        { name: '上传1', value: 'el-icon-upload' },
-        { name: '上传2', value: 'el-icon-upload2' },
-        { name: '下载', value: 'el-icon-download' },
-        { name: '相机(空心)', value: 'el-icon-camera' },
-        { name: '相机(实心)', value: 'el-icon-camera-solid' },
-        { name: '通知(实心)', value: 'el-icon-message-solid' },
-        { name: '通知(空心)', value: 'el-icon-bell' },
-        { name: '合作', value: 'el-icon-s-cooperation' },
-        { name: '显示器', value: 'el-icon-s-platform' },
-        { name: '折叠', value: 'el-icon-s-fold' },
-        { name: '展开', value: 'el-icon-s-unfold' },
-        { name: '销售', value: 'el-icon-s-marketing' },
-        { name: '评论', value: 'el-icon-s-comment' },
-        { name: '柱状图', value: 'el-icon-s-data' },
-        { name: '网格', value: 'el-icon-s-grid' },
-        { name: '菜单', value: 'el-icon-menu' },
-        { name: '分享', value: 'el-icon-share' },
-        { name: '三角_左', value: 'el-icon-caret-left' },
-        { name: '三角_右', value: 'el-icon-caret-right' },
-        { name: '三角_下', value: 'el-icon-caret-bottom' },
-        { name: '三角_上', value: 'el-icon-caret-top' },
-        { name: '打印', value: 'el-icon-printer' },
-        { name: '备忘录', value: 'el-icon-notebook-1' },
-        { name: '用户(空心)', value: 'el-icon-user' },
-        { name: '用户(实心)', value: 'el-icon-user-solid' },
-        { name: '标签', value: 'el-icon-collection-tag' },
-        { name: '收藏', value: 'el-icon-collection' },
-        { name: '排序', value: 'el-icon-s-order' },
-        { name: '事项', value: 'el-icon-tickets' },
-        { name: '接口', value: 'el-icon-s-operation' }
-      ],
+      icons: [],
       filters: []
     }
   },
@@ -87,6 +50,55 @@ export default {
     }
   },
   created () {
+    switch (this.type) {
+      case 'menu':
+        this.icons = [
+          { name: '定位信息', value: 'el-icon-location-information' },
+          { name: '删除', value: 'el-icon-delete' },
+          { name: '首页', value: 'el-icon-s-home' },
+          { name: '日期', value: 'el-icon-date' },
+          { name: '权限', value: 'el-icon-lock' },
+          { name: '文件夹(关闭)', value: 'el-icon-folder' },
+          { name: '文件夹(打开)', value: 'el-icon-folder-opened' },
+          { name: '设置', value: 'el-icon-setting' },
+          { name: '图片(实心)', value: 'el-icon-picture' },
+          { name: '图片(空心)', value: 'el-icon-picture-outline' },
+          { name: '上传1', value: 'el-icon-upload' },
+          { name: '上传2', value: 'el-icon-upload2' },
+          { name: '下载', value: 'el-icon-download' },
+          { name: '相机(空心)', value: 'el-icon-camera' },
+          { name: '相机(实心)', value: 'el-icon-camera-solid' },
+          { name: '通知(实心)', value: 'el-icon-message-solid' },
+          { name: '通知(空心)', value: 'el-icon-bell' },
+          { name: '合作', value: 'el-icon-s-cooperation' },
+          { name: '显示器', value: 'el-icon-s-platform' },
+          { name: '折叠', value: 'el-icon-s-fold' },
+          { name: '展开', value: 'el-icon-s-unfold' },
+          { name: '销售', value: 'el-icon-s-marketing' },
+          { name: '评论', value: 'el-icon-s-comment' },
+          { name: '柱状图', value: 'el-icon-s-data' },
+          { name: '网格', value: 'el-icon-s-grid' },
+          { name: '菜单', value: 'el-icon-menu' },
+          { name: '分享', value: 'el-icon-share' },
+          { name: '三角_左', value: 'el-icon-caret-left' },
+          { name: '三角_右', value: 'el-icon-caret-right' },
+          { name: '三角_下', value: 'el-icon-caret-bottom' },
+          { name: '三角_上', value: 'el-icon-caret-top' },
+          { name: '打印', value: 'el-icon-printer' },
+          { name: '备忘录', value: 'el-icon-notebook-1' },
+          { name: '用户(空心)', value: 'el-icon-user' },
+          { name: '用户(实心)', value: 'el-icon-user-solid' },
+          { name: '标签', value: 'el-icon-collection-tag' },
+          { name: '收藏', value: 'el-icon-collection' },
+          { name: '排序', value: 'el-icon-s-order' },
+          { name: '事项', value: 'el-icon-tickets' },
+          { name: '接口', value: 'el-icon-s-operation' }
+        ]
+        break
+      case 'account':
+        this.icons = []
+        break
+    }
     this.filters = this.icons
   }
 }

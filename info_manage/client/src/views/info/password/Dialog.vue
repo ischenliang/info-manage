@@ -6,11 +6,26 @@
     :before-close="close"
     :destroy-on-close="true">
     <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="top">
-      <el-form-item label="prop1" prop="prop1">
-        <el-input v-model="form.prop1"></el-input>
+      <el-form-item label="名称" prop="name">
+        <el-input v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="prop2" prop="prop2">
-        <el-input v-model="form.prop2"></el-input>
+      <el-form-item label="类别" prop="type">
+        <el-select v-model="form.type" style="width: 100%">
+          <el-option label="网站" :value="1" />
+          <el-option label="软件" :value="0" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="网址" prop="url" v-if="form.type === 1">
+        <el-input v-model="form.url"></el-input>
+      </el-form-item>
+      <el-form-item label="账号" prop="account">
+        <el-input v-model="form.account" placeholder="请输入账号，如：QQ号"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input v-model="form.password" show-password placeholder="请输入密码，长度尽量不要超过16位"></el-input>
+      </el-form-item>
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model="form.remark" type="textarea" placeholder="请输入备注：如支付密码"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -32,11 +47,18 @@ export default {
   data () {
     return {
       form: {
-        prop1: '',
-        prop2: ''
+        name: '',
+        type: 1, // 1:网站 0:软件
+        url: '',
+        account: '',
+        password: '',
+        remark: ''
       },
       rules: {
-        prop1: [{ required: true, message: '请输入prop1', trigger: 'blur' }]
+        name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        url: [{ required: true, message: '请输入url', trigger: 'blur' }],
+        account: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
       },
       loading: false
     }
@@ -49,7 +71,7 @@ export default {
     // 新增提交
     addSubmit () {
       this.$http({
-        name: 'AddUser',
+        name: 'AddPassword',
         requireAuth: true,
         data: this.form
       }).then(res => {
@@ -65,7 +87,7 @@ export default {
     // 编辑提交
     editSubmit () {
       this.$http({
-        name: 'UpdateUser',
+        name: 'UpdatePassword',
         requireAuth: true,
         data: this.form
       }).then(res => {
@@ -95,10 +117,11 @@ export default {
     listGet () {
       // 获取数据....
       this.$http({
-        name: 'GetUser',
+        name: 'GetPassword',
         requireAuth: true,
         paths: [this.id]
       }).then(res => {
+        this.form = res.data
       }).catch(error => {
         this.$notify.error(error)
       })
@@ -108,9 +131,6 @@ export default {
     if (this.id !== '') {
       this.listGet()
     } else {
-      // 这里面对一些不同的需求做判断，如：
-      // 新增时：密码不填 修改时：密码不必填
-      // this.$set(this.rules, 'password', [{ required: true, message: '请输入用户密码', trigger: 'blur' }])
     }
   }
 }

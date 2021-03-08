@@ -156,12 +156,34 @@ const list = {
   */
   // 账目列表 请求类型：get 请求地址：/account/list
   GetAccounts: { method: 'get', url: '/account/list' },
+  // 新增账目 请求类型：post 请求地址：/account/add
+  AddAccount: { method: 'post', url: '/account/add' },
+  // 账目详情 请求类型：get 请求地址：/account/detail
+  GetAccount: { method: 'get', url: '/account/detail' },
+  // 更新账目 请求类型：put 请求地址：/account/update
+  UpdateAccount: { method: 'put', url: '/account/update' },
+  // 删除账目 请求类型：delete 请求地址：/account/deleteById
+  DeleteAccount: { method: 'delete', url: '/account/deleteById' },
 
   /**
    * 密码管理
   */
   // 密码列表 请求类型：get 请求地址：/password/list
   GetPasswords: { method: 'get', url: '/password/list' },
+  // 新增密码 请求类型：post 请求地址：/password/add
+  AddPassword: { method: 'post', url: '/password/add' },
+  // 更新密码 请求类型：put 请求地址：/password/update
+  UpdatePassword: { method: 'put', url: '/password/update' },
+  // 密码详情 请求类型：get 请求地址：/password/detail
+  GetPassword: { method: 'get', url: '/password/detail' },
+  // 删除密码 请求类型：delete 请求地址：/password/deleteById
+  DeletePassword: { method: 'delete', url: '/password/deleteById' },
+
+  /**
+   * 备忘录管理
+  */
+  // 备忘录列表 请求类型：get 请求地址：/memory/list
+  GetMemories: { method: 'get', url: '/memory/list' },
 
   /**
    * 公共接口

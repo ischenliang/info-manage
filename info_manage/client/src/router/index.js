@@ -146,8 +146,21 @@ const routes = [
       },
       {
         path: 'memory',
-        name: 'MemoryList',
-        component: () => import('@/views/info/memory/List')
+        name: 'MemoryIndex',
+        redirect: 'memory/list',
+        component: () => import('@/views/Index'),
+        children: [
+          {
+            path: 'list',
+            name: 'MemoryList',
+            component: () => import('@/views/info/memory/List')
+          },
+          {
+            path: 'add',
+            name: 'MemoryAdd',
+            component: () => import('@/views/info/memory/Dialog')
+          }
+        ]
       }
     ]
   }

@@ -14,7 +14,7 @@
         type="primary"
         size="medium"
         v-perms="'system:user:add'"
-        @click="visible = true">
+        @click="itemAdd">
         新增
       </el-button>
       <el-button
@@ -116,19 +116,14 @@
         </el-table-column>
       </el-table>
     </div>
-    <com-dialog v-if="visible" :visible.sync="visible" @submit="listGet" :name.sync="name" />
     <c-resources v-if="moveVisible" :visible.sync="moveVisible" :title="'移动到'" @submit="moveSubmit" />
     <c-resources v-if="copyVisible" :visible.sync="copyVisible" :title="'复制到'" @submit="copySubmit" />
   </div>
 </template>
 
 <script>
-import ComDialog from './Dialog'
 export default {
   name: 'ResourceList',
-  components: {
-    ComDialog
-  },
   data () {
     return {
       show: [
@@ -201,22 +196,63 @@ export default {
         this.$router.push({ path: '/info/resource/list', query: { path: row.path } })
       }
     },
+    // 新增
+    itemAdd () {
+      const _this = this
+      this.$prompt('文件夹名称', '新建文件夹', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputValue: '新建文件夹'
+      }).then(({ value }) => {
+        _this.$http({
+          name: 'AddResource',
+          requireAuth: true,
+          data: value,
+          params: {
+            path: _this.$route.query.path ? _this.$route.query.path : '/'
+          },
+          headers: {
+            'Content-Type': 'text/plain'
+          }
+        }).then(res => {
+          _this.listGet()
+          _this.$notify.success(res.msg)
+        }).catch(error => {
+          _this.close().$notify.error(error)
+        })
+      }).catch(() => {})
+    },
     // 更改
     itemEdit (row) {
-      // this.name = row.path
-      // this.visible = true
+      const _this = this
       this.$prompt('文件名称', '文件重命名', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         inputValue: row.name
       }).then(({ value }) => {
-        console.log(value)
+        _this.$http({
+          name: 'UpdateResource',
+          requireAuth: true,
+          data: value,
+          params: {
+            path: row.path
+          },
+          headers: {
+            'Content-Type': 'text/plain'
+          }
+        }).then(res => {
+          _this.listGet()
+          _this.$notify.success(res.msg)
+        }).catch(error => {
+          _this.close().$notify.error(error)
+        })
       }).catch(() => {})
     },
     // 下载
     itemDownload (row) {
       // 文件夹时:下载成zip包
       // 文件就直接下载文件
+      console.log(row)
     },
     // 删除
     itemDelete (row) {
