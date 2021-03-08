@@ -39,7 +39,7 @@
               <i class="el-icon-lock"></i>
               <span>密码管理</span>
             </el-menu-item>
-            <el-menu-item index="/info/memory">
+            <el-menu-item index="/info/memory/list">
               <i class="el-icon-document"></i>
               <span>备忘录管理</span>
             </el-menu-item>

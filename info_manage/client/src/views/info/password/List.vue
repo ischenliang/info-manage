@@ -2,10 +2,6 @@
   <div class="app-page">
     <div class="toolbar">
       <el-input v-model="list.filters.search" placeholder="请输入内容" suffix-icon="el-icon-search" @input="listGet"/>
-      <el-select v-model="list.filters.status" clearable filterable @change="listGet">
-        <el-option label="启用" :value="true" />
-        <el-option label="禁用" :value="false" />
-      </el-select>
       <c-flex-auto />
       <el-button
         type="primary"
@@ -36,7 +32,9 @@
         :data="list.data">
         <el-table-column type="selection" width="60" align="center"/>
         <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="100" align="center" sortable="custom"/>
-        <el-table-column v-if="show[1].value" label="网址" prop="url" min-width="150" align="center" sortable="custom"/>
+        <el-table-column v-if="show[1].value" label="网址" prop="url" min-width="150" align="center" sortable="custom">
+          <template v-slot="{ row }">{{ row.url ? row.url : '-' }}</template>
+        </el-table-column>
         <el-table-column v-if="show[2].value" label="类别" prop="type" min-width="80" align="center" sortable="custom">
           <template v-slot="{ row }">
             <el-tag type="success">{{ row.type === 1 ? '网站' : '软件' }}</el-tag>
@@ -51,7 +49,7 @@
               :key="row.id + 'copy' + '-account'" />
           </template>
         </el-table-column>
-        <el-table-column v-if="show[4].value" label="密码" prop="password" min-width="200" align="center" sortable="custom">
+        <el-table-column v-if="show[4].value" label="密码" prop="password" min-width="220" align="center" sortable="custom">
           <template v-slot="{ row }">
             {{ row.password | passwordFormat(row.look) }}
             <c-toggle-look :look.sync="row.look" :key="row.id + 'look'" />
@@ -65,7 +63,7 @@
         <el-table-column v-if="show[5].value" label="备注" prop="remark" min-width="150" align="center" sortable="custom" />
         <el-table-column v-if="show[6].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom" />
         <el-table-column v-if="show[7].value" label="修改时间" prop="mtime" min-width="160" align="center" sortable="custom" />
-        <el-table-column label="操作" width="220" align="center">
+        <el-table-column label="操作" width="160" align="center">
           <template v-slot="{ row }">
             <el-button
               type="primary"
@@ -118,7 +116,6 @@ export default {
         loading: false,
         filters: {
           search: '',
-          status: '',
           sort: '',
           order: ''
         },
@@ -157,8 +154,7 @@ export default {
           size: this.list.size,
           search: this.list.filters.search,
           sort: this.list.filters.sort,
-          order: this.list.filters.order,
-          status: this.list.filters.status
+          order: this.list.filters.order
         }
       }).then(res => {
         this.list.total = res.data.total
@@ -198,7 +194,7 @@ export default {
     itemDelete (row) {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.$http({
-          name: 'DeleteMenu',
+          name: 'DeletePassword',
           requireAuth: true,
           paths: [row.id]
         }).then(res => {
@@ -215,7 +211,7 @@ export default {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.list.selected.forEach((item, index) => {
           this.$http({
-            name: 'DeleteMenu',
+            name: 'DeletePassword',
             requireAuth: true,
             paths: [item]
           }).then(res => {

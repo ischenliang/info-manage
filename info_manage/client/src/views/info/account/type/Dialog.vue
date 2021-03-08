@@ -18,7 +18,7 @@
           trigger="focus"
           :offset="0"
           v-model="popover.icon">
-          <c-popicon :icon.sync="form.icon" :visible.sync="popover.icon" />
+          <c-popicon :icon.sync="form.icon" :visible.sync="popover.icon" type="account" />
         </el-popover>
       </el-form-item>
       <el-form-item label="类别" prop="type">

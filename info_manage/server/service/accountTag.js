@@ -13,7 +13,7 @@ const seq = require('../utils/seq')
 */
 async function add (account_tag) {
   // 获取当前用户已创建的accountTag中的order最大值
-  const res = await AccountTag.max('order', { where: { uid: account_tag.uid } })
+  const res = await AccountTag.max('order', { where: { uid: account_tag.uid, type: account_tag.type } })
   if (!isNaN(res)) {
     account_tag.order = res + 1
   } else {
@@ -49,7 +49,8 @@ async function deleteById (id, uid) {
       update account_tag as a
       set a.order = a.order - 1
       where a.uid='${uid}'
-      and a.order > ${tmp.order}`)
+      and a.order > ${tmp.order}
+      and a.type=${tmp.type}`)
     return await AccountTag.destroy({
       where: {
         id,
@@ -145,18 +146,19 @@ async function list (query, uid) {
 async function move (id, uid, option) {
   try {
     const current = await AccountTag.findOne({ where: {id, uid}, raw: true })
-    const max = await AccountTag.max('order', { where: { uid } })
+    const max = await AccountTag.max('order', { where: { uid, type: current.type } })
     switch(option) {
       case 'up':
         if (current.order > 1) {
-          const prev = await AccountTag.findOne({ where: {order: current.order - 1, uid}, raw: true })
+          const prev = await AccountTag.findOne({ where: {order: current.order - 1, uid, type: current.type}, raw: true })
           // 更新当前项
           await AccountTag.update({
             order: prev.order
           }, {
             where: {
               id,
-              uid
+              uid,
+              type: current.type
             }
           })
           // 更新前一项
@@ -165,21 +167,23 @@ async function move (id, uid, option) {
           }, {
             where: {
               id: prev.id,
-              uid
+              uid,
+              type: current.type
             }
           })
         }
         break
       case 'down':
         if (current.order < max) {
-          const next = await AccountTag.findOne({ where: {order: current.order + 1, uid}, raw: true })
+          const next = await AccountTag.findOne({ where: {order: current.order + 1, uid, type: current.type}, raw: true })
           // 更新当前项
           await AccountTag.update({
             order: next.order
           }, {
             where: {
               id,
-              uid
+              uid,
+              type: current.type
             }
           })
           // 更新后一项
@@ -188,7 +192,8 @@ async function move (id, uid, option) {
           }, {
             where: {
               id: next.id,
-              uid
+              uid,
+              type: current.type
             }
           })
         }

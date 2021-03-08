@@ -68,7 +68,7 @@
           align="center"
           sortable="custom">
           <template v-slot="{ row }">
-            <el-tag v-if="row.type === 0" type="success">收入</el-tag>
+            <el-tag v-if="row.type === 1" type="success">收入</el-tag>
             <el-tag v-else type="danger">支出</el-tag>
           </template>
         </el-table-column>

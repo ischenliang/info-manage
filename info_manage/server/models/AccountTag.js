@@ -61,7 +61,13 @@ const AccountTag = seq.define('account_tag', {
     comment: '更新时间'
   }
 }, {
-  freezeTableName: true
+  freezeTableName: true,
+  indexes: [
+    {
+      unique: true,
+      fields: ['name']
+    }
+  ]
 })
 
 module.exports = AccountTag

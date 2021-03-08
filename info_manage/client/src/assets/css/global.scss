@@ -40,6 +40,9 @@
     font-weight: bold;
   }
 }
+.el-cascader-menu {
+  height: 300px;
+}
 // 参考：https://www.cnblogs.com/chenfanga/p/11600251.html
 input:-webkit-autofill {
   box-shadow: 0 0 0px 1000px white inset !important;
@@ -47,3 +50,12 @@ input:-webkit-autofill {
 input:-webkit-autofill:focus {
   box-shadow: 0 0 0px 1000px white inset !important;
 } 
+
+
+.over-ellipsis{
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}

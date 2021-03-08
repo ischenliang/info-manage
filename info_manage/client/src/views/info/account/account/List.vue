@@ -2,10 +2,12 @@
   <div class="app-page" style="padding: 0;">
     <div class="toolbar">
       <el-input v-model="list.filters.search" placeholder="请输入内容" suffix-icon="el-icon-search" @input="listGet"/>
-      <el-select v-model="list.filters.status" clearable filterable @change="listGet">
-        <el-option label="启用" :value="true" />
-        <el-option label="禁用" :value="false" />
+      <el-select v-model="list.filters.type" clearable filterable @change="listGet">
+        <el-option label="收入" :value="1" />
+        <el-option label="支出" :value="0" />
       </el-select>
+      <el-date-picker v-model="list.filters.start" type="datetime" placeholder="开始时间" format="yyyy-MM-dd HH:mm:ss" @change="timeFormat('start')" />
+      <el-date-picker v-model="list.filters.end" type="datetime" placeholder="结束时间" format="yyyy-MM-dd HH:mm:ss" @change="timeFormat('end')" />
       <c-flex-auto />
       <el-button
         type="primary"
@@ -24,23 +26,31 @@
       <cDropdown :show.sync="show" />
     </div>
     <div class="table">
+      <!-- 注意： 如果给el-table设置了height="100%"，那么再使用show-summary是不显示的 -->
       <el-table
         style="width: 100%;"
-        height="100%"
+        max-height="100%"
         stripe
         ref="table"
         border
+        show-summary
+        sum-text="总计"
+        :summary-method="getSummaries"
         v-loading="list.loading"
         @sort-change="sortChange"
         @selection-change="selectChange"
         :data="list.data">
         <el-table-column type="selection" width="60" align="center"/>
-        <el-table-column v-if="show[0].value" label="金额(元)" prop="money" min-width="100" align="center" sortable="custom"/>
+        <el-table-column v-if="show[0].value" label="金额(元)" prop="money" min-width="100" align="center" sortable="custom">
+          <template v-slot="{ row }">
+            <span :style="{ color:  row.type === 0 ? '#FF5722' : '#369A04' }">{{ row.money }}</span>
+          </template>
+        </el-table-column>
         <el-table-column v-if="show[1].value" label="支付方式" prop="pay" min-width="110" align="center" sortable="custom"/>
         <el-table-column v-if="show[2].value" label="付款时间" prop="ptime" min-width="160" align="center" sortable="custom"/>
         <el-table-column v-if="show[3].value" label="标签" prop="tag" min-width="100" align="center" sortable="custom">
           <template v-slot="{ row }">
-            <i :class="row.tag.icon"></i>
+            <i :class="row.tag.icon" style="font-size: 20px;"></i>
             <span>{{ row.tag.name }}</span>
           </template>
         </el-table-column>
@@ -49,14 +59,14 @@
         </el-table-column>
         <el-table-column v-if="show[5].value" label="类别" prop="type" min-width="80" align="center" sortable="custom">
           <template v-slot="{ row }">
-            <el-tag v-if="row.type === 0" type="success">收入</el-tag>
+            <el-tag v-if="row.type === 1" type="success">收入</el-tag>
             <el-tag v-else type="danger">支出</el-tag>
           </template>
         </el-table-column>
         <el-table-column v-if="show[6].value" label="备注" prop="remark" min-width="150" align="center" sortable="custom" />
         <el-table-column v-if="show[7].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom" />
         <el-table-column v-if="show[8].value" label="修改时间" prop="mtime" min-width="160" align="center" sortable="custom" />
-        <el-table-column label="操作" width="220" align="center">
+        <el-table-column label="操作" width="160" align="center">
           <template v-slot="{ row }">
             <el-button
               type="primary"
@@ -110,9 +120,11 @@ export default {
         loading: false,
         filters: {
           search: '',
-          status: '',
+          type: '',
           sort: '',
-          order: ''
+          order: '',
+          start: '',
+          end: ''
         },
         selected: []
       },
@@ -142,7 +154,9 @@ export default {
           search: this.list.filters.search,
           sort: this.list.filters.sort,
           order: this.list.filters.order,
-          status: this.list.filters.status
+          type: this.list.filters.type,
+          start: this.list.filters.start,
+          end: this.list.filters.end
         }
       }).then(res => {
         this.list.total = res.data.total
@@ -177,7 +191,7 @@ export default {
     itemDelete (row) {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.$http({
-          name: 'DeleteMenu',
+          name: 'DeleteAccount',
           requireAuth: true,
           paths: [row.id]
         }).then(res => {
@@ -194,7 +208,7 @@ export default {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.list.selected.forEach((item, index) => {
           this.$http({
-            name: 'DeleteMenu',
+            name: 'DeleteAccount',
             requireAuth: true,
             paths: [item]
           }).then(res => {
@@ -209,6 +223,51 @@ export default {
           })
         })
       }).catch(() => {})
+    },
+    // 时间格式化
+    timeFormat (type) {
+      if (this.list.filters[type]) {
+        this.list.filters[type] = this.$moment(this.list.filters[type]).format('yyyy-MM-DD HH:mm:ss')
+      } else {
+        this.list.filters[type] = ''
+      }
+      this.listGet()
+    },
+    // 获取总价
+    getSummaries (param) {
+      // columns: 表头
+      // data：单元格数据
+      const { columns, data } = param
+      const sums = []
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = '总价'
+          return
+        }
+        const values = data.map(item => {
+          if (item.type === 0 && column.property === 'money') {
+            return -Number(item[column.property])
+          } else if (column.property === 'type') {
+            return Number('哈哈哈哈')
+          } else {
+            return Number(item[column.property])
+          }
+        })
+        if (!values.every(value => isNaN(value))) {
+          sums[index] = values.reduce((prev, curr) => {
+            if (!isNaN(parseFloat(curr))) {
+              // 排除出现很多小数点，如：200 - 4.5 - 20.18 - 20.18 - 4.53 = 150.60999999999999
+              return (Number(prev) + Number(curr)).toFixed(2)
+            } else {
+              return prev
+            }
+          }, 0)
+          sums[index] += ' 元'
+        } else {
+          sums[index] = 'N/A'
+        }
+      })
+      return sums
     }
   },
   created () {

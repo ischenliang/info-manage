@@ -45,7 +45,7 @@ const Account = seq.define('account', {
   money: {
     type: DataTypes.FLOAT,
     allowNull: false,
-    defaultValue: 0.0,
+    defaultValue: 0.00,
     comment: '付款金额'
   },
   ptime: {
