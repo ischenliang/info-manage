@@ -164,6 +164,11 @@ const routes = [
             path: 'edit/:id',
             name: 'MemoryEdit',
             component: () => import('@/views/info/memory/Dialog')
+          },
+          {
+            path: 'detail/:id',
+            name: 'MemoryDetail',
+            component: () => import('@/views/info/memory/Detail')
           }
         ]
       }

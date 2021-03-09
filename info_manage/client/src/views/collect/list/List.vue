@@ -117,7 +117,7 @@ export default {
       show: [
         { label: '名称', disabled: true, value: true },
         { label: '地址', disabled: true, value: true },
-        { label: '图标', disabled: false, value: true },
+        { label: '图标', disabled: false, value: false },
         { label: '类别', disabled: false, value: true },
         { label: '仓库', disabled: false, value: true },
         { label: '标签', disabled: false, value: true },

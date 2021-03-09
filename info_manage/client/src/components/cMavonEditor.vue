@@ -1,39 +1,46 @@
 <template>
-  <div style="width: 100%;height: 100%;display:flex;flex-direction: column;justify-content: center;align-items: center;user-select: none;">
-    <div style="width: 100%;height: 400px;">
-      <mavon-editor
-        v-model="value"
-        language="zh-CN"
-        fontSize="14px"
-        :scrollStyle="true"
-        :boxShadow="true"
-        :boxShadowStyle="'0 2px 12px 0 rgba(0, 0, 0, 0.1)'"
-        :transition="true"
-        :toolbarsBackground="'#ffffff'"
-        :previewBackground="'#fbfbfb'"
-        :subfield="false"
-        :defaultOpen="'edit'"
-        :placeholder="'请输入内容......'"
-        :editable="true"
-        :codeStyle="'code-github'"
-        :toolbarsFlag="true"
-        :navigation="false"
-        :shortCut="true"
-        :autofocus="false"
-        :ishljs="true"
-        :toolbars="toolbars"
-        @change="handleHtmlCode"
-        ref="md"
-        @imgAdd="imgAdd"/>
-    </div>
-  </div>
+  <mavon-editor
+    :value="content"
+    language="zh-CN"
+    fontSize="14px"
+    :scrollStyle="true"
+    :boxShadow="false"
+    :boxShadowStyle="'0 2px 12px 0 rgba(0, 0, 0, 0.1)'"
+    :transition="true"
+    :toolbarsBackground="'#ffffff'"
+    :previewBackground="'#fbfbfb'"
+    style="border: 1px solid #ccc;border-radius: 0;"
+    :subfield="false"
+    :defaultOpen="'edit'"
+    :placeholder="'请输入内容......'"
+    :editable="true"
+    :codeStyle="'code-github'"
+    :toolbarsFlag="true"
+    :navigation="false"
+    :shortCut="true"
+    :autofocus="false"
+    :ishljs="true"
+    :toolbars="toolbars"
+    @change="handleChange"
+    ref="md"
+    @imgAdd="imgAdd"
+    @imgDel="imgDel">
+  </mavon-editor>
 </template>
 
 <script>
 export default {
+  name: 'cMavonEditor',
+  props: {
+    content: String,
+    text: String
+  },
+  model: {
+    prop: 'content',
+    event: 'change'
+  },
   data () {
     return {
-      value: '',
       toolbars: {
         bold: true, // 粗体
         italic: true, // 斜体
@@ -72,11 +79,8 @@ export default {
     }
   },
   methods: {
-    handleChange (value) {
-      console.log(value)
-    },
+    // 图片文件添加回调事件
     imgAdd (pos, file) {
-      console.log(file)
       // 第一步.将图片上传到服务器.
       var formdata = new FormData()
       formdata.append('image', file)
@@ -96,12 +100,21 @@ export default {
       // })
       this.$refs.md.$imglst2Url([[pos, 'https://camo.githubusercontent.com/1d4f37917e6048582d298221101eec3ac8b63181a5f7cb88d1aab6e3fff0ff27/68747470733a2f2f6e6f6465692e636f2f6e706d2f6d61766f6e2d656469746f722e706e673f646f776e6c6f6164733d7472756526646f776e6c6f616452616e6b3d747275652673746172733d74727565']])
     },
-    handleHtmlCode (status, value) {
-      console.log(status, value)
+    // 图片文件删除回调事件
+    imgDel (filename) {
+      console.log(filename)
+    },
+    // 编辑区发生变化的回调事件
+    handleChange (text, html) {
+      this.$emit('change', text)
+      this.$emit('update:text', html)
     }
   }
 }
 </script>
 
 <style lang="scss">
+.v-note-wrapper .v-note-op {
+  border-bottom: 1px solid #ccc !important;
+}
 </style>

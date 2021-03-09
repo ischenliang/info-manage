@@ -186,6 +186,12 @@ const list = {
   GetMemories: { method: 'get', url: '/memory/list' },
   // 新增备忘录 请求类型：post 请求地址：/memory/add
   AddMemory: { method: 'post', url: '/memory/add' },
+  // 删除备忘录 请求类型：delete 请求地址：/memory/deleteById
+  DeleteMemory: { method: 'delete', url: '/memory/deleteById' },
+  // 备忘录详情 请求类型：get 请求地址：/memory/detail
+  GetMemory: { method: 'get', url: '/memory/detail' },
+  // 更新备忘录 请求类型：put 请求地址：/memory/update
+  UpdateMemory: { method: 'put', url: '/memory/update' },
 
   /**
    * 公共接口

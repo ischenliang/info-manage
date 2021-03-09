@@ -10,6 +10,7 @@ const seq = require('../utils/seq')
  * content：内容 Text(html)
  * tag：标签 String，使用`,`分隔
  * priority：重要性 float
+ * type: 文本类型 Integer 
  * uid：用户 UUID
  * ctime：api创建时间 String
  * mtime：api更新时间 String
@@ -42,6 +43,12 @@ const Memory = seq.define('memory', {
     allowNull: false,
     defaultValue: 0,
     comment: '重要性'
+  },
+  type: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 1,
+    comment: '1: 富文本 2：markdown'
   },
   tag: {
     type: DataTypes.STRING,

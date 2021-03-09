@@ -19,7 +19,14 @@
             <el-input v-model="form.name"/>
           </el-form-item>
           <el-form-item label="重要性" prop="priority">
-            <el-rate v-model="form.priority" show-text />
+            <div class="c-input">
+              <el-rate
+                v-model="form.priority"
+                show-text
+                allow-half
+                text-color="#ff9900"
+                :texts="['不重要', '一般', '重要', '非常重要', '超级重要']" />
+            </div>
           </el-form-item>
         </div>
         <el-form-item label="标签" prop="tag" class="form-item-tags">
@@ -28,15 +35,23 @@
             :repeat="false"
             :type="'warning'"
             :theme="'dark'"
+            :focus="false"
             :placeholder="'按enter键创建'" />
         </el-form-item>
-        <el-form-item label="内容" prop="content">
-          <quill-editor
-            ref="myTextEditor"
+        <el-form-item label="备忘录内容" prop="content" class="rich-text" style="position: relative;">
+          <el-button type="info" size="mini" class="rich-text-btn" @click="toggleEditor">
+            {{ form.type === 1 ? '富文本' : 'Markdown' }}
+          </el-button>
+          <c-quill-editor
+            v-if="form.type === 1"
             v-model="form.content"
-            :options="editorOption"
-            style="height: 500px;"
-            @change="onEditorChange($event)"></quill-editor>
+            :text.sync="form.text"
+            style="height: 500px;" />
+          <c-mavon-editor
+            v-if="form.type === 2"
+            v-model="form.content"
+            :text.sync="form.text"
+            style="height: 530px;" />
         </el-form-item>
       </el-form>
     </div>
@@ -52,33 +67,17 @@ export default {
         name: '',
         tag: [],
         priority: 0,
-        content: ''
-      },
-      editorOption: {
-        placeholder: '请输入备忘录内容'
-        // modules: {
-        //   toolbar: [
-        //     ['bold', 'italic', 'underline', 'strike'], // 加粗，斜体，下划线，删除线
-        //     ['blockquote', 'code-block'], // 引用，代码块
-        //     [{ header: 1 }, { header: 2 }], // 标题，键值对的形式；1、2表示字体大小
-        //     [{ list: 'ordered' }, { list: 'bullet' }], // 列表
-        //     [{ script: 'sub' }, { script: 'super' }], // 上下标
-        //     [{ indent: '-1' }, { indent: '+1' }], // 缩进
-        //     [{ direction: 'rtl' }], // 文本方向
-        //     [{ size: ['small', false, 'large', 'huge'] }], // 字体大小
-        //     [{ header: [1, 2, 3, 4, 5, 6, false] }], // 几级标题
-        //     [{ color: [] }, { background: [] }], // 字体颜色，字体背景颜色
-        //     [{ font: [] }], // 字体
-        //     [{ align: ['left', 'center', 'right'] }], // 对齐方式
-        //     ['clean'], // 清除字体样式
-        //     ['image', 'video'] // 上传图片、上传视频
-        //   ]
-        // }
+        content: '',
+        text: '',
+        type: 1
       },
       rules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
         tag: [{ required: true, message: '请输入标签', trigger: 'blur' }],
-        priority: [{ required: true, message: '请选择重要性', trigger: 'blur' }]
+        priority: [
+          { required: true, message: '请选择重要性' },
+          { type: 'number', message: '重要性必须为number' }
+        ]
       },
       loading: false
     }
@@ -89,10 +88,6 @@ export default {
     }
   },
   methods: {
-    onEditorChange ({ editor, html, text }) {
-      this.content = html
-      console.log(text)
-    },
     // 新增提交
     addSubmit () {
       const data = JSON.parse(JSON.stringify(this.form))
@@ -112,22 +107,15 @@ export default {
     },
     // 编辑提交
     editSubmit () {
-      const tag = this.tags.find(item => {
-        return item.id === this.form.tag
-      })
-      const account = JSON.parse(JSON.stringify(this.form))
-      account.tag = {
-        name: tag.name,
-        icon: tag.icon
-      }
+      const data = JSON.parse(JSON.stringify(this.form))
+      data.tag = data.tag.join(',')
       this.$http({
-        name: 'UpdateAccount',
+        name: 'UpdateMemory',
         requireAuth: true,
-        data: account
+        data: data
       }).then(res => {
-        this.$emit('submit')
-        this.close()
         this.$notify.success(res.msg)
+        this.$router.push({ path: '/info/memory/list' })
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
@@ -146,23 +134,59 @@ export default {
           }
         }
       })
+    },
+    // 切换富文本
+    toggleEditor () {
+      if (this.form.type === 1) {
+        this.form.type = 2
+      } else if (this.form.type === 2) {
+        this.form.type = 1
+      }
+    },
+    // 获取数据
+    listGet () {
+      // 获取数据....
+      this.$http({
+        name: 'GetMemory',
+        requireAuth: true,
+        paths: [this.id]
+      }).then(res => {
+        this.form = res.data
+        this.form.tag = res.data.tag.split(',')
+      }).catch(error => {
+        this.$notify.error(error)
+      })
+    }
+  },
+  created () {
+    if (this.id !== '') {
+      this.listGet()
     }
   }
 }
 </script>
 
 <style lang="scss">
-  .ql-snow .ql-picker-label::before{
-    position: absolute !important;
-  }
-  .ql-snow .ql-color-picker .ql-picker-label svg, .ql-snow .ql-icon-picker .ql-picker-label svg {
-    right: 4px;
-    top: 0;
-    position: absolute !important;
-  }
   .form-item-tags {
     .el-form-item__content {
       line-height: 0 !important;
+    }
+  }
+  .c-input{
+    border: 1px solid #DCDFE6;
+    height: 40px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+  }
+  .rich-text{
+    position: relative;
+    .rich-text-btn{
+      position: absolute;
+      top: -28px;
+      right: 0;
+      border-radius: 0 !important;
     }
   }
 </style>

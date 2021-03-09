@@ -34,16 +34,33 @@
         :data="list.data">
         <el-table-column type="selection" width="60" align="center"/>
         <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="100" align="center" sortable="custom"/>
-        <el-table-column v-if="show[1].value" label="标签" prop="tag" min-width="150" align="center" sortable="custom"/>
-        <el-table-column v-if="show[2].value" label="内容" prop="content" min-width="200" align="center" sortable="custom">
+        <el-table-column v-if="show[1].value" label="类型" prop="name" min-width="100" align="center" sortable="custom">
+          <template v-slot="{ row }">
+            <el-tag v-if="row.type === 1" type="success">富文本</el-tag>
+            <el-tag v-else type="warning">markdown</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="show[2].value" label="标签" prop="tag" min-width="150" align="center" sortable="custom"/>
+        <el-table-column v-if="show[3].value" label="重要性" prop="priority" min-width="180" align="center" sortable="custom">
+          <template v-slot="{ row }">
+            <el-rate v-model="row.priority" disabled show-score text-color="#ff9900" score-template="{value}" />
+          </template>
+        </el-table-column>
+        <el-table-column v-if="show[4].value" label="内容" prop="content" min-width="200" align="center" sortable="custom">
           <template v-slot="{ row }">
             <div class="over-ellipsis" style="max-height: 42px;line-clamp: 2;">{{ row.content }}</div>
           </template>
         </el-table-column>
-        <el-table-column v-if="show[3].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom" />
-        <el-table-column v-if="show[4].value" label="修改时间" prop="mtime" min-width="160" align="center" sortable="custom" />
+        <el-table-column v-if="show[5].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom" />
+        <el-table-column v-if="show[6].value" label="修改时间" prop="mtime" min-width="160" align="center" sortable="custom" />
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
+            <el-button
+              type="success"
+              size="mini"
+              icon="el-icon-info"
+              title="详情"
+              @click="$router.push({ path: `/info/memory/detail/${row.id}` })" />
             <el-button
               type="primary"
               size="mini"
@@ -65,7 +82,6 @@
       :page.sync="list.page"
       :size.sync="list.size"
       @change="listGet" />
-    <!-- <com-dialog v-if="visible" :visible.sync="visible" @submit="listGet" :id.sync="id" /> -->
   </div>
 </template>
 
@@ -75,7 +91,9 @@ export default {
     return {
       show: [
         { label: '名称', disabled: true, value: true },
+        { label: '类型', disabled: false, value: false },
         { label: '标签', disabled: true, value: true },
+        { label: '重要性', disabled: true, value: true },
         { label: '内容', disabled: true, value: true },
         { label: '创建时间', disabled: false, value: false },
         { label: '修改时间', disabled: false, value: true }
@@ -93,9 +111,7 @@ export default {
           end: ''
         },
         selected: []
-      },
-      id: '',
-      visible: false
+      }
     }
   },
   computed: {
@@ -149,14 +165,13 @@ export default {
     },
     // 更改
     itemEdit (row) {
-      this.id = row.id
-      this.visible = true
+      this.$router.push({ path: `/info/memory/edit/${row.id}` })
     },
     // 删除
     itemDelete (row) {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.$http({
-          name: 'DeleteMenu',
+          name: 'DeleteMemory',
           requireAuth: true,
           paths: [row.id]
         }).then(res => {
@@ -173,7 +188,7 @@ export default {
       this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
         this.list.selected.forEach((item, index) => {
           this.$http({
-            name: 'DeleteMenu',
+            name: 'DeleteMemory',
             requireAuth: true,
             paths: [item]
           }).then(res => {

@@ -23,7 +23,8 @@
             <span slot="title">项目管理</span>
           </el-menu-item>
           <el-menu-item index="/collect">
-            <i class="el-icon-star-on"></i>
+            <!-- <i class="el-icon-star-on"></i> -->
+            <i class="el-icon-collection"></i>
             <span>收藏管理</span>
           </el-menu-item>
           <el-submenu index="/info">

@@ -11,6 +11,9 @@ import cForkMe from './cForkMe.vue'
 import cResources from './cResources.vue'
 import cToggleLook from './cToggleLook.vue'
 import cToggleCopy from './cToggleCopy.vue'
+import cQuillEditor from './cQuillEditor.vue'
+import cMavonEditor from './cMavonEditor.vue'
+import cBackUp from './cBackUp.vue'
 
 // 使用开发插件的形式全局使用公用的components
 export default {
@@ -29,7 +32,10 @@ export default {
         cForkMe,
         cResources,
         cToggleLook,
-        cToggleCopy
+        cToggleCopy,
+        cQuillEditor,
+        cMavonEditor,
+        cBackUp
       }
     })
   }
