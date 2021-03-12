@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%;height: 100%;display:flex;flex-direction: column;justify-content: center;align-items: center;user-select: none;">
     <div style="width: 100%;height: 400px;">
-      <mavon-editor
+      <!-- <mavon-editor
         v-model="value"
         language="zh-CN"
         fontSize="14px"
@@ -24,7 +24,8 @@
         :toolbars="toolbars"
         @change="handleHtmlCode"
         ref="md"
-        @imgAdd="imgAdd"/>
+        @imgAdd="imgAdd"/> -->
+        <c-fork-me />
     </div>
   </div>
 </template>
