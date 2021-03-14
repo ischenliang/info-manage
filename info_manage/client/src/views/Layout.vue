@@ -18,7 +18,7 @@
             <i class="el-icon-s-home"></i>
             <span slot="title">首页</span>
           </el-menu-item>
-          <el-menu-item index="/project">
+          <el-menu-item index="/project/list">
             <i class="el-icon-s-grid"></i>
             <span slot="title">项目管理</span>
           </el-menu-item>

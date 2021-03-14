@@ -1,6 +1,7 @@
 const crypto = require('crypto')
 const fs = require('fs')
 const path = require('path')
+const nodemailer = require('nodemailer')
 
 module.exports = {
   // md5加密
@@ -59,5 +60,27 @@ module.exports = {
     const error = new Error(msg)
     error.status = code
     throw error
+  },
+  // 发送邮件
+  async sendMail (email, title, content) {
+    // 发送邮件封装
+    var user = '1825956830@qq.com' // 发送人邮箱
+    var pass = 'pmjcgrpplkwociaf' // 邮箱授权码
+    let transporter = nodemailer.createTransport({
+      host: "smtp.qq.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: user, // 用户账号
+        pass: pass, //授权码,通过QQ获取
+      },
+    })
+    return await transporter.sendMail({
+      from: user, // 发送人邮箱
+      to: email, // 收件人邮箱
+      subject: title, // 标题
+      // text: text, // 通知内容(纯文本)
+      html: content // 通知内容(html)
+    })
   }
 }

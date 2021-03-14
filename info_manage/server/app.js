@@ -24,7 +24,7 @@ const { userApi } = require('./service/user')
  * 4.根据authorization获取里面的用户信息
  *    将用户信息存储到ctx中
 */
-const notauth = ['/api/login', '/api/test/download']
+const notauth = ['/api/login', '/api/test/download', '/api/test/download?option=start', '/api/test/download?option=stop', '/api/test/download?option=restart']
 app.use(async (ctx, next) => {
   try {
     if (notauth.includes(ctx.request.url)) {

@@ -1,0 +1,11 @@
+[2021-03-14 16:20:20] [TRACE] tasklog  - 启动任务
+[2021-03-14 16:24:39] [TRACE] tasklog  - 启动任务
+[2021-03-14 16:25:05] [INFO] tasklog  - 任务：日志清理执行成功
+[2021-03-14 16:26:05] [INFO] tasklog  - 任务：日志清理执行成功
+[2021-03-14 16:27:19] [TRACE] tasklog  - 启动任务
+[2021-03-14 16:28:05] [INFO] tasklog  - 任务：日志清理执行成功
+[2021-03-14 16:28:15] [TRACE] tasklog  - 取消任务
+[2021-03-14 16:31:36] [TRACE] tasklog.cleanupLog - 启动任务
+[2021-03-14 16:32:05] [INFO] tasklog.cleanupLog - 任务：日志清理执行成功
+[2021-03-14 16:33:05] [INFO] tasklog.cleanupLog - 任务：日志清理执行成功
+[2021-03-14 16:33:11] [TRACE] tasklog.cancel - 取消任务

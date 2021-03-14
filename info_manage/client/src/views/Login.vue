@@ -145,11 +145,11 @@ export default {
       align-items: center;
       font-size: 2.2rem;
       // color: #f2f2f2;
-      color: #707070;
+      color: #1e4874;
       margin: 20px 0;
       letter-spacing: 2px;
       text-shadow: 3px 3px 3px #e7e0de,
-                   -2px -2px 2px #e4aa2f;
+                   -2px -2px 2px #a1d4e7;
     }
     .login_btn{
       button{
