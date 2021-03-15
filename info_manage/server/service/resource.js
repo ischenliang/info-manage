@@ -187,11 +187,6 @@ async function upload (files, parent, uid) {
   }
 }
 
-// 文件下载
-async function download (targetPath, uid) {
-
-}
-
 module.exports =  {
   add,
   deleteById,
@@ -200,6 +195,5 @@ module.exports =  {
   list,
   move,
   copy,
-  upload,
-  download 
+  upload
 }

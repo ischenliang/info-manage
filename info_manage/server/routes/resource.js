@@ -1,4 +1,10 @@
 const router = require('koa-router')()
+const path = require('path')
+const fs = require('fs')
+const token = require('jsonwebtoken')
+const appConfig = require('../config/app.config')
+const archiver = require('archiver')
+const send = require('koa-send')
 router.prefix('/api/resource')
 const resConfig = require('../config/app.res')
 const { add, deleteById, update, detail, list, move, copy, upload } = require('../service/resource')
@@ -119,4 +125,37 @@ router.post('/upload', async(ctx, next) => {
   }
 })
 
+// 下载
+router.get('/download', async(ctx, next) => {
+  try {
+    ctx.verifyParams({
+      path: { type: 'string', required: true },
+      token: { type: 'string', required: true }
+    })
+    const uid = token.verify(ctx.query.token, appConfig.secret).data
+    const info = fs.statSync(path.join(__dirname, '../resource', uid, ctx.query.path))
+    if (info.isDirectory()) {
+      // 是文件夹：则打压缩包
+      const name = ctx.query.path.split('/').pop()
+      // 将压缩包先放进临时目录
+      const dir = path.join(__dirname, `../tmp/${name}.zip`)
+      const stream = fs.createWriteStream(dir)
+      const zip = archiver('zip', {
+        zlib: { level: 9 }
+      })
+      zip.pipe(stream)
+      zip.directory(`resource/${uid}/${name}/`, `${name}`)
+      await zip.finalize()
+      ctx.attachment(`${name}.zip`)
+      await send(ctx, `/tmp/${name}.zip`, { root: path.join(__dirname, '..') })
+    } else {
+      // 是文件则直接下载
+      const name = ctx.query.path.split('/').pop()
+      ctx.attachment(name)
+      await send(ctx, `/resource/${uid}/${ctx.query.path}`, { root: path.join(__dirname, '..') })
+    }
+  } catch (error) {
+    ctx.throw(error.status, error)
+  }
+})
 module.exports = router

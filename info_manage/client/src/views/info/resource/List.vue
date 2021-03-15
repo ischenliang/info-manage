@@ -244,7 +244,7 @@ export default {
           _this.listGet()
           _this.$notify.success(res.msg)
         }).catch(error => {
-          _this.close().$notify.error(error)
+          _this.$notify.error(error)
         })
       }).catch(() => {})
     },

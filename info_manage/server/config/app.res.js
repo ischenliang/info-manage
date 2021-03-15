@@ -12,5 +12,6 @@ module.exports = {
   401: '权限不足',
   MOVE_SUCCESS: '移动成功',
   COPY_SUCCESS: '复制成功',
-  UPLOAD_SUCCESS: '上传成功'
+  UPLOAD_SUCCESS: '上传成功',
+  DOWNLOAD_SUCCESS: '下载成功'
 }

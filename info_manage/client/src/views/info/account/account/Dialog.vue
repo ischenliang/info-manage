@@ -28,7 +28,13 @@
           </el-select>
         </el-form-item>
         <el-form-item label="付款时间" prop="ptime">
-          <el-date-picker v-model="form.ptime" type="datetime" placeholder="选择付款时间" style="width: 100%;" format="yyyy-MM-dd HH:mm:ss" @change="timeFormat" />
+          <el-date-picker
+            v-model="form.ptime"
+            type="datetime"
+            placeholder="选择付款时间"
+            style="width: 100%;"
+            format="yyyy-MM-dd HH:mm:ss"
+            value-format="yyyy-MM-dd HH:mm:ss" />
         </el-form-item>
       </div>
       <el-form-item label="标签" prop="tag">
@@ -203,10 +209,6 @@ export default {
       }).catch(error => {
         this.$notify.error(error)
       })
-    },
-    // 时间格式化
-    timeFormat (val) {
-      this.form.ptime = this.$moment(val).format('yyyy-MM-DD HH:mm:ss')
     },
     // 城市回调
     handleChange (value) {

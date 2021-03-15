@@ -2,8 +2,20 @@
   <div class="app-page">
     <div class="toolbar">
       <el-input v-model="list.filters.search" placeholder="请输入内容" suffix-icon="el-icon-search" @input="listGet"/>
-      <el-date-picker v-model="list.filters.start" type="datetime" placeholder="开始时间" format="yyyy-MM-dd HH:mm:ss" @change="timeFormat('start')" />
-      <el-date-picker v-model="list.filters.end" type="datetime" placeholder="结束时间" format="yyyy-MM-dd HH:mm:ss" @change="timeFormat('end')" />
+      <el-date-picker
+        v-model="list.filters.start"
+        type="datetime"
+        placeholder="开始时间"
+        format="yyyy-MM-dd HH:mm:ss"
+        value-format="yyyy-MM-dd HH:mm:ss"
+        @change="listGet" />
+      <el-date-picker
+        v-model="list.filters.end"
+        type="datetime"
+        placeholder="结束时间"
+        format="yyyy-MM-dd HH:mm:ss"
+        value-format="yyyy-MM-dd HH:mm:ss"
+        @change="listGet" />
       <c-flex-auto />
       <el-button
         type="primary"
@@ -203,15 +215,6 @@ export default {
           })
         })
       }).catch(() => {})
-    },
-    // 时间格式化
-    timeFormat (type) {
-      if (this.list.filters[type]) {
-        this.list.filters[type] = this.$moment(this.list.filters[type]).format('yyyy-MM-DD HH:mm:ss')
-      } else {
-        this.list.filters[type] = ''
-      }
-      this.listGet()
     }
   },
   created () {
