@@ -76,7 +76,13 @@
     </div>
     <div class="main-container">
       <div class="app-header">
-        <div class="navbar"></div>
+        <div class="navbar" style="display: flex;justify-content: flex-end;align-items: flex-end;">
+          <el-button
+            type="primary"
+            size="small"
+            @click="logout"
+            style="margin-right: 25px;">退出</el-button>
+        </div>
         <div class="tags-view"></div>
       </div>
       <div class="app-main">
@@ -88,6 +94,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   computed: {
     active () {
@@ -98,6 +105,17 @@ export default {
         default:
           return this.$route.path
       }
+    }
+  },
+  methods: {
+    ...mapActions({
+      clear_info: 'user/CLEAR_INFO'
+    }),
+    logout () {
+      this.$Cookies.remove('token')
+      this.$Cookies.remove('uid')
+      this.clear_info()
+      this.$router.push({ path: '/login' })
     }
   }
 }

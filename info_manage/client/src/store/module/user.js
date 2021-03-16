@@ -118,6 +118,12 @@ export default {
       })
       // console.log(routes)
       // console.log(apis)
+    },
+    CLEAR_INFO ({ commit }) {
+      commit('SET_UID', '')
+      commit('SET_TOKEN', '')
+      commit('SET_MENUS', [])
+      commit('SET_PERMS', [])
     }
   }
 }

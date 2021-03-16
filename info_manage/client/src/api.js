@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios'
 import Cookies from 'js-cookie'
+const baseURL = 'http://localhost:3000/api/'
 const http = axios.create({
-  baseURL: 'http://localhost:3000/api/'
+  baseURL
 })
 
 // 定义所有的请求
@@ -132,6 +133,8 @@ const list = {
   MoveResource: { method: 'post', url: '/resource/move' },
   // 复制资源 请求类型：post 请求地址：/resource/copy
   CopyResource: { method: 'post', url: '/resource/copy' },
+  // 下载资源 请求类型：get 请求地址：/resource/download
+  DownloadResource: { method: 'get', url: '/resource/download' },
 
   /**
    * 账目类别管理
@@ -235,6 +238,11 @@ export default (config) => {
       })
     }
 
+    if (requestConfig.headers && requestConfig.headers['Content-Type'] === 'application/octet-stream') {
+      requestConfig.baseURL = baseURL
+      resolve(requestConfig)
+    }
+
     if (config.requireAuth) {
       requestConfig.headers.Authorization = Cookies.get('token')
     }
@@ -245,7 +253,7 @@ export default (config) => {
         if (res.data.code === 200) {
           resolve(res.data)
         } else {
-          reject(res.data)
+          resolve(res.data)
         }
       }
     }).catch(error => {

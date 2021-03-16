@@ -137,7 +137,8 @@ export default {
       list: {
         loading: false,
         filters: {
-          path: this.$route.query.path === undefined ? '/' : this.$route.query.path
+          path: this.$route.query.path === undefined ? '/' : this.$route.query.path,
+          search: ''
         },
         selected: []
       },
@@ -168,7 +169,8 @@ export default {
         name: 'GetResources',
         requireAuth: true,
         params: {
-          path: this.list.filters.path
+          path: this.list.filters.path,
+          search: this.list.filters.search
         }
       }).then(res => {
         this.list.data = res.data
@@ -252,7 +254,21 @@ export default {
     itemDownload (row) {
       // 文件夹时:下载成zip包
       // 文件就直接下载文件
-      console.log(row)
+      this.$http({
+        name: 'DownloadResource',
+        requireAuth: true,
+        params: {
+          path: row.path,
+          token: this.$Cookies.get('token')
+        },
+        headers: {
+          'Content-Type': 'application/octet-stream'
+        }
+      }).then(res => {
+        window.open(`${res.baseURL}${res.url.substring(1)}?path=${res.params.path}&token=${res.params.token}`, '_self')
+      }).catch(error => {
+        this.$notify.error(error)
+      })
     },
     // 删除
     itemDelete (row) {

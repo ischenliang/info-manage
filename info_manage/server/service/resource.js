@@ -88,24 +88,30 @@ async function detail (parent, uid) {
 
 /**
  * 查询列表
- * @param {*} query
+ * @param {*} search
+ * @param {*} parent
+ * @param {*} uid
  */
-async function list (parent, uid) {
+async function list (search, parent, uid) {
   try {
+    if (!search) search = ''
     const files = fse.readdirSync(path.join(__dirname, '../resource', uid, parent))
     const res = []
     files.forEach(item => {
-      const info = fse.statSync(path.join(__dirname, '../resource', uid, parent, item))
-      const suffix = item.split('.')
-      res.push({
-        name: item,
-        type: info.isDirectory() ? 'folder' : 'file',
-        size: info.size,
-        path: (path.join('/', parent, item)).replace(/\\/g, '/'),
-        extension: suffix.length > 1 ? suffix.pop() : '',
-        ctime: moment(info.ctimeMs).format('YYYY-MM-DD HH:mm:ss'),
-        mtime: moment(info.mtimeMs).format('YYYY-MM-DD HH:mm:ss')
-      })
+      const reg = new RegExp(`${search}`, 'g')
+      if (reg.test(item)) {
+        const info = fse.statSync(path.join(__dirname, '../resource', uid, parent, item))
+        const suffix = item.split('.')
+        res.push({
+          name: item,
+          type: info.isDirectory() ? 'folder' : 'file',
+          size: info.size,
+          path: (path.join('/', parent, item)).replace(/\\/g, '/'),
+          extension: suffix.length > 1 ? suffix.pop() : '',
+          ctime: moment(info.ctimeMs).format('YYYY-MM-DD HH:mm:ss'),
+          mtime: moment(info.mtimeMs).format('YYYY-MM-DD HH:mm:ss')
+        })
+      }
     })
     return res
   } catch (error) {

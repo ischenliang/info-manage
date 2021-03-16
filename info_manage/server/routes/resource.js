@@ -76,7 +76,7 @@ router.get('/list', async(ctx, next) => {
     ctx.body = {
       code: 200,
       msg: resConfig[ctx.request.method],
-      data: await list(ctx.query.path, ctx.uid)
+      data: await list(ctx.query.search, ctx.query.path, ctx.uid)
     }
   } catch (error) {
     ctx.throw(error.status, error)

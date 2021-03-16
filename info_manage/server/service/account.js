@@ -82,7 +82,8 @@ async function list (query, uid) {
         [Op.or]: [
           { remark:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
           { ctime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
-          { mtime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } }
+          { mtime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
+          { 'tag.name':  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } }
         ],
         ptime: {
           [Op.between]: [
