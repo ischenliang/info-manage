@@ -25,7 +25,8 @@
         @change="handleHtmlCode"
         ref="md"
         @imgAdd="imgAdd"/> -->
-        <c-fork-me />
+        <!-- <c-fork-me /> -->
+        <el-button type="primary" size="medumn" v-perms="'system:resource:upload'">上传</el-button>
     </div>
   </div>
 </template>

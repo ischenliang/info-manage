@@ -21,19 +21,14 @@ Vue.prototype.$moment = moment
 Vue.use(VueParticles)
 
 // 全局指令：按钮级权限指令控制
+
+// 自定义指令实现按钮级的权限控制
 Vue.directive('perms', {
   inserted: (el, binding, vnode) => {
-    // console.log(el)
-    // const perm = binding.value
-    // // 判断是否拥有该类别的大权限
-    // if (store.getters.permission[perm.category] === undefined) {
-    //   el.parentNode.removeChild(el)
-    // } else {
-    //   // 判断是否拥有大权限下的某一个小权限
-    //   if (!store.getters.permission[perm.category].includes(perm.id)) {
-    //     el.parentNode.removeChild(el)
-    //   }
-    // }
+    const perms = vnode.context.$store.state.user.perms
+    if (!perms.includes(binding.value)) {
+      el.parentNode.removeChild(el)
+    }
   }
 })
 

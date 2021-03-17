@@ -6,7 +6,7 @@ import { Message } from 'element-ui'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
     websocket: null
   },
@@ -49,5 +49,9 @@ export default new Vuex.Store({
   modules: {
     user,
     role
+  },
+  getters: {
+    perms: state => state.user.perms
   }
 })
+export default store

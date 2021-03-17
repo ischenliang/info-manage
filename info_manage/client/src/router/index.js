@@ -201,7 +201,7 @@ router.beforeEach(async (to, from, next) => {
     // 获取用户菜单信息以及用户接口信息
     store.dispatch('user/SET_UID', uid)
     store.dispatch('user/SET_TOKEN', token)
-    store.dispatch('user/SET_USER')
+    await store.dispatch('user/SET_USER') // 一定要加await，否则后续再使用指令过程中拿不到数据
     next()
   } else {
     const notauth = ['/login', '/404', '/401']

@@ -34,7 +34,6 @@ export default {
       commit('SET_TOKEN', arg)
     },
     async SET_USER ({ state, commit }, arg) {
-      // eslint-disable-next-line no-unused-vars
       const [menus, apis] = await Promise.all([
         http({
           name: 'GetUserMenu',
@@ -116,8 +115,10 @@ export default {
         }
         routes.push(tmp1)
       })
-      // console.log(routes)
-      // console.log(apis)
+      commit('SET_MENUS', routes)
+      const perms = []
+      apis.data.forEach(item => perms.push(item.perms))
+      commit('SET_PERMS', perms)
     },
     CLEAR_INFO ({ commit }) {
       commit('SET_UID', '')
