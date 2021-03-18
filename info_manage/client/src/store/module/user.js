@@ -33,24 +33,17 @@ export default {
     SET_TOKEN ({ commit }, arg) {
       commit('SET_TOKEN', arg)
     },
-    async SET_USER ({ state, commit }, arg) {
-      const [menus, apis] = await Promise.all([
-        http({
-          name: 'GetUserMenu',
-          requireAuth: true,
-          paths: [state.uid],
-          params: {
-            status: true
-          }
-        }),
-        http({
-          name: 'GetUserApi',
-          requireAuth: true,
-          paths: [state.uid]
-        })
-      ])
+    async SET_MENUS ({ state, commit }) {
+      const res = await http({
+        name: 'GetUserMenu',
+        requireAuth: true,
+        paths: [state.uid],
+        params: {
+          status: true
+        }
+      })
       const routes = []
-      menus.data.sort((a, b) => a.order - b.order).forEach(item1 => {
+      res.data.sort((a, b) => a.order - b.order).forEach(item1 => {
         // 第一层
         const tmp1 = {
           path: item1.path,
@@ -116,10 +109,17 @@ export default {
         routes.push(tmp1)
       })
       commit('SET_MENUS', routes)
-      const perms = []
-      apis.data.forEach(item => perms.push(item.perms))
-      commit('SET_PERMS', perms)
       return routes
+    },
+    async SET_PERMS ({ state, commit }) {
+      const res = await http({
+        name: 'GetUserApi',
+        requireAuth: true,
+        paths: [state.uid]
+      })
+      const perms = []
+      res.data.forEach(item => perms.push(item.perms))
+      commit('SET_PERMS', perms)
     },
     CLEAR_INFO ({ commit }) {
       commit('SET_UID', '')

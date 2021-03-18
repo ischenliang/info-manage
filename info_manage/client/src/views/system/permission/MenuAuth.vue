@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -42,6 +43,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      setUser: 'user/SET_MENUS'
+    }),
     listGet () {
       this.list.loading = true
       this.$http({
@@ -85,6 +89,7 @@ export default {
       }).then(res => {
         this.$notify.success(res.msg)
         this.listGet()
+        this.setUser()
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {

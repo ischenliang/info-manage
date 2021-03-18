@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -44,6 +45,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      setUser: 'user/SET_USER'
+    }),
     async loadNode (node, resolve) {
       if (node.level === 0) {
         this.list.loading = true
@@ -136,6 +140,7 @@ export default {
       }).then(res => {
         this.$notify.success(res.msg)
         this.itemGet()
+        this.setUser()
       }).catch(error => {
         console.log(error)
         this.$notify.error(error)

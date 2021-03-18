@@ -92,7 +92,7 @@ export default {
       form: {
         name: '',
         path: '',
-        component: '/Layout',
+        component: 'Layout',
         type: 1,
         visible: true,
         status: true,

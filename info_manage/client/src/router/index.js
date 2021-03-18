@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Cookies from 'js-cookie'
 import store from '@/store'
 import { Message } from 'element-ui'
+import routeComponentMap from '@/utils/routeComponentMap'
 
 Vue.use(VueRouter)
 
@@ -18,171 +19,184 @@ const routes = [
         component: () => import('@/views/home/Home')
       }
     ]
-  },
-  {
-    path: '/login',
-    component: () => import('@/views/Login'),
-    meta: {
-      title: 'login',
-      hidden: true
-    }
-  },
-  {
-    path: '/401',
-    component: () => import('@/views/error-page/401'),
-    meta: {
-      title: '401',
-      hidden: true
-    }
-  },
-  {
-    path: '/404',
-    component: () => import('@/views/error-page/404'),
-    meta: {
-      title: '404',
-      hidden: true
-    }
-  },
-  {
-    path: '/test',
-    component: () => import('@/views/test/Test'),
-    meta: {
-      title: 'Test',
-      hidden: true
-    }
-  },
-  {
-    path: '/system',
-    component: () => import('@/views/Layout'),
-    redirect: '/system/role',
-    children: [
-      {
-        path: 'role',
-        name: 'SystemRole',
-        component: () => import('@/views/system/role/List')
-      },
-      {
-        path: 'user',
-        name: 'SystemUser',
-        component: () => import('@/views/system/user/List')
-      },
-      {
-        path: 'menu',
-        name: 'SystemMenu',
-        component: () => import('@/views/system/menu/List')
-      },
-      {
-        path: 'api',
-        name: 'SystemApi',
-        component: () => import('@/views/system/api/List')
-      },
-      {
-        path: 'permission/:id',
-        name: 'SystemPermission',
-        component: () => import('@/views/system/permission/List')
-      }
-    ]
-  },
-  {
-    path: '/info',
-    component: () => import('@/views/Layout'),
-    redirect: '/info/resource',
-    children: [
-      {
-        path: 'resource',
-        name: 'Resource',
-        redirect: 'resource/list',
-        component: () => import('@/views/Index'),
-        children: [
-          {
-            path: 'list',
-            name: 'ResourceList',
-            component: () => import('@/views/info/resource/List')
-          },
-          {
-            path: 'upload',
-            name: 'ResourceUpload',
-            component: () => import('@/views/info/resource/Upload')
-          }
-        ]
-      },
-      {
-        path: 'password',
-        name: 'PasswordList',
-        component: () => import('@/views/info/password/List')
-      },
-      {
-        path: 'account',
-        name: 'AccountList',
-        component: () => import('@/views/info/account/List')
-      },
-      {
-        path: 'memory',
-        name: 'MemoryIndex',
-        redirect: 'memory/list',
-        component: () => import('@/views/Index'),
-        children: [
-          {
-            path: 'list',
-            name: 'MemoryList',
-            component: () => import('@/views/info/memory/List')
-          },
-          {
-            path: 'add',
-            name: 'MemoryAdd',
-            component: () => import('@/views/info/memory/Dialog')
-          },
-          {
-            path: 'edit/:id',
-            name: 'MemoryEdit',
-            component: () => import('@/views/info/memory/Dialog')
-          },
-          {
-            path: 'detail/:id',
-            name: 'MemoryDetail',
-            component: () => import('@/views/info/memory/Detail')
-          }
-        ]
-      },
-      {
-        path: 'project',
-        name: 'ProjectList',
-        component: () => import('@/views/project/List')
-      },
-      {
-        path: 'collect',
-        name: 'CollectList',
-        component: () => import('@/views/collect/List')
-      }
-    ]
-  },
-  {
-    path: '/monitor',
-    component: () => import('@/views/Layout'),
-    redirect: '/monitor/job',
-    children: [
-      {
-        path: 'job',
-        name: 'MonitorJob',
-        component: () => import('@/views/monitor/job/List')
-      },
-      {
-        path: 'server',
-        name: 'MonitorServer',
-        component: () => import('@/views/monitor/server/List')
-      },
-      {
-        path: 'cache',
-        name: 'MonitorCache',
-        component: () => import('@/views/monitor/cache/List')
-      }
-    ]
   }
+  // {
+  //   path: '/login',
+  //   component: () => import('@/views/Login'),
+  //   meta: {
+  //     title: 'login',
+  //     hidden: true
+  //   }
+  // },
+  // {
+  //   path: '/401',
+  //   component: () => import('@/views/error-page/401'),
+  //   meta: {
+  //     title: '401',
+  //     hidden: true
+  //   }
+  // },
+  // {
+  //   path: '/404',
+  //   component: () => import('@/views/error-page/404'),
+  //   meta: {
+  //     title: '404',
+  //     hidden: true
+  //   }
+  // },
+  // {
+  //   path: '/test',
+  //   component: () => import('@/views/test/Test'),
+  //   meta: {
+  //     title: 'Test',
+  //     hidden: true
+  //   }
+  // },
+  // {
+  //   path: '/system',
+  //   component: () => import('@/views/Layout'),
+  //   redirect: '/system/role',
+  //   children: [
+  //     {
+  //       path: 'role',
+  //       name: 'SystemRole',
+  //       component: () => import('@/views/system/role/List')
+  //     },
+  //     {
+  //       path: 'user',
+  //       name: 'SystemUser',
+  //       component: () => import('@/views/system/user/List')
+  //     },
+  //     {
+  //       path: 'menu',
+  //       name: 'SystemMenu',
+  //       component: () => import('@/views/system/menu/List')
+  //     },
+  //     {
+  //       path: 'api',
+  //       name: 'SystemApi',
+  //       component: () => import('@/views/system/api/List')
+  //     },
+  //     {
+  //       path: 'permission/:id',
+  //       name: 'SystemPermission',
+  //       component: () => import('@/views/system/permission/List')
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/info',
+  //   component: () => import('@/views/Layout'),
+  //   redirect: '/info/resource',
+  //   children: [
+  //     {
+  //       path: 'resource',
+  //       name: 'Resource',
+  //       redirect: 'resource/list',
+  //       component: () => import('@/views/Index'),
+  //       children: [
+  //         {
+  //           path: 'list',
+  //           name: 'ResourceList',
+  //           component: () => import('@/views/info/resource/List')
+  //         },
+  //         {
+  //           path: 'upload',
+  //           name: 'ResourceUpload',
+  //           component: () => import('@/views/info/resource/Upload')
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       path: 'password',
+  //       name: 'PasswordList',
+  //       component: () => import('@/views/info/password/List')
+  //     },
+  //     {
+  //       path: 'account',
+  //       name: 'AccountList',
+  //       component: () => import('@/views/info/account/List')
+  //     },
+  //     {
+  //       path: 'memory',
+  //       name: 'MemoryIndex',
+  //       redirect: 'memory/list',
+  //       component: () => import('@/views/Index'),
+  //       children: [
+  //         {
+  //           path: 'list',
+  //           name: 'MemoryList',
+  //           component: () => import('@/views/info/memory/List')
+  //         },
+  //         {
+  //           path: 'add',
+  //           name: 'MemoryAdd',
+  //           component: () => import('@/views/info/memory/Dialog')
+  //         },
+  //         {
+  //           path: 'edit/:id',
+  //           name: 'MemoryEdit',
+  //           component: () => import('@/views/info/memory/Dialog')
+  //         },
+  //         {
+  //           path: 'detail/:id',
+  //           name: 'MemoryDetail',
+  //           component: () => import('@/views/info/memory/Detail')
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       path: 'project',
+  //       name: 'ProjectList',
+  //       component: () => import('@/views/project/List')
+  //     },
+  //     {
+  //       path: 'collect',
+  //       name: 'CollectList',
+  //       component: () => import('@/views/collect/List')
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/monitor',
+  //   component: () => import('@/views/Layout'),
+  //   redirect: '/monitor/job',
+  //   children: [
+  //     {
+  //       path: 'job',
+  //       name: 'MonitorJob',
+  //       component: () => import('@/views/monitor/job/List')
+  //     },
+  //     {
+  //       path: 'server',
+  //       name: 'MonitorServer',
+  //       component: () => import('@/views/monitor/server/List')
+  //     },
+  //     {
+  //       path: 'cache',
+  //       name: 'MonitorCache',
+  //       component: () => import('@/views/monitor/cache/List')
+  //     }
+  //   ]
+  // }
 ]
 
-const router = new VueRouter({
+const createRouter = () => new VueRouter({
   routes
 })
+const router = createRouter()
+
+// 根据权限获取有效路由列表
+export function parseRoutes (routes) {
+  const res = routes.map(element => {
+    if (element.children && element.children.length > 0) {
+      element.children = parseRoutes(element.children)
+    }
+    element.component = routeComponentMap[element.component]
+    return element
+  })
+  return res
+}
 
 /**
  * 路由前置守卫
@@ -212,8 +226,10 @@ router.beforeEach(async (to, from, next) => {
         next()
       } else {
         // 一定要加await，否则后续再使用指令过程中拿不到数据
-        const routes = await store.dispatch('user/SET_USER')
-        console.log(routes)
+        await store.dispatch('user/SET_PERMS')
+        const routes = await store.dispatch('user/SET_MENUS')
+        const routelist = parseRoutes(routes)
+        router.addRoutes([...routelist])
         next()
       }
     } catch (error) {
@@ -240,3 +256,8 @@ router.beforeEach(async (to, from, next) => {
 })
 
 export default router
+
+export function resetRouter () {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // 替换旧的router 的watcher
+}

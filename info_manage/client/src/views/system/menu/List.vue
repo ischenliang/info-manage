@@ -33,7 +33,7 @@
             <i :class="row.icon" style="font-size: 22px;"></i>
           </template>
         </el-table-column>
-        <el-table-column v-if="show[2].value" prop="component" label="组件路径" min-width="120" align="center" sortable="custom" />
+        <el-table-column v-if="show[2].value" prop="component" label="菜单组件" min-width="120" align="center" sortable="custom" />
         <el-table-column v-if="show[3].value" prop="path" label="路由地址" min-width="120" align="center" sortable="custom" />
         <el-table-column v-if="show[4].value" prop="order" label="显示顺序" min-width="120" align="center" sortable="custom" />
         <el-table-column v-if="show[5].value" prop="is_frame" label="是否外链" min-width="120" align="center" sortable="custom">
