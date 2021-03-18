@@ -1,12 +1,12 @@
 <template>
-  <div class="app-page" style="padding: 0;">
-    测试高亮显示菜单。。。。
+  <div class="app-page">
+    MonitorCache
   </div>
 </template>
 
 <script>
 export default {
-
+  name: 'MonitorCache'
 }
 </script>
 

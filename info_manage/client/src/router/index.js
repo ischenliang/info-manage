@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Cookies from 'js-cookie'
 import store from '@/store'
+import { Message } from 'element-ui'
 
 Vue.use(VueRouter)
 
@@ -79,35 +80,6 @@ const routes = [
         path: 'permission/:id',
         name: 'SystemPermission',
         component: () => import('@/views/system/permission/List')
-      },
-      {
-        path: 'edit/:id',
-        name: 'SystemEdit',
-        component: () => import('@/views/system/permission/Edit')
-      }
-    ]
-  },
-  {
-    path: '/collect',
-    component: () => import('@/views/Layout'),
-    redirect: '/collect/list',
-    children: [
-      {
-        path: 'list',
-        name: 'CollectList',
-        component: () => import('@/views/collect/List')
-      }
-    ]
-  },
-  {
-    path: '/project',
-    component: () => import('@/views/Layout'),
-    redirect: '/project/list',
-    children: [
-      {
-        path: 'list',
-        name: 'ProjectList',
-        component: () => import('@/views/project/List')
       }
     ]
   },
@@ -171,6 +143,38 @@ const routes = [
             component: () => import('@/views/info/memory/Detail')
           }
         ]
+      },
+      {
+        path: 'project',
+        name: 'ProjectList',
+        component: () => import('@/views/project/List')
+      },
+      {
+        path: 'collect',
+        name: 'CollectList',
+        component: () => import('@/views/collect/List')
+      }
+    ]
+  },
+  {
+    path: '/monitor',
+    component: () => import('@/views/Layout'),
+    redirect: '/monitor/job',
+    children: [
+      {
+        path: 'job',
+        name: 'MonitorJob',
+        component: () => import('@/views/monitor/job/List')
+      },
+      {
+        path: 'server',
+        name: 'MonitorServer',
+        component: () => import('@/views/monitor/server/List')
+      },
+      {
+        path: 'cache',
+        name: 'MonitorCache',
+        component: () => import('@/views/monitor/cache/List')
       }
     ]
   }
@@ -196,13 +200,30 @@ router.beforeEach(async (to, from, next) => {
   // 使用localStorage 还是使用 Cookies
   const token = Cookies.get('token')
   const uid = Cookies.get('uid')
+  const perms = store.getters.perms
   // 判断登录状态
   if (token && uid) {
-    // 获取用户菜单信息以及用户接口信息
-    store.dispatch('user/SET_UID', uid)
-    store.dispatch('user/SET_TOKEN', token)
-    await store.dispatch('user/SET_USER') // 一定要加await，否则后续再使用指令过程中拿不到数据
-    next()
+    try {
+      // 获取用户菜单信息以及用户接口信息
+      store.dispatch('user/SET_UID', uid)
+      store.dispatch('user/SET_TOKEN', token)
+      // 判断当前数据是否已有，有就不必再获取，避免每次都需要去请求获取
+      if (perms && perms.length > 0) {
+        next()
+      } else {
+        // 一定要加await，否则后续再使用指令过程中拿不到数据
+        const routes = await store.dispatch('user/SET_USER')
+        console.log(routes)
+        next()
+      }
+    } catch (error) {
+      Message({
+        title: '错误',
+        message: error,
+        type: 'error',
+        duration: 1000
+      })
+    }
   } else {
     const notauth = ['/login', '/404', '/401']
     if (notauth.includes(to.path)) {

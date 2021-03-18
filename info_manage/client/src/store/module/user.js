@@ -119,6 +119,7 @@ export default {
       const perms = []
       apis.data.forEach(item => perms.push(item.perms))
       commit('SET_PERMS', perms)
+      return routes
     },
     CLEAR_INFO ({ commit }) {
       commit('SET_UID', '')

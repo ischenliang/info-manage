@@ -58,7 +58,7 @@ export default {
           { name: '首页', value: 'el-icon-s-home' },
           { name: '日期', value: 'el-icon-date' },
           { name: '权限', value: 'el-icon-lock' },
-          { name: '文件夹(关闭)', value: 'el-icon-folder' },
+          { name: '文件夹', value: 'el-icon-folder' },
           { name: '文件夹(打开)', value: 'el-icon-folder-opened' },
           { name: '设置', value: 'el-icon-setting' },
           { name: '图片(实心)', value: 'el-icon-picture' },
@@ -86,13 +86,22 @@ export default {
           { name: '三角_上', value: 'el-icon-caret-top' },
           { name: '打印', value: 'el-icon-printer' },
           { name: '备忘录', value: 'el-icon-notebook-1' },
-          { name: '用户(空心)', value: 'el-icon-user' },
+          { name: '用户', value: 'el-icon-user' },
           { name: '用户(实心)', value: 'el-icon-user-solid' },
           { name: '标签', value: 'el-icon-collection-tag' },
           { name: '收藏', value: 'el-icon-collection' },
           { name: '排序', value: 'el-icon-s-order' },
           { name: '事项', value: 'el-icon-tickets' },
-          { name: '接口', value: 'el-icon-s-operation' }
+          { name: '接口', value: 'el-icon-s-operation' },
+          { name: '指引', value: 'el-icon-position' },
+          { name: '监控', value: 'el-icon-video-camera-solid' },
+          { name: '服务', value: 'el-icon-service' },
+          { name: '缓存', value: 'el-icon-data-line' },
+          { name: '信息', value: 'el-icon-takeaway-box' },
+          { name: '文档', value: 'el-icon-document' },
+          { name: '印章', value: 'el-icon-s-check' },
+          { name: '上传', value: 'el-icon-upload' },
+          { name: '授权', value: 'el-icon-document-checked' }
         ]
         break
       case 'account':

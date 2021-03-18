@@ -253,7 +253,7 @@ export default (config) => {
         if (res.data.code === 200) {
           resolve(res.data)
         } else {
-          resolve(res.data)
+          reject(res.data)
         }
       }
     }).catch(error => {

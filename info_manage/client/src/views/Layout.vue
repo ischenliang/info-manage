@@ -18,15 +18,24 @@
             <i class="el-icon-s-home"></i>
             <span slot="title">首页</span>
           </el-menu-item>
-          <el-menu-item index="/project/list">
-            <i class="el-icon-s-grid"></i>
-            <span slot="title">项目管理</span>
-          </el-menu-item>
-          <el-menu-item index="/collect">
-            <!-- <i class="el-icon-star-on"></i> -->
-            <i class="el-icon-collection"></i>
-            <span>收藏管理</span>
-          </el-menu-item>
+          <el-submenu index="/monitor">
+            <template slot="title">
+              <i class="el-icon-video-camera-solid"></i>
+              <span slot="title">系统监控</span>
+            </template>
+            <el-menu-item index="/monitor/job">
+              <i class="el-icon-date"></i>
+              <span>定时任务</span>
+            </el-menu-item>
+            <el-menu-item index="/monitor/server">
+              <i class="el-icon-service"></i>
+              <span>服务监控</span>
+            </el-menu-item>
+            <el-menu-item index="/monitor/cache">
+              <i class="el-icon-data-line"></i>
+              <span>缓存监控</span>
+            </el-menu-item>
+          </el-submenu>
           <el-submenu index="/info">
             <template slot="title">
               <i class="el-icon-takeaway-box"></i>
@@ -35,6 +44,10 @@
             <el-menu-item index="/info/resource/list">
               <i class="el-icon-folder"></i>
               <span>文件管理</span>
+            </el-menu-item>
+            <el-menu-item index="/info/project">
+              <i class="el-icon-s-grid"></i>
+              <span>项目管理</span>
             </el-menu-item>
             <el-menu-item index="/info/password">
               <i class="el-icon-lock"></i>
@@ -47,6 +60,10 @@
             <el-menu-item index="/info/account">
               <i class="el-icon-s-marketing"></i>
               <span>账目管理</span>
+            </el-menu-item>
+            <el-menu-item index="/info/collect">
+              <i class="el-icon-collection"></i>
+              <span>收藏管理</span>
             </el-menu-item>
           </el-submenu>
           <el-submenu index="/system">
