@@ -1,6 +1,23 @@
 export default {
   Layout: () => import('@/views/Layout'),
+  Index: () => import('@/views/Index'),
   MonitorJobList: () => import('@/views/monitor/job/List'),
   MonitorServerList: () => import('@/views/monitor/server/List'),
-  MonitorCacheList: () => import('@/views/monitor/cache/List')
+  MonitorCacheList: () => import('@/views/monitor/cache/List'),
+  CollectList: () => import('@/views/info/collect/List'),
+  ResourceUpload: () => import('@/views/info/resource/Upload'),
+  ResourceList: () => import('@/views/info/resource/List'),
+  ProjectList: () => import('@/views/info/project/List'),
+  MemoryDetail: () => import('@/views/info/memory/Detail'),
+  MemoryList: () => import('@/views/info/memory/List'),
+  MemoryDialog: () => import('@/views/info/memory/Dialog'),
+  PasswordList: () => import('@/views/info/password/List'),
+  AccountList: () => import('@/views/info/account/List'),
+  SystemPermission: () => import('@/views/system/permission/List'),
+  SystemMenu: () => import('@/views/system/menu/List'),
+  SystemRole: () => import('@/views/system/role/List'),
+  SystemUser: () => import('@/views/system/user/List'),
+  SystemApi: () => import('@/views/system/api/List')
+  // ProjectList: () => import('@/views/info/project/List'),
+  // ProjectList: () => import('@/views/info/project/List'),
 }

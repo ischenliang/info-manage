@@ -29,6 +29,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { parseRoutes, routes, resetRouter } from '@/router/index.js'
 export default {
   data () {
     return {
@@ -86,10 +87,15 @@ export default {
         requireAuth: true,
         paths: [this.$route.params.id],
         data: this.$refs.tree.getCheckedKeys()
-      }).then(res => {
+      }).then(async res => {
         this.$notify.success(res.msg)
         this.listGet()
-        this.setUser()
+        // 重置路由并更新路由
+        resetRouter()
+        const dynamicRoutes = await this.setUser(routes) // 注意：要将静态路由拼接到menus中
+        const routelist = parseRoutes(dynamicRoutes)
+        routelist.push({ path: '*', redirect: '/404' })
+        this.$router.addRoutes(routes.concat(...routelist))
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {

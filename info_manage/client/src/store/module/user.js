@@ -33,7 +33,7 @@ export default {
     SET_TOKEN ({ commit }, arg) {
       commit('SET_TOKEN', arg)
     },
-    async SET_MENUS ({ state, commit }) {
+    async SET_MENUS ({ state, commit }, arg) {
       const res = await http({
         name: 'GetUserMenu',
         requireAuth: true,
@@ -108,7 +108,7 @@ export default {
         }
         routes.push(tmp1)
       })
-      commit('SET_MENUS', routes)
+      commit('SET_MENUS', arg.concat([...routes]))
       return routes
     },
     async SET_PERMS ({ state, commit }) {
