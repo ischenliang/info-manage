@@ -72,7 +72,7 @@
               size="mini"
               icon="el-icon-info"
               title="详情"
-              @click="$router.push({ path: `/info/memory/detail/${row.id}` })" />
+              @click="$router.push({ path: `/info/momery/detail/${row.id}` })" />
             <el-button
               type="primary"
               size="mini"
