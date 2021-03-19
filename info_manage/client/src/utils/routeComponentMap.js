@@ -2,6 +2,8 @@ export default {
   Layout: () => import('@/views/Layout'),
   Index: () => import('@/views/Index'),
   MonitorJobList: () => import('@/views/monitor/job/List'),
+  MonitorJobDialog: () => import('@/views/monitor/job/Dialog'),
+  MonitorJobLog: () => import('@/views/monitor/job/Log'),
   MonitorServerList: () => import('@/views/monitor/server/List'),
   MonitorCacheList: () => import('@/views/monitor/cache/List'),
   CollectList: () => import('@/views/info/collect/List'),

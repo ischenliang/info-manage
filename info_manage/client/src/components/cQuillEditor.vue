@@ -20,7 +20,11 @@ export default {
   name: 'cQuillEditor',
   props: {
     content: String,
-    text: String
+    text: String,
+    placeholder: {
+      type: String,
+      default: '请输入备忘录内容'
+    }
   },
   model: {
     prop: 'content',
@@ -31,7 +35,7 @@ export default {
       // 第一种
       // curContent: this.content,
       editorOption: {
-        placeholder: '请输入备忘录内容'
+        placeholder: this.placeholder
         // modules: {
         //   toolbar: [
         //     ['bold', 'italic', 'underline', 'strike'], // 加粗，斜体，下划线，删除线

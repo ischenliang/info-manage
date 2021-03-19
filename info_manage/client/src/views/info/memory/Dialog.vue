@@ -10,7 +10,10 @@
         size="medium"
         @click="submit"
         :loading="loading">保存</el-button>
-      <el-button type="danger" size="medium">取消</el-button>
+      <el-button
+        type="danger"
+        size="medium"
+        @click="$router.push({ path: '/info/memory/list' })">取消</el-button>
     </div>
     <div class="table" style="padding: 10px 20px;">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="top">

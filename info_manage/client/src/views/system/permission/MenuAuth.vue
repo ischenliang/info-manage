@@ -67,7 +67,9 @@ export default {
       }).then(res => {
         const keys = []
         res.data.rm.forEach(item => {
-          keys.push(item.id)
+          if (item.type === 2) {
+            keys.push(item.id)
+          }
         })
         this.$nextTick(() => {
           this.$refs.tree.setCheckedKeys(keys)
@@ -86,7 +88,7 @@ export default {
         name: 'UpdateRoleMenu',
         requireAuth: true,
         paths: [this.$route.params.id],
-        data: this.$refs.tree.getCheckedKeys()
+        data: [...this.$refs.tree.getCheckedKeys(), ...this.$refs.tree.getHalfCheckedKeys()]
       }).then(async res => {
         this.$notify.success(res.msg)
         this.listGet()

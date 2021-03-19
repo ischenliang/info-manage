@@ -197,6 +197,16 @@ const list = {
   UpdateMemory: { method: 'put', url: '/memory/update' },
 
   /**
+   * 定时任务管理
+  */
+  // 任务列表 请求类型：get 请求地址：/task/list
+  GetTasks: { method: 'get', url: '/task/list' },
+  // 更新任务 请求类型：put 请求地址：/task/update
+  UpdateTask: { method: 'put', url: '/task/update' },
+  // 删除任务 请求类型：delete 请求地址：/task/deleteById
+  DeleteTask: { method: 'delete', url: '/task/deleteById' },
+
+  /**
    * 公共接口
   */
   // 登录 请求类型：post 请求地址：/api/login
@@ -217,12 +227,6 @@ export default (config) => {
       headers: config.headers ? config.headers : {}
     }
 
-    // if (method === 'get' || method === 'delete') {
-    //   requestConfig.params = config.params
-    // }
-    // if (method === 'post' || method === 'put') {
-    //   requestConfig.data = config.data
-    // }
     requestConfig.params = config.params
     requestConfig.data = config.data
 

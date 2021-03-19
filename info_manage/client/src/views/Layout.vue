@@ -23,7 +23,7 @@
               <i class="el-icon-video-camera-solid"></i>
               <span slot="title">系统监控</span>
             </template>
-            <el-menu-item index="/monitor/job">
+            <el-menu-item index="/monitor/job/list">
               <i class="el-icon-date"></i>
               <span>定时任务</span>
             </el-menu-item>

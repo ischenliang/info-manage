@@ -61,8 +61,6 @@ async function update (role) {
 async function detail (id) {
   try {
     // 查询role_menu所有数据
-    // const results = await sequelize.query(`select * from role_menu where roleId='${id}'`, { type: QueryTypes.SELECT })
-    // const role = (await Role.findOne({ where: { id } })).toJSON()
     return await Role.findOne({
       where: {
         id
