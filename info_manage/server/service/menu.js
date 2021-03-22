@@ -117,7 +117,7 @@ async function list (query) {
         }
       },
       order: [
-        [query.sort ? query.sort : 'ctime', query.order ? query.order : 'desc']
+        [query.sort ? query.sort : 'order', query.order ? query.order : 'asc']
       ],
       limit: limit,
       offset: query.page ? (parseInt(query.page) - 1) * limit : 0,
@@ -132,6 +132,9 @@ async function list (query) {
               [Op.like]: query.status ? `%${JSON.parse(query.status) ? 1 : 0}%` : '%%'
             }
           },
+          order: [
+            ['order', 'asc']
+          ],
           // all: true,
           // nested : true
           include: [
@@ -143,7 +146,11 @@ async function list (query) {
                   [Op.like]: query.status ? `%${JSON.parse(query.status) ? 1 : 0}%` : '%%'
                 }
               },
-              as: 'children' }
+              order: [
+                ['order', 'asc']
+              ],
+              as: 'children'
+            }
           ]
         }
       ],

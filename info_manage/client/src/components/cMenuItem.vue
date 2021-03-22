@@ -13,6 +13,7 @@
        />
     </el-submenu>
     <!-- 只有一个子节点 -->
+    <!-- 需要排除外链的情况 -->
     <el-menu-item v-else-if="parent" :index="item.path" @click.native="click">
       <i :class="item.meta.icon"></i>
       <span slot="title">{{ item.meta.title }}</span>
