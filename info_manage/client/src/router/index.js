@@ -15,17 +15,31 @@ export const routes = [
     children: [
       {
         path: 'home',
-        name: 'Home',
-        component: () => import('@/views/home/Home')
+        title: 'Home',
+        component: () => import('@/views/home/Home'),
+        meta: {
+          title: '首页',
+          hidden: 1,
+          is_frame: 0,
+          icon: 'el-icon-s-home'
+        }
       }
-    ]
+    ],
+    meta: {
+      title: '首页',
+      hidden: 1,
+      is_frame: 0,
+      icon: 'el-icon-s-home'
+    }
   },
   {
     path: '/login',
     component: () => import('@/views/Login'),
     meta: {
       title: 'login',
-      hidden: true
+      hidden: 0,
+      is_frame: 0,
+      icon: ''
     }
   },
   {

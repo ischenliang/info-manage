@@ -22,7 +22,10 @@
         </el-form-item>
         <div class="form-inline">
           <el-form-item label="调用目标字符串" prop="invoke_target">
-            <el-input v-model="form.invoke_target"></el-input>
+            <el-select v-model="form.invoke_target" style="width: 100%">
+              <el-option label="task.notification" value="task.notification" />
+              <el-option label="task.cleanupLog" value="task.cleanupLog" />
+            </el-select>
           </el-form-item>
           <el-form-item prop="cron_expression">
             <span slot="label">
@@ -46,7 +49,7 @@
         <el-form-item label="通知内容" prop="content">
           <c-quill-editor
             v-model="form.content"
-            style="height: 400px;"
+            style="height: 360px;"
             :placeholder="'请输入通知内容....'" />
         </el-form-item>
       </el-form>
@@ -56,10 +59,9 @@
 
 <script>
 export default {
-  props: {
-    id: {
-      type: String,
-      default: ''
+  computed: {
+    id () {
+      return this.$route.params.id === undefined ? '' : this.$route.params.id
     }
   },
   data () {
@@ -88,12 +90,11 @@ export default {
     // 新增提交
     addSubmit () {
       this.$http({
-        name: 'AddUser',
+        name: 'AddTask',
         requireAuth: true,
         data: this.form
       }).then(res => {
-        this.$emit('submit')
-        this.close()
+        this.$router.push({ path: '/monitor/job/list' })
         this.$notify.success(res.msg)
       }).catch(error => {
         this.$notify.error(error)
@@ -104,12 +105,11 @@ export default {
     // 编辑提交
     editSubmit () {
       this.$http({
-        name: 'UpdateUser',
+        name: 'UpdateTask',
         requireAuth: true,
         data: this.form
       }).then(res => {
-        this.$emit('submit')
-        this.close()
+        this.$router.push({ path: '/monitor/job/list' })
         this.$notify.success(res.msg)
       }).catch(error => {
         this.$notify.error(error)
@@ -134,10 +134,11 @@ export default {
     listGet () {
       // 获取数据....
       this.$http({
-        name: 'GetUser',
+        name: 'GetTask',
         requireAuth: true,
         paths: [this.id]
       }).then(res => {
+        this.form = res.data
       }).catch(error => {
         this.$notify.error(error)
       })

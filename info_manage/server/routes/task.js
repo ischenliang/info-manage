@@ -1,7 +1,7 @@
 const router = require('koa-router')()
 router.prefix('/api/task')
 const resConfig = require('../config/app.res')
-const { add, deleteById, update, detail, list } = require('../service/task')
+const { add, deleteById, update, detail, list, log } = require('../service/task')
 
 // 新增
 router.post('/add', async(ctx, next) => {
@@ -75,6 +75,21 @@ router.get('/list', async(ctx, next) => {
       data: await list(ctx.query, ctx.uid)
     }
   } catch (error) {
+    ctx.throw(error.status, error)
+  }
+})
+
+// 任务日志
+router.get('/log/:id', async(ctx, next) => {
+  try {
+    ctx.status = 200
+    ctx.body = {
+      code: 200,
+      msg: resConfig[ctx.request.method],
+      data:  await log(ctx.params.id, ctx.uid)
+    }
+  } catch (error) {
+    error.status = error.status ? error.status : 500
     ctx.throw(error.status, error)
   }
 })

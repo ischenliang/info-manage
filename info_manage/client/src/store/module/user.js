@@ -57,7 +57,7 @@ export default {
           }
         }
         if (item1.children) {
-          item1.children.forEach(item2 => {
+          item1.children.sort((a, b) => a.order - b.order).forEach(item2 => {
             // 第二层
             const tmp2 = {
               path: item2.path,
@@ -67,11 +67,12 @@ export default {
                 title: item2.name,
                 icon: item2.icon,
                 hidden: item2.visible,
-                is_frame: item2.is_frame
+                is_frame: item2.is_frame,
+                active: item2.visible === 1 ? '' : tmp1.path
               }
             }
             if (item2.children) {
-              item2.children.forEach(item3 => {
+              item2.children.sort((a, b) => a.order - b.order).forEach(item3 => {
                 // 第三层
                 const tmp3 = {
                   path: item3.path,
@@ -81,7 +82,8 @@ export default {
                     title: item3.name,
                     icon: item3.icon,
                     hidden: item3.visible,
-                    is_frame: item3.is_frame
+                    is_frame: item3.is_frame,
+                    active: item3.visible === 1 ? '' : tmp2.path
                   }
                 }
                 if (item3.children) {
@@ -94,7 +96,8 @@ export default {
                         title: item4.name,
                         icon: item4.icon,
                         hidden: item4.visible,
-                        is_frame: item4.is_frame
+                        is_frame: item4.is_frame,
+                        active: item4.visible === 1 ? '' : tmp3.path
                       }
                     }
                     item3.children.push(tmp4)
@@ -102,9 +105,17 @@ export default {
                 }
                 tmp2.children.push(tmp3)
               })
+              const redirect = item2.children.filter(item => item.visible === 1)[0]
+              if (redirect) {
+                tmp2.redirect = redirect.path
+              }
             }
             tmp1.children.push(tmp2)
           })
+          const redirect = item1.children.filter(item => item.visible === 1)[0]
+          if (redirect) {
+            tmp1.redirect = redirect.path
+          }
         }
         routes.push(tmp1)
       })

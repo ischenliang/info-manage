@@ -51,7 +51,8 @@ const store = new Vuex.Store({
     role
   },
   getters: {
-    perms: state => state.user.perms
+    perms: state => state.user.perms,
+    menus: state => state.user.menus
   }
 })
 export default store

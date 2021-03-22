@@ -205,6 +205,12 @@ const list = {
   UpdateTask: { method: 'put', url: '/task/update' },
   // 删除任务 请求类型：delete 请求地址：/task/deleteById
   DeleteTask: { method: 'delete', url: '/task/deleteById' },
+  // 新增任务 请求类型：post 请求地址：/task/add
+  AddTask: { method: 'post', url: '/task/add' },
+  // 任务详情 请求类型：get 请求地址：/task/detail
+  GetTask: { method: 'get', url: '/task/detail' },
+  // 任务执行日志 请求类型：get 请求地址：/task/log
+  GetTaskLog: { method: 'get', url: '/task/log' },
 
   /**
    * 公共接口

@@ -14,6 +14,7 @@ import cToggleCopy from './cToggleCopy.vue'
 import cQuillEditor from './cQuillEditor.vue'
 import cMavonEditor from './cMavonEditor.vue'
 import cBackUp from './cBackUp.vue'
+import cMenuItem from './cMenuItem.vue'
 
 // 使用开发插件的形式全局使用公用的components
 export default {
@@ -35,7 +36,8 @@ export default {
         cToggleCopy,
         cQuillEditor,
         cMavonEditor,
-        cBackUp
+        cBackUp,
+        cMenuItem
       }
     })
   }

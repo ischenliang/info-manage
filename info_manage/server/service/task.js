@@ -3,8 +3,33 @@ const { Op } = require("sequelize")
 const sequelize = require('../utils/seq')
 const fse = require('fs-extra')
 const path = require('path')
+const readline = require('readline')
 const { taskNotification, taskCleanupLog, cancleSchedule } = require('../utils/schedule')
 const moment = require('moment')
+
+function read_line (dir) {
+  return new Promise((resolve, reject) => {
+    try {
+      // 文件若不存在：则创建文件
+      if (!fse.existsSync(dir)) {
+        fse.createFileSync(dir)
+      }
+      const fread = fse.createReadStream(dir)
+      const lines = readline.createInterface({
+        input: fread
+      })
+      var logs = new Array()
+      lines.on('line', function (line) {
+        logs.push(line)
+      })
+      lines.on('close', function () {
+        resolve(logs)
+      })
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
 
 // 新增
 async function add (task) {
@@ -153,11 +178,33 @@ async function list (query, uid) {
   }
 }
 
+// 查询日志
+async function log (id, uid) {
+  try {
+    const task = await Task.findOne({
+      where: {
+        id,
+        uid
+      }
+    })
+    if (task) {
+      const dir = path.join(__dirname, `../log/schedule/${id}.log`)
+      return {
+        name: task.name,
+        logs: await read_line(dir)
+      }
+    }
+  } catch (error) {
+    throw error
+  }
+}
+
 
 module.exports =  {
   add,
   deleteById,
   update,
   detail,
-  list
+  list,
+  log
 }

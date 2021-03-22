@@ -7,7 +7,7 @@
       </div>
        <div class="el-scrollbar">
         <el-menu
-          :default-active="active"
+          :default-active="activeMenu"
           class="el-menu-vertical-demo"
           background-color="#304156"
           text-color="#C1CBD9"
@@ -23,7 +23,7 @@
               <i class="el-icon-video-camera-solid"></i>
               <span slot="title">系统监控</span>
             </template>
-            <el-menu-item index="/monitor/job/list">
+            <el-menu-item index="/monitor/job">
               <i class="el-icon-date"></i>
               <span>定时任务</span>
             </el-menu-item>
@@ -41,7 +41,7 @@
               <i class="el-icon-takeaway-box"></i>
               <span slot="title">信息管理</span>
             </template>
-            <el-menu-item index="/info/resource/list">
+            <el-menu-item index="/info/resource">
               <i class="el-icon-folder"></i>
               <span>文件管理</span>
             </el-menu-item>
@@ -53,7 +53,7 @@
               <i class="el-icon-lock"></i>
               <span>密码管理</span>
             </el-menu-item>
-            <el-menu-item index="/info/memory/list">
+            <el-menu-item index="/info/memory">
               <i class="el-icon-document"></i>
               <span>备忘录管理</span>
             </el-menu-item>
@@ -111,17 +111,23 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   computed: {
-    active () {
-      switch (this.$route.name) {
-        case 'SystemPermission':
-        case 'SystemEdit':
-          return '/system/role'
-        default:
-          return this.$route.path
+    ...mapGetters({
+      menus: 'menus'
+    }),
+    activeMenu () {
+      const route = this.$route
+      const { meta, path } = route
+      // 这样处理有个bug：如果不是list页面呢？待解决
+      if (meta.active === '' && path.indexOf('list') !== -1) {
+        return path.replace(/\/list/, '')
       }
+      if (meta.active !== '') {
+        return meta.active
+      }
+      return path
     }
   },
   methods: {
