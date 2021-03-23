@@ -14,9 +14,7 @@ async function server () {
       os: process.arch,
       platform: process.platform,
       pid: process.pid, // 进程 ID
-      time: process.cpuUsage(),
       port: process.debugPort,
-      env: process.env,
       memoryUsage: process.memoryUsage()
     }
   } catch (error) {
