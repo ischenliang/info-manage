@@ -41,7 +41,6 @@
       <!-- 注意： 如果给el-table设置了height="100%"，那么再使用show-summary是不显示的 -->
       <el-table
         style="width: 100%;"
-        max-height="100%"
         stripe
         ref="table"
         border

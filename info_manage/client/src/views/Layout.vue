@@ -6,6 +6,7 @@
         <label>个人信息管理系统</label>
       </div>
        <div class="el-scrollbar">
+         <!-- unique-opened -->
         <el-menu
           :default-active="activeMenu"
           class="el-menu-vertical-demo"
@@ -14,7 +15,12 @@
           active-text-color="#409EFF"
           style="border-right: none;"
           router>
-          <el-menu-item index="/home">
+          <c-menu-item
+            v-for="(item, index) in menus"
+            :key="index + item.path"
+            :item="item"
+          />
+          <!-- <el-menu-item index="/home">
             <i class="el-icon-s-home"></i>
             <span slot="title">首页</span>
           </el-menu-item>
@@ -87,7 +93,7 @@
               <i class="el-icon-location"></i>
               <span>接口管理</span>
             </el-menu-item>
-          </el-submenu>
+          </el-submenu> -->
         </el-menu>
        </div>
     </div>
@@ -124,6 +130,10 @@ export default {
       if (meta.active === '' && path.indexOf('list') !== -1) {
         return path.replace(/\/list/, '')
       }
+      // 排除授权页的高亮
+      if (path.indexOf('/system/permission') !== -1) {
+        return '/system/role'
+      }
       if (meta.active !== '') {
         return meta.active
       }
@@ -145,4 +155,7 @@ export default {
 </script>
 
 <style lang="scss">
+.el-submenu .el-menu-item {
+  background-color: #1f2d3d !important;
+}
 </style>

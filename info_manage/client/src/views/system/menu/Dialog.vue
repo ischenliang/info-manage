@@ -79,6 +79,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import { parseRoutes, routes, resetRouter } from '@/router/index.js'
 export default {
   props: {
     visible: Boolean,
@@ -115,6 +117,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      setUser: 'user/SET_MENUS'
+    }),
     close () {
       this.$emit('update:visible', false)
       this.$emit('update:id', '')
@@ -153,13 +158,19 @@ export default {
     },
     // 提交中间件
     submit () {
-      this.$refs.form.validate(valid => {
+      this.$refs.form.validate(async valid => {
         if (valid) {
           if (this.id === '' || this.id === undefined) {
             this.addSubmit()
           } else {
             this.editSubmit()
           }
+          // 重置路由并更新路由
+          resetRouter()
+          const dynamicRoutes = await this.setUser(routes) // 注意：要将静态路由拼接到menus中
+          const routelist = parseRoutes(dynamicRoutes)
+          routelist.push({ path: '*', redirect: '/404' })
+          this.$router.addRoutes(routes.concat(...routelist))
         }
       })
     },

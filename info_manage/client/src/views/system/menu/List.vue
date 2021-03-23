@@ -73,6 +73,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import { parseRoutes, routes, resetRouter } from '@/router/index.js'
 import ComDialog from './Dialog'
 export default {
   components: {
@@ -111,6 +113,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      setUser: 'user/SET_MENUS'
+    }),
     listGet () {
       this.list.loading = true
       this.$http({
@@ -190,8 +195,14 @@ export default {
           name: 'DeleteMenu',
           requireAuth: true,
           paths: [row.id]
-        }).then(res => {
+        }).then(async res => {
           this.$notify.success(res.msg)
+          // 重置路由并更新路由
+          resetRouter()
+          const dynamicRoutes = await this.setUser(routes) // 注意：要将静态路由拼接到menus中
+          const routelist = parseRoutes(dynamicRoutes)
+          routelist.push({ path: '*', redirect: '/404' })
+          this.$router.addRoutes(routes.concat(...routelist))
         }).catch(error => {
           this.$notify.error(error)
         }).finally(() => {
@@ -207,10 +218,16 @@ export default {
             name: 'DeleteMenu',
             requireAuth: true,
             paths: [item]
-          }).then(res => {
+          }).then(async res => {
             if (index === this.list.selected.length - 1) {
               this.$notify.success(res.msg)
               this.list.selected = []
+              // 重置路由并更新路由
+              resetRouter()
+              const dynamicRoutes = await this.setUser(routes) // 注意：要将静态路由拼接到menus中
+              const routelist = parseRoutes(dynamicRoutes)
+              routelist.push({ path: '*', redirect: '/404' })
+              this.$router.addRoutes(routes.concat(...routelist))
             }
           }).catch(error => {
             this.$notify.error(error)
@@ -235,6 +252,5 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss">
 </style>

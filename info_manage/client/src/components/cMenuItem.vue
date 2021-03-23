@@ -14,10 +14,16 @@
     </el-submenu>
     <!-- 只有一个子节点 -->
     <!-- 需要排除外链的情况 -->
-    <el-menu-item v-else-if="parent" :index="item.path" @click.native="click">
-      <i :class="item.meta.icon"></i>
-      <span slot="title">{{ item.meta.title }}</span>
-    </el-menu-item>
+    <template v-else-if="parent">
+      <el-menu-item v-if="item.meta.is_frame === 1" index="" @click.native="click">
+        <i :class="item.meta.icon"></i>
+        <span slot="title">{{ item.meta.title }}</span>
+      </el-menu-item>
+      <el-menu-item v-else :index="item.path">
+        <i :class="item.meta.icon"></i>
+        <span slot="title">{{ item.meta.title }}</span>
+      </el-menu-item>
+    </template>
   </div>
 </template>
 
@@ -50,6 +56,7 @@ export default {
       }
     },
     click () {
+      window.open(this.item.path, '_blank')
     }
   }
 }

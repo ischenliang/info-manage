@@ -32,7 +32,7 @@
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button type="primary" size="medium" @click="submit">确定</el-button>
+      <el-button type="primary" size="medium" @click="submit" :loading="loading">确定</el-button>
       <el-button type="danger" size="medium" @click="close">取消</el-button>
     </span>
   </el-dialog>
@@ -72,7 +72,8 @@ export default {
           { label: 'DELETE', value: 'DELETE' }
         ],
         apiTypes: []
-      }
+      },
+      loading: false
     }
   },
   methods: {
@@ -92,6 +93,8 @@ export default {
         this.$notify.success(res.msg)
       }).catch(error => {
         this.$notify.error(error)
+      }).finally(() => {
+        this.loading = false
       })
     },
     // 编辑提交
@@ -106,12 +109,15 @@ export default {
         this.$notify.success(res.msg)
       }).catch(error => {
         this.$notify.error(error)
+      }).finally(() => {
+        this.loading = false
       })
     },
     // 提交中间件
     submit () {
       this.$refs.form.validate(valid => {
         if (valid) {
+          this.loading = true
           if (this.id === '' || this.id === undefined) {
             this.addSubmit()
           } else {
@@ -140,7 +146,8 @@ export default {
         requireAuth: true,
         params: {
           page: 1,
-          size: 10000
+          size: 10000,
+          status: true
         }
       }).then(res => {
         this.list.apiTypes = res.data.data

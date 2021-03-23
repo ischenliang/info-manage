@@ -15,9 +15,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import cMenuItem from '../../components/cMenuItem.vue'
 export default {
-  components: { cMenuItem },
   name: 'Home',
   data () {
     return {

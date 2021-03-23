@@ -9,3 +9,6 @@
 [2021-03-14 16:32:05] [INFO] tasklog.cleanupLog - 任务：日志清理执行成功
 [2021-03-14 16:33:05] [INFO] tasklog.cleanupLog - 任务：日志清理执行成功
 [2021-03-14 16:33:11] [TRACE] tasklog.cancel - 取消任务
+[2021-03-23 10:11:09] [TRACE] tasklog.cleanupLog - 启动任务
+[2021-03-23 10:12:05] [INFO] tasklog.cleanupLog - 任务：日志清理执行成功
+[2021-03-23 10:12:11] [TRACE] tasklog.cancel - 取消任务
