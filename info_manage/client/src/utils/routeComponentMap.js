@@ -19,7 +19,8 @@ export default {
   SystemMenu: () => import('@/views/system/menu/List'),
   SystemRole: () => import('@/views/system/role/List'),
   SystemUser: () => import('@/views/system/user/List'),
-  SystemApi: () => import('@/views/system/api/List')
+  SystemApi: () => import('@/views/system/api/List'),
+  ToolDns: () => import('@/views/tool/Dns')
   // ProjectList: () => import('@/views/info/project/List'),
   // ProjectList: () => import('@/views/info/project/List'),
 }

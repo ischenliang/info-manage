@@ -215,8 +215,12 @@ const list = {
   /**
    * 公共接口
   */
-  // 登录 请求类型：post 请求地址：/api/login
-  Login: { method: 'post', url: '/login' }
+  // 登录 请求类型：post 请求地址：/login
+  Login: { method: 'post', url: '/login' },
+  // 系统监控 请求类型：get 请求地址：/monitor/server
+  MonitorSystem: { method: 'get', url: '/monitor/server' },
+  // 服务监控 请求类型：get 请求地址：/monitor/process
+  MonitorServer: { method: 'get', url: '/monitor/process' }
 }
 
 export default (config) => {
