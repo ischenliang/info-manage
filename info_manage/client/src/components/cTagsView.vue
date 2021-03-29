@@ -87,7 +87,10 @@ export default {
           this.del_other_tag({
             name: this.$route.name,
             params: this.$route.params,
-            query: this.$route.query
+            query: this.$route.query,
+            title: this.$route.meta.title,
+            path: this.$route.path,
+            fullPath: this.$route.fullPath
           })
           break
         case 'all':
