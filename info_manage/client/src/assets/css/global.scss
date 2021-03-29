@@ -53,10 +53,10 @@ input:-webkit-autofill:focus {
 
 .el-breadcrumb__item {
   .el-breadcrumb__inner {
-    color: #97a8be;
+    color: #97a8be !important;
     cursor: text;
     &.is-link {
-      color: #606266;
+      color: #606266 !important;
       font-weight: 400;
       cursor: pointer;
     }

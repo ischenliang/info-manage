@@ -1,19 +1,23 @@
 <template>
   <div class="app-wrapper">
     <!-- <div class="sidebar-container has-logo"> -->
-    <div class="sidebar-container">
+    <div class="sidebar-container" :style="collapse === true ? { width: '64px' } : { width: '210px' }">
       <div class="sidebar-logo-container">
-        <label>个人信息管理系统</label>
+        <a href="/" class="sidebar-logo-link">
+          <img src="../assets/logo.png" alt="logo" class="sidebar-logo" :style="{ marginRight: collapse ? '' : '5px' }">
+          <span class="sidebar-title" v-if="!collapse">信息管理系统</span>
+        </a>
       </div>
        <div class="el-scrollbar">
          <!-- unique-opened -->
         <el-menu
           :default-active="activeMenu"
-          class="el-menu-vertical-demo"
           background-color="#304156"
           text-color="#C1CBD9"
+          :collapse="collapse"
           active-text-color="#409EFF"
           style="border-right: none;"
+          collapse-transition
           router>
           <c-menu-item
             v-for="(item, index) in menus"
@@ -100,7 +104,9 @@
     <div class="main-container">
       <div class="app-header">
         <div class="app-navbar">
-          <div class="app-hamburger"></div>
+          <div class="app-hamburger" @click="collapse = !collapse">
+            <span :class="collapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'"></span>
+          </div>
           <div class="app-breadbrumb">
             <c-bread-crumb />
           </div>
@@ -131,6 +137,11 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 export default {
+  data () {
+    return {
+      collapse: false
+    }
+  },
   computed: {
     ...mapGetters({
       menus: 'menus'

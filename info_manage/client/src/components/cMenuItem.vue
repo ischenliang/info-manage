@@ -4,7 +4,7 @@
     <el-submenu v-if="!hasOneShowingChild(item)" :index="item.path">
       <template slot="title">
         <i :class="item.meta.icon"></i>
-        <span>{{ item.meta.title }}</span>
+        <span slot="title">{{ item.meta.title }}</span>
       </template>
       <c-menu-item
         v-for="(child, index) in item.children"

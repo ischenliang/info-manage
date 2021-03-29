@@ -7,6 +7,18 @@ import routeComponentMap from '@/utils/routeComponentMap'
 
 Vue.use(VueRouter)
 
+// 重写replace方法
+const originalReplace = VueRouter.prototype.replace
+VueRouter.prototype.replace = function replace (location, onResolve, onReject) {
+  if (onResolve || onReject) return originalReplace.call(this, location, onResolve, onReject)
+  return originalReplace.call(this, location).catch(err => err)
+}
+// 重写push方法
+const routerPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location) {
+  return routerPush.call(this, location).catch(error => error)
+}
+
 export const routes = [
   {
     path: '/',
