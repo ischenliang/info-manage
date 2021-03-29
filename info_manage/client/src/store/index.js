@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import user from '@/store/module/user'
 import role from '@/store/module/role'
+import tagsview from '@/store/module/tagsview'
 import { Message } from 'element-ui'
 
 Vue.use(Vuex)
@@ -48,11 +49,13 @@ const store = new Vuex.Store({
   },
   modules: {
     user,
-    role
+    role,
+    tagsview
   },
   getters: {
     perms: state => state.user.perms,
-    menus: state => state.user.menus
+    menus: state => state.user.menus,
+    tags: state => state.tagsview.tags
   }
 })
 export default store

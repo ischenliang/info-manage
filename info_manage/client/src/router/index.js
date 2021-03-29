@@ -11,11 +11,13 @@ export const routes = [
   {
     path: '/',
     redirect: '/home',
+    name: 'Layout',
     component: () => import('@/views/Layout'),
     children: [
       {
         path: 'home',
         title: 'Home',
+        name: 'Home',
         component: () => import('@/views/home/Home'),
         meta: {
           title: '首页',
@@ -47,7 +49,7 @@ export const routes = [
     component: () => import('@/views/error-page/401'),
     meta: {
       title: '401',
-      hidden: true
+      hidden: 0
     }
   },
   {
@@ -55,8 +57,27 @@ export const routes = [
     component: () => import('@/views/error-page/404'),
     meta: {
       title: '404',
-      hidden: true
+      hidden: 0,
+      is_frame: 0,
+      icon: ''
     }
+  },
+  {
+    path: '/redirect',
+    component: () => import('@/views/Layout'),
+    meta: {
+      title: '404',
+      hidden: 0,
+      is_frame: 0,
+      icon: ''
+    },
+    children: [
+      {
+        path: '/redirect/:path(.*)',
+        name: 'Redirect',
+        component: () => import('@/views/redirect/Index')
+      }
+    ]
   }
 ]
 

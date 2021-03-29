@@ -51,6 +51,23 @@ input:-webkit-autofill:focus {
   box-shadow: 0 0 0px 1000px white inset !important;
 } 
 
+.el-breadcrumb__item {
+  .el-breadcrumb__inner {
+    color: #97a8be;
+    cursor: text;
+    &.is-link {
+      color: #606266;
+      font-weight: 400;
+      cursor: pointer;
+    }
+  }
+  .el-breadcrumb__separator {
+    margin: 0 9px;
+    font-weight: 700;
+    color: #C0C4CC;
+  }
+}
+
 
 .over-ellipsis{
   width: 100%;
@@ -58,4 +75,20 @@ input:-webkit-autofill:focus {
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+}
+
+/* fade-transform */
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all .5s;
+}
+
+.fade-transform-enter {
+  opacity: 0;
+  // transform: translateX(-30px);
+}
+
+.fade-transform-leave-to {
+  opacity: 0;
+  // transform: translateX(30px);
 }

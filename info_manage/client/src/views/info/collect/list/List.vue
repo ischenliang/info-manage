@@ -292,6 +292,9 @@ export default {
       // 在数据加载完，重新渲染表格
       if (this.showTale) this.$refs.table.doLayout()
     })
+  },
+  activated () {
+    this.listGet()
   }
 }
 </script>

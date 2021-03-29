@@ -15,6 +15,8 @@ import cQuillEditor from './cQuillEditor.vue'
 import cMavonEditor from './cMavonEditor.vue'
 import cBackUp from './cBackUp.vue'
 import cMenuItem from './cMenuItem.vue'
+import cTagsView from './cTagsView.vue'
+import cBreadCrumb from './cBreadCrumb.vue'
 
 // 使用开发插件的形式全局使用公用的components
 export default {
@@ -37,7 +39,9 @@ export default {
         cQuillEditor,
         cMavonEditor,
         cBackUp,
-        cMenuItem
+        cMenuItem,
+        cTagsView,
+        cBreadCrumb
       }
     })
   }

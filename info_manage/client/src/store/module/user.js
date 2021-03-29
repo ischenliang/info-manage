@@ -49,6 +49,7 @@ export default {
           path: item1.path,
           component: item1.component,
           children: [],
+          name: item1.component,
           meta: {
             title: item1.name,
             icon: item1.icon,
@@ -63,6 +64,7 @@ export default {
               path: item2.path,
               component: item2.component,
               children: [],
+              name: item2.component,
               meta: {
                 title: item2.name,
                 icon: item2.icon,
@@ -78,6 +80,7 @@ export default {
                   path: item3.path,
                   component: item3.component,
                   children: [],
+                  name: item3.component,
                   meta: {
                     title: item3.name,
                     icon: item3.icon,
@@ -92,6 +95,7 @@ export default {
                       path: item4.path,
                       component: item4.component,
                       children: [],
+                      name: item4.component,
                       meta: {
                         title: item4.name,
                         icon: item4.icon,

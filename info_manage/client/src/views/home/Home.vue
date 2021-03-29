@@ -29,7 +29,6 @@ export default {
       const route = this.$route
       // const { meta, path } = route
       const { path } = route
-      console.log(path)
       return path
     }
   }

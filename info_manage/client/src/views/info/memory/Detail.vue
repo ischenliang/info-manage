@@ -2,7 +2,7 @@
   <div class="app-page" style="padding: 12px 15px 12px 15px;">
     <div class="toolbar">
       <el-page-header
-        @back="$router.go(-1)"
+        @back="$router.push({ path: '/info/memory/list' })"
         :content="'备忘录详情'" />
       <c-flex-auto />
     </div>

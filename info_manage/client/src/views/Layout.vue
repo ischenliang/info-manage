@@ -99,17 +99,29 @@
     </div>
     <div class="main-container">
       <div class="app-header">
-        <div class="navbar" style="display: flex;justify-content: flex-end;align-items: flex-end;">
-          <el-button
-            type="primary"
-            size="small"
-            @click="logout"
-            style="margin-right: 25px;">退出</el-button>
+        <div class="app-navbar">
+          <div class="app-hamburger"></div>
+          <div class="app-breadbrumb">
+            <c-bread-crumb />
+          </div>
+          <div class="app-rightmenu">
+            <el-button
+              type="primary"
+              size="small"
+              @click="logout">退出</el-button>
+          </div>
         </div>
-        <div class="tags-view"></div>
+        <div class="app-tagsview">
+          <c-tags-view></c-tags-view>
+        </div>
       </div>
       <div class="app-main">
-        <router-view></router-view>
+        <transition name="fade-transform" mode="out-in">
+          <keep-alive>
+            <!-- 添加个key就能实现多个路由指向同一个组件缓存 -->
+            <router-view :key="key"></router-view>
+          </keep-alive>
+        </transition>
       </div>
       <div class="app-copyright"></div>
     </div>
@@ -130,6 +142,9 @@ export default {
       if (meta.active === '' && path.indexOf('list') !== -1) {
         return path.replace(/\/list/, '')
       }
+      if (path === '/home') {
+        return '/'
+      }
       // 排除授权页的高亮
       if (path.indexOf('/system/permission') !== -1) {
         return '/system/role'
@@ -138,6 +153,9 @@ export default {
         return meta.active
       }
       return path
+    },
+    key () {
+      return this.$route.fullPath
     }
   },
   methods: {
