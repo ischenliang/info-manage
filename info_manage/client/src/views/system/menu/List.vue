@@ -7,9 +7,22 @@
         <el-option :value="false" label="禁用" />
       </el-select>
       <div style="flex: auto;"></div>
-      <el-button type="primary" size="medium" @click="visible = true">新增</el-button>
+      <el-button
+        type="primary"
+        size="medium"
+        v-perms="'system:menu:add'"
+        @click="visible = true">
+        新增
+      </el-button>
       <el-button type="warning" size="medium">导出</el-button>
-      <el-button type="danger" size="medium" @click="deleteSelected" :disabled="deleteDisabled">删除</el-button>
+      <el-button
+        type="danger"
+        size="medium"
+        v-perms="'system:menu:delete'"
+        @click="deleteSelected"
+        :disabled="deleteDisabled">
+        删除
+      </el-button>
       <!-- 考虑做成组件 -->
       <cDropdown :show.sync="show" />
     </div>
@@ -57,8 +70,20 @@
         <el-table-column v-if="show[10].value" prop="remark" label="备注" min-width="200" align="center" sortable="custom" />
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
-            <el-button type="primary" size="mini" icon="el-icon-edit" title="编辑" @click="itemEdit(row)" />
-            <el-button type="danger" size="mini" icon="el-icon-delete" title="删除" @click="itemDelete(row)" />
+            <el-button
+              type="primary"
+              size="mini"
+              icon="el-icon-edit"
+              title="编辑"
+              v-perms="'system:menu:update'"
+              @click="itemEdit(row)" />
+            <el-button
+              type="danger"
+              size="mini"
+              icon="el-icon-delete"
+              title="删除"
+              v-perms="'system:menu:delete'"
+              @click="itemDelete(row)" />
           </template>
         </el-table-column>
       </el-table>
@@ -77,10 +102,10 @@ import { mapActions } from 'vuex'
 import { parseRoutes, routes, resetRouter } from '@/router/index.js'
 import ComDialog from './Dialog'
 export default {
+  name: 'SystemMenu',
   components: {
     ComDialog
   },
-  name: 'SystemMenu',
   data () {
     return {
       // 用于dropdown的循环和动态切换el-table-column的显示

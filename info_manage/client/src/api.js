@@ -220,7 +220,9 @@ const list = {
   // 系统监控 请求类型：get 请求地址：/monitor/server
   MonitorSystem: { method: 'get', url: '/monitor/server' },
   // 服务监控 请求类型：get 请求地址：/monitor/process
-  MonitorServer: { method: 'get', url: '/monitor/process' }
+  MonitorServer: { method: 'get', url: '/monitor/process' },
+  // 服下载 请求类型：get 请求地址：/test/download
+  Download: { method: 'get', url: '/test/download' }
 }
 
 export default (config) => {

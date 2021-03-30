@@ -1,15 +1,17 @@
 <template>
   <div class="app-page">
-    <el-menu
-      :default-active="activeMenu"
-      class="el-menu-vertical-demo"
-      style="width: 100%;">
-      <c-menu-item
-        v-for="(item, index) in menus"
-        :key="index + item.path"
-        :item="item"
-       />
-    </el-menu>
+    <div class="table">
+      <el-menu
+        :default-active="activeMenu"
+        class="el-menu-vertical-demo"
+        style="width: 100%;">
+        <c-menu-item
+          v-for="(item, index) in menus"
+          :key="index + item.path"
+          :item="item"
+        />
+      </el-menu>
+    </div>
   </div>
 </template>
 

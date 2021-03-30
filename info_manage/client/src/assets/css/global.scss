@@ -77,18 +77,38 @@ input:-webkit-autofill:focus {
   -webkit-box-orient: vertical;
 }
 
+// 自定义滚动条
+/*滚动条整体样式*/
+.c-scrollbar::-webkit-scrollbar {
+  /*高宽分别对应横竖滚动条的尺寸*/
+  width: 5px;
+  height: 1px;
+}
+/*滚动条里面小方块*/
+.c-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #606a78;
+}
+/*滚动条里面轨道*/
+.c-scrollbar::-webkit-scrollbar-track, .c-scrollbar::-moz-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  background: #304156;
+}
+
 /* fade-transform */
-.fade-transform-leave-active,
-.fade-transform-enter-active {
-  transition: all .5s;
-}
+// .fade-transform-leave-active,
+// .fade-transform-enter-active {
+//   transition: all .5s;
+// }
 
-.fade-transform-enter {
-  opacity: 0;
-  // transform: translateX(-30px);
-}
+// .fade-transform-enter {
+//   opacity: 0;
+//   transform: translateX(-30px);
+// }
 
-.fade-transform-leave-to {
-  opacity: 0;
-  // transform: translateX(30px);
-}
+// .fade-transform-leave-to {
+//   opacity: 0;
+//   transform: translateX(30px);
+// }

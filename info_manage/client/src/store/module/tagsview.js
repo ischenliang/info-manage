@@ -8,7 +8,8 @@ export default {
       title: '首页',
       path: '/home',
       fullPath: '/home'
-    }]
+    }],
+    cachedTags: ['Home']
   },
   mutations: {
     // 添加标签
@@ -37,15 +38,37 @@ export default {
     // 删除其他标签
     DEL_ALL_TAG (state, tags) {
       state.tags = tags
+    },
+    // 新增缓存标签
+    ADD_CACHED_TAG (state, tag) {
+      if (!state.cachedTags.includes(tag)) {
+        state.cachedTags.push(tag)
+      }
+    },
+    // 删除缓存标签
+    DEL_CACHED_TAG (state, tag) {
+      const index = state.cachedTags.findIndex(item => item === tag)
+      state.cachedTags.splice(index, 1)
+    },
+    // 删除其他缓存标签
+    DEL_OTHER_CACHED_TAG (state, tags) {
+      state.cachedTags = tags
+    },
+    // 删除所有缓存标签
+    DEL_ALL_CACHED_TAG (state, tags) {
+      state.cachedTags = tags
     }
   },
   actions: {
+    // 新增标签：于此同时需要新增缓存标签
     add_tag ({ commit }, tag) {
       commit('ADD_TAG', tag)
+      commit('ADD_CACHED_TAG', tag.name)
     },
-    // 删除标签
+    // 删除标签：于此同时需要删除缓存标签
     del_tag ({ commit }, tag) {
       commit('DEL_TAG', tag)
+      commit('DEL_CACHED_TAG', tag.name)
     },
     // 删除其他标签
     del_other_tag ({ commit }, tag) {
@@ -57,6 +80,7 @@ export default {
         path: '/home',
         fullPath: '/home'
       }, tag])
+      commit('DEL_OTHER_CACHED_TAG', ['Home', tag.name])
     },
     // 删除
     del_all_tag ({ commit }) {
@@ -68,6 +92,11 @@ export default {
         path: '/home',
         fullPath: '/home'
       }])
+      commit('DEL_ALL_CACHED_TAG', ['Home'])
+    },
+    // 分发删除缓存标签: 主要是在刷新标签的时候使用
+    del_cached_tag ({ commit }, tag) {
+      commit('DEL_CACHED_TAG', tag)
     }
   }
 }

@@ -7,9 +7,22 @@
         <el-option :value="false" label="禁用" />
       </el-select>
       <div style="flex: auto;"></div>
-      <el-button type="primary" size="medium" @click="visible = true">新增</el-button>
+      <el-button
+        type="primary"
+        size="medium"
+        v-perms="'system:role:add'"
+        @click="visible = true">
+        新增
+      </el-button>
       <c-json-excel :name="'GetRoles'" :fields="$fields.role" :filename="'role'" style="margin: 0 10px;" />
-      <el-button type="danger" size="medium" @click="deleteSelected" :disabled="deleteDisabled">删除</el-button>
+      <el-button
+        type="danger"
+        size="medium"
+        v-perms="'system:role:delete'"
+        @click="deleteSelected"
+        :disabled="deleteDisabled">
+        删除
+      </el-button>
       <!-- 考虑做成组件 -->
       <c-dropdown :show.sync="show" />
     </div>
@@ -37,9 +50,27 @@
         <el-table-column v-if="show[5].value" prop="mtime" label="修改时间" width="160" align="center" sortable="custom" />
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
-            <el-button type="success" size="mini" icon="el-icon-lock" title="授权" @click="itemAuth(row)" />
-            <el-button type="primary" size="mini" icon="el-icon-edit" title="编辑" @click="itemEdit(row)" />
-            <el-button type="danger" size="mini" icon="el-icon-delete" title="删除" @click="itemDelete(row)" />
+            <el-button
+              type="success"
+              size="mini"
+              icon="el-icon-lock"
+              title="授权"
+              v-perms="'system:role:detail'"
+              @click="itemAuth(row)" />
+            <el-button
+              type="primary"
+              size="mini"
+              icon="el-icon-edit"
+              title="编辑"
+              v-perms="'system:role:update'"
+              @click="itemEdit(row)" />
+            <el-button
+              type="danger"
+              size="mini"
+              icon="el-icon-delete"
+              title="删除"
+              v-perms="'system:role:delete'"
+              @click="itemDelete(row)" />
           </template>
         </el-table-column>
       </el-table>
@@ -56,6 +87,7 @@
 <script>
 import ComDialog from './Dialog'
 export default {
+  name: 'SystemRole',
   components: {
     ComDialog
   },
@@ -68,7 +100,6 @@ export default {
       }
     }
   },
-  name: 'SystemRole',
   data () {
     return {
       // 用于dropdown的循环和动态切换el-table-column的显示

@@ -13,13 +13,14 @@
       <el-button
         type="primary"
         size="medium"
-        v-perms="'system:user:add'"
+        v-perms="'system:resource:add'"
         @click="itemAdd">
         新增
       </el-button>
       <el-button
         type="danger"
         size="medium"
+        v-perms="'system:resource:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">
         删除
@@ -27,6 +28,7 @@
       <el-button
         type="success"
         size="medium"
+        v-perms="'system:resource:move'"
         @click="moveVisible = true"
         :disabled="moveDisabled">
         移动
@@ -34,6 +36,7 @@
       <el-button
         type="success"
         size="medium"
+        v-perms="'system:resource:copy'"
         @click="copyVisible = true"
         :disabled="copyDisabled">
         复制
@@ -96,6 +99,7 @@
               size="mini"
               icon="el-icon-download"
               title="下载"
+              v-perms="'system:resource:download'"
               @click="itemDownload(row)" />
           </template>
         </el-table-column>
@@ -106,10 +110,26 @@
                 <i class="el-icon-more"></i>
               </el-button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item :command="() => moveFile(row)">移动到</el-dropdown-item>
-                <el-dropdown-item :command="() => copyFile(row)">复制到</el-dropdown-item>
-                <el-dropdown-item :command="() => itemEdit(row)">重命名</el-dropdown-item>
-                <el-dropdown-item :command="() => itemDelete(row)">删除</el-dropdown-item>
+                <el-dropdown-item
+                  v-perms="'system:resource:move'"
+                  :command="() => moveFile(row)">
+                  移动到
+                </el-dropdown-item>
+                <el-dropdown-item
+                  v-perms="'system:resource:copy'"
+                  :command="() => copyFile(row)">
+                  复制到
+                </el-dropdown-item>
+                <el-dropdown-item
+                  v-perms="'system:respurce:update'"
+                  :command="() => itemEdit(row)">
+                  重命名
+                </el-dropdown-item>
+                <el-dropdown-item
+                  v-perms="'system:respurce:delete'"
+                  :command="() => itemDelete(row)">
+                  删除
+                </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>

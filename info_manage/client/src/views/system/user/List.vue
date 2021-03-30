@@ -7,9 +7,22 @@
         <el-option :value="false" label="禁用" />
       </el-select>
       <div style="flex: auto;"></div>
-      <el-button type="primary" size="medium" @click="visible = true">新增</el-button>
+      <el-button
+        type="primary"
+        size="medium"
+        v-perms="'system:user:add'"
+        @click="visible = true">
+        新增
+      </el-button>
       <c-json-excel :name="'GetUsers'" :fields="$fields.user" :filename="'user'" style="margin: 0 10px;" />
-      <el-button type="danger" size="medium" @click="deleteSelected" :disabled="deleteDisabled">删除</el-button>
+      <el-button
+        type="danger"
+        size="medium"
+        v-perms="'system:user:delete'"
+        @click="deleteSelected"
+        :disabled="deleteDisabled">
+        删除
+      </el-button>
       <!-- 考虑做成组件 -->
       <cDropdown :show.sync="show" />
     </div>
@@ -46,9 +59,27 @@
         <el-table-column v-if="show[6].value" prop="remark" label="备注" min-width="200" align="center" sortable="custom" />
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
-            <el-button type="success" size="mini" icon="el-icon-key" title="重置" @click="resetPwd(row)" />
-            <el-button type="primary" size="mini" icon="el-icon-edit" title="编辑" @click="itemEdit(row)" />
-            <el-button type="danger" size="mini" icon="el-icon-delete" title="删除" @click="itemDelete(row)" />
+            <el-button
+              type="success"
+              size="mini"
+              icon="el-icon-key"
+              title="重置"
+              v-perms="'system:user:update'"
+              @click="resetPwd(row)" />
+            <el-button
+              type="primary"
+              size="mini"
+              icon="el-icon-edit"
+              title="编辑"
+              v-perms="'system:user:update'"
+              @click="itemEdit(row)" />
+            <el-button
+              type="danger"
+              size="mini"
+              icon="el-icon-delete"
+              title="删除"
+              v-perms="'system:user:delete'"
+              @click="itemDelete(row)" />
           </template>
         </el-table-column>
       </el-table>

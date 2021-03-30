@@ -2,13 +2,13 @@
   <div class="app-page">
     <el-tabs type="border-card" class="permission-tabs" v-model="active">
       <el-tab-pane label="菜单授权" name="first">
-        <menu-auth v-if="active === 'first'" />
+        <menu-auth v-if="active === 'first'" v-perms="'system:role:menu'" />
       </el-tab-pane>
       <el-tab-pane label="接口授权" name="second">
-        <api-auth v-if="active === 'second'" />
+        <api-auth v-if="active === 'second'" v-perms="'system:role:api'" />
       </el-tab-pane>
       <el-tab-pane label="数据授权" name="third">
-        <data-auth v-if="active === 'third'" />
+        <data-auth v-if="active === 'third'" v-perms="'system:role:data'" />
       </el-tab-pane>
     </el-tabs>
   </div>

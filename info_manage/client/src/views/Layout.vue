@@ -8,7 +8,7 @@
           <span class="sidebar-title" v-if="!collapse">信息管理系统</span>
         </a>
       </div>
-       <div class="el-scrollbar">
+       <div class="el-scrollbar c-scrollbar">
          <!-- unique-opened -->
         <el-menu
           :default-active="activeMenu"
@@ -122,12 +122,21 @@
         </div>
       </div>
       <div class="app-main">
-        <transition name="fade-transform" mode="out-in">
+        <!-- 添加个key就能实现多个路由指向同一个组件缓存 -->
+        <!-- 这样做的问题：当刷新某一个页面时，导致所有缓存页面都刷新了 -->
+        <!-- <transition name="fade-transform" mode="out-in" v-if="cachedTags.includes($route.name)">
           <keep-alive>
-            <!-- 添加个key就能实现多个路由指向同一个组件缓存 -->
             <router-view :key="key"></router-view>
           </keep-alive>
         </transition>
+        <transition name="fade-transform" mode="out-in" v-if="!cachedTags.includes($route.name)">
+          <router-view :key="key"></router-view>
+        </transition> -->
+
+        <!-- 这种方式对于共用一个组件的会失效: 原因是路由嵌套了三层，在使用的时候实际上应该搞第二层的组件名称 -->
+        <keep-alive :include="cachedTags">
+          <router-view :key="key"></router-view>
+        </keep-alive>
       </div>
       <div class="app-copyright"></div>
     </div>
@@ -143,6 +152,9 @@ export default {
     }
   },
   computed: {
+    cachedTags () {
+      return this.$store.state.tagsview.cachedTags
+    },
     ...mapGetters({
       menus: 'menus'
     }),

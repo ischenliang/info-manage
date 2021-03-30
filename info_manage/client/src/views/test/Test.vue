@@ -26,7 +26,8 @@
         ref="md"
         @imgAdd="imgAdd"/> -->
         <!-- <c-fork-me /> -->
-        <el-button type="primary" size="medumn" v-perms="'system:resource:upload'">上传</el-button>
+        <!-- <el-button type="primary" size="medumn" v-perms="'system:resource:upload'">上传</el-button> -->
+      <img :src="url" alt="">
     </div>
   </div>
 </template>
@@ -70,7 +71,8 @@ export default {
         /* 2.2.1 */
         subfield: true, // 单双栏模式
         preview: true // 预览
-      }
+      },
+      url: ''
     }
   },
   methods: {
@@ -101,6 +103,16 @@ export default {
     handleHtmlCode (status, value) {
       console.log(status, value)
     }
+  },
+  created () {
+    this.$http({
+      name: 'Download'
+    }).then(res => {
+      console.log(res)
+      this.url = res.data
+    }).catch(error => {
+      console.log(error)
+    })
   }
 }
 </script>

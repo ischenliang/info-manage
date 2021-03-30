@@ -60,7 +60,8 @@ export default {
       add_tag: 'tagsview/add_tag',
       del_tag: 'tagsview/del_tag',
       del_other_tag: 'tagsview/del_other_tag',
-      del_all_tag: 'tagsview/del_all_tag'
+      del_all_tag: 'tagsview/del_all_tag',
+      del_cached_tag: 'tagsview/del_cached_tag'
     }),
     // 自定义鼠标右键功能
     handleContextMenu (event, tag) {
@@ -112,8 +113,12 @@ export default {
     refresh (type) {
       switch (type) {
         case 'current':
-          this.$router.replace({
-            path: '/redirect' + this.$route.fullPath
+          this.del_cached_tag(this.current.name).then(() => {
+            this.$nextTick(() => {
+              this.$router.replace({
+                path: '/redirect' + this.current.fullPath
+              })
+            })
           })
           break
         case 'all':

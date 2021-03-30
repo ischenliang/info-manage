@@ -51,16 +51,24 @@ router.prefix('/api/test')
 //   ctx.body = "哈哈哈哈"
 // })
 
-const send = require('koa-send')
-router.get('/download', async(ctx, next) => {
-  // ctx.attachment('tmp/test.html')
-  // await send(ctx, 'tmp/chart/echarts.js')
-  // fs.createReadStream(path.join(__dirname, '../tmp/chart/echarts.js')).pipe(ctx)
-  const dir = path.join(__dirname, '../tmp/chart/echarts.js')
-  ctx.set('Content-Type', 'application/force-download')
-  ctx.set('Content-Disposition', 'attachment; filename=echarts.js')
-  ctx.set('Content-Length', 1068)
-  fs.createReadStream(dir).pipe(ctx)
+// const send = require('koa-send')
+// router.get('/download', async(ctx, next) => {
+//   // ctx.attachment('tmp/test.html')
+//   // await send(ctx, 'tmp/chart/echarts.js')
+//   // fs.createReadStream(path.join(__dirname, '../tmp/chart/echarts.js')).pipe(ctx)
+//   const dir = path.join(__dirname, '../tmp/chart/echarts.js')
+//   ctx.set('Content-Type', 'application/force-download')
+//   ctx.set('Content-Disposition', 'attachment; filename=echarts.js')
+//   ctx.set('Content-Length', 1068)
+//   fs.createReadStream(dir).pipe(ctx)
+// })
+
+router.get('/download', async (ctx, next) => {
+  ctx.body = {
+    code: 200,
+    msg: '获取成功',
+    data: 'data:image/png;base64,' + fs.readFileSync(path.join(__dirname, '../project/01.jpg'), 'base64')
+  }
 })
 
 module.exports = router

@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      setUser: 'user/SET_USER'
+      setPerms: 'user/SET_PERMS'
     }),
     async loadNode (node, resolve) {
       if (node.level === 0) {
@@ -137,10 +137,11 @@ export default {
         requireAuth: true,
         paths: [this.$route.params.id],
         data: result
-      }).then(res => {
+      }).then(async res => {
         this.$notify.success(res.msg)
         this.itemGet()
-        this.setUser()
+        // 这里需要重置下权限
+        await this.setPerms()
       }).catch(error => {
         console.log(error)
         this.$notify.error(error)

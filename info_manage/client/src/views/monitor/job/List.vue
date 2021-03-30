@@ -6,13 +6,14 @@
       <el-button
         type="primary"
         size="medium"
-        v-perms="'system:user:add'"
+        v-perms="'system:task:add'"
         @click="$router.push({ path: '/monitor/job/add' })">
         新增
       </el-button>
       <el-button
         type="danger"
         size="medium"
+        v-perms="'system:task:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">
         删除
@@ -50,18 +51,21 @@
               size="mini"
               icon="el-icon-info"
               title="日志"
+              v-perms="'system:task:log'"
               @click="$router.push({ path: `/monitor/job/log/${row.id}` })" />
             <el-button
               type="primary"
               size="mini"
               icon="el-icon-edit"
               title="编辑"
+              v-perms="'system:task:update'"
               @click="$router.push({ path: `/monitor/job/edit/${row.id}` })" />
             <el-button
               type="danger"
               size="mini"
               icon="el-icon-delete"
               title="删除"
+              v-perms="'system:task:delete'"
               @click="itemDelete(row)" />
           </template>
         </el-table-column>
@@ -77,6 +81,7 @@
 
 <script>
 export default {
+  name: 'MonitorJob',
   data () {
     return {
       show: [

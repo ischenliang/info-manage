@@ -8,16 +8,16 @@ import routeComponentMap from '@/utils/routeComponentMap'
 Vue.use(VueRouter)
 
 // 重写replace方法
-const originalReplace = VueRouter.prototype.replace
-VueRouter.prototype.replace = function replace (location, onResolve, onReject) {
-  if (onResolve || onReject) return originalReplace.call(this, location, onResolve, onReject)
-  return originalReplace.call(this, location).catch(err => err)
-}
-// 重写push方法
-const routerPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push (location) {
-  return routerPush.call(this, location).catch(error => error)
-}
+// const originalReplace = VueRouter.prototype.replace
+// VueRouter.prototype.replace = function replace (location, onResolve, onReject) {
+//   if (onResolve || onReject) return originalReplace.call(this, location, onResolve, onReject)
+//   return originalReplace.call(this, location).catch(err => err)
+// }
+// // 重写push方法
+// const routerPush = VueRouter.prototype.push
+// VueRouter.prototype.push = function push (location) {
+//   return routerPush.call(this, location).catch(error => error)
+// }
 
 export const routes = [
   {
@@ -75,10 +75,20 @@ export const routes = [
     }
   },
   {
+    path: '/test',
+    component: () => import('@/views/test/Test'),
+    meta: {
+      title: 'Test',
+      hidden: 0,
+      is_frame: 0,
+      icon: ''
+    }
+  },
+  {
     path: '/redirect',
     component: () => import('@/views/Layout'),
     meta: {
-      title: '404',
+      title: '重定向',
       hidden: 0,
       is_frame: 0,
       icon: ''
@@ -87,7 +97,13 @@ export const routes = [
       {
         path: '/redirect/:path(.*)',
         name: 'Redirect',
-        component: () => import('@/views/redirect/Index')
+        component: () => import('@/views/redirect/Index'),
+        meta: {
+          title: '重定向',
+          hidden: 0,
+          is_frame: 0,
+          icon: ''
+        }
       }
     ]
   }
@@ -129,6 +145,15 @@ router.beforeEach(async (to, from, next) => {
   const perms = store.getters.perms
   // 判断登录状态
   if (token && uid) {
+    // 解决三级菜单不能缓存的问题
+    if (to.matched && to.matched.length > 2) {
+      for (let i = 0; i < to.matched.length; i++) {
+        const element = to.matched[i]
+        if (element.components.default.name === 'Index') {
+          to.matched.splice(i, 1)
+        }
+      }
+    }
     try {
       // 获取用户菜单信息以及用户接口信息
       store.dispatch('user/SET_UID', uid)

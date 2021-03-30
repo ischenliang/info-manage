@@ -54,7 +54,7 @@
 import cBackUp from '../../../components/cBackUp.vue'
 export default {
   components: { cBackUp },
-  name: 'InfoMemoryDetail',
+  name: 'MemoryDetail',
   computed: {
     id () {
       return this.$route.params.id ? this.$route.params.id : ''

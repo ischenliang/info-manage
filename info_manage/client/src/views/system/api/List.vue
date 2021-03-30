@@ -15,7 +15,7 @@
 import Api from './api/List'
 import Type from './type/List'
 export default {
-  name: 'AccountList',
+  name: 'SystemApi',
   components: {
     Api,
     Type

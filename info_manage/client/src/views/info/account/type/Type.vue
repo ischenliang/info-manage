@@ -10,13 +10,14 @@
       <el-button
         type="primary"
         size="medium"
-        v-perms="'system:user:add'"
+        v-perms="'system:accountTag:add'"
         @click="visible = true">
         新增
       </el-button>
       <el-button
         type="danger"
         size="medium"
+        v-perms="'system:accountTag:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">
         删除
@@ -93,24 +94,28 @@
               size="mini"
               icon="el-icon-top"
               title="上移"
+              v-perms="'system:accountTag:move'"
               @click="itemMove(row, 'up')" />
             <el-button
               type="primary"
               size="mini"
               icon="el-icon-bottom"
               title="下移"
+              v-perms="'system:accountTag:move'"
               @click="itemMove(row, 'down')" />
             <el-button
               type="primary"
               size="mini"
               icon="el-icon-edit"
               title="编辑"
+              v-perms="'system:accountTag:update'"
               @click="itemEdit(row)" />
             <el-button
               type="danger"
               size="mini"
               icon="el-icon-delete"
               title="删除"
+              v-perms="'system:accountTag:delete'"
               @click="itemDelete(row)" />
           </template>
         </el-table-column>

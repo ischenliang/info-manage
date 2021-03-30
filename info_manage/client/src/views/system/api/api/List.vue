@@ -9,9 +9,22 @@
         <el-option v-for="(item, index) in list.apiTypes" :key="index" :label="item.name" :value="item.id" />
       </el-select>
       <div style="flex: auto;"></div>
-      <el-button type="primary" size="medium" @click="visible = true">新增</el-button>
+      <el-button
+        type="primary"
+        size="medium"
+        v-perms="'system:api:add'"
+        @click="visible = true">
+        新增
+      </el-button>
       <c-json-excel :name="'GetApis'" :fields="$fields.api" :filename="'api'" style="margin: 0 10px;" />
-      <el-button type="danger" size="medium" @click="deleteSelected" :disabled="deleteDisabled">删除</el-button>
+      <el-button
+        type="danger"
+        size="medium"
+        v-perms="'system:api:delete'"
+        @click="deleteSelected"
+        :disabled="deleteDisabled">
+        删除
+      </el-button>
       <cDropdown :show.sync="show" />
     </div>
     <div class="table">
@@ -51,8 +64,20 @@
         <el-table-column v-if="show[7].value" label="修改时间" prop="mtime" min-width="160" align="center" sortable="custom"/>
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
-            <el-button type="primary" size="mini" icon="el-icon-edit" title="编辑" @click="itemEdit(row)" />
-            <el-button type="danger" size="mini" icon="el-icon-delete" title="删除" @click="itemDelete(row)" />
+            <el-button
+              type="primary"
+              size="mini"
+              icon="el-icon-edit"
+              title="编辑"
+              v-perms="'system:api:update'"
+              @click="itemEdit(row)" />
+            <el-button
+              type="danger"
+              size="mini"
+              icon="el-icon-delete"
+              title="删除"
+              v-perms="'system:api:delete'"
+              @click="itemDelete(row)" />
           </template>
         </el-table-column>
       </el-table>
@@ -69,6 +94,7 @@
 <script>
 import ComDialog from './Dialog'
 export default {
+  name: 'SystemApiList',
   components: {
     ComDialog
   },

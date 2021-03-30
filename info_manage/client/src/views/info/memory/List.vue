@@ -20,13 +20,14 @@
       <el-button
         type="primary"
         size="medium"
-        v-perms="'system:user:add'"
+        v-perms="'system:memory:add'"
         @click="$router.push({ path: '/info/memory/add' })">
         新增
       </el-button>
       <el-button
         type="danger"
         size="medium"
+        v-perms="'system:memory:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">
         删除
@@ -72,18 +73,21 @@
               size="mini"
               icon="el-icon-info"
               title="详情"
+              v-perms="'system:memory:detail'"
               @click="$router.push({ path: `/info/memory/detail/${row.id}` })" />
             <el-button
               type="primary"
               size="mini"
               icon="el-icon-edit"
               title="编辑"
+              v-perms="'system:memory:update'"
               @click="itemEdit(row)" />
             <el-button
               type="danger"
               size="mini"
               icon="el-icon-delete"
               title="删除"
+              v-perms="'system:memory:delete'"
               @click="itemDelete(row)" />
           </template>
         </el-table-column>
@@ -99,6 +103,7 @@
 
 <script>
 export default {
+  name: 'MemoryList',
   data () {
     return {
       show: [
@@ -226,6 +231,11 @@ export default {
       // 在数据加载完，重新渲染表格
       this.$refs.table.doLayout()
     })
+  },
+  watch: {
+    $route (to, from) {
+      console.log(to, from)
+    }
   }
 }
 </script>

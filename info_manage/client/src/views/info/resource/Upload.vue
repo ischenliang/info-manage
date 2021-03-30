@@ -16,7 +16,13 @@
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       </el-upload>
       <div style="margin-top: 10px;">
-        <el-button type="primary" size="medium" @click="upload">上传</el-button>
+        <el-button
+          type="primary"
+          size="medium"
+          v-perms="'system:respurce:upload'"
+          @click="upload">
+          上传
+        </el-button>
       </div>
     </div>
   </div>

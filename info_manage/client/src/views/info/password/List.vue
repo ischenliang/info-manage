@@ -6,13 +6,14 @@
       <el-button
         type="primary"
         size="medium"
-        v-perms="'system:user:add'"
+        v-perms="'system:password:add'"
         @click="visible = true">
         新增
       </el-button>
       <el-button
         type="danger"
         size="medium"
+        v-perms="'system:password:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">
         删除
@@ -70,12 +71,14 @@
               size="mini"
               icon="el-icon-edit"
               title="编辑"
+              v-perms="'system:password:update'"
               @click="itemEdit(row)" />
             <el-button
               type="danger"
               size="mini"
               icon="el-icon-delete"
               title="删除"
+              v-perms="'system:password:delete'"
               @click="itemDelete(row)" />
           </template>
         </el-table-column>
