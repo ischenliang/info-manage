@@ -23,7 +23,7 @@ export default {
   methods: {
     getBreadcrumb () {
       let matched = this.$route.matched
-      if (matched[0] && matched[0].name !== 'Home') {
+      if (matched[0] && matched[0].path !== '') {
         matched = [{ path: '/home', meta: { title: '首页' }, name: 'Home' }].concat(matched)
       }
       this.breadcrumbs = matched.map(item => {
