@@ -95,7 +95,7 @@ export default {
         data: this.form
       }).then(res => {
         this.$router.push({ path: '/monitor/job/list' })
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
@@ -110,7 +110,7 @@ export default {
         data: this.form
       }).then(res => {
         this.$router.push({ path: '/monitor/job/list' })
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
@@ -138,7 +138,7 @@ export default {
         requireAuth: true,
         paths: [this.id]
       }).then(res => {
-        this.form = res.data
+        this.form = res.data.data
       }).catch(error => {
         this.$notify.error(error)
       })

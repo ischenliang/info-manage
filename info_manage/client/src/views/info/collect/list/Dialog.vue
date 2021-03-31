@@ -96,7 +96,7 @@ export default {
       }).then(res => {
         this.$emit('submit')
         this.close()
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
@@ -115,7 +115,7 @@ export default {
       }).then(res => {
         this.$emit('submit')
         this.close()
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
@@ -143,10 +143,10 @@ export default {
         requireAuth: true,
         paths: [this.id]
       }).then(res => {
-        res.data.logo = res.data.logo.replace(new RegExp(this.prefix), '')
-        res.data.logo = res.data.logo.replace(new RegExp('\\?' + this.suffix), '')
-        res.data.tag = res.data.tag.split(',')
-        this.form = res.data
+        res.data.data.logo = res.data.data.logo.replace(new RegExp(this.prefix), '')
+        res.data.data.logo = res.data.data.logo.replace(new RegExp('\\?' + this.suffix), '')
+        res.data.data.tag = res.data.data.tag.split(',')
+        this.form = res.data.data
       }).catch(error => {
         this.$notify.error(error)
       })
@@ -165,7 +165,7 @@ export default {
         size: 10000
       }
     }).then(res => {
-      this.types = res.data.data
+      this.types = res.data.data.data
     }).catch(error => {
       this.$notify.error(error)
     })

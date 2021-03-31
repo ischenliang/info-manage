@@ -100,7 +100,7 @@ export default {
         requireAuth: true,
         data: data
       }).then(res => {
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
         this.$router.push({ path: '/info/memory/list' })
       }).catch(error => {
         this.$notify.error(error)
@@ -117,7 +117,7 @@ export default {
         requireAuth: true,
         data: data
       }).then(res => {
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
         this.$router.push({ path: '/info/memory/list' })
       }).catch(error => {
         this.$notify.error(error)
@@ -154,8 +154,8 @@ export default {
         requireAuth: true,
         paths: [this.id]
       }).then(res => {
-        this.form = res.data
-        this.form.tag = res.data.tag.split(',')
+        this.form = res.data.data
+        this.form.tag = res.data.data.tag.split(',')
       }).catch(error => {
         this.$notify.error(error)
       })

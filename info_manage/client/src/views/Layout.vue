@@ -3,10 +3,10 @@
     <!-- <div class="sidebar-container has-logo"> -->
     <div class="sidebar-container" :style="collapse === true ? { width: '64px' } : { width: '210px' }">
       <div class="sidebar-logo-container">
-        <a href="/" class="sidebar-logo-link">
+        <router-link :to="'/home'" class="sidebar-logo-link">
           <img src="../assets/logo.png" alt="logo" class="sidebar-logo" :style="{ marginRight: collapse ? '' : '5px' }">
           <span class="sidebar-title" v-if="!collapse">信息管理系统</span>
-        </a>
+        </router-link>
       </div>
        <div class="el-scrollbar c-scrollbar">
          <!-- unique-opened -->
@@ -104,12 +104,15 @@
     <div class="main-container">
       <div class="app-header">
         <div class="app-navbar">
+          <!-- 收缩按钮 -->
           <div class="app-hamburger" @click="collapse = !collapse">
             <span :class="collapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'"></span>
           </div>
+          <!-- 面包屑 -->
           <div class="app-breadbrumb">
             <c-bread-crumb />
           </div>
+          <!-- 右侧菜单栏 -->
           <div class="app-rightmenu">
             <el-button
               type="primary"

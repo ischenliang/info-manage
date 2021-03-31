@@ -106,7 +106,7 @@ export default {
         name: 'MonitorSystem',
         requireAuth: true
       }).then(res => {
-        this.system = res.data
+        this.system = res.data.data
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {

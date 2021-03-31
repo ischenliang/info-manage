@@ -133,7 +133,7 @@ export default {
       }).then(res => {
         this.$emit('submit')
         this.close()
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
@@ -157,7 +157,7 @@ export default {
       }).then(res => {
         this.$emit('submit')
         this.close()
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
@@ -185,7 +185,7 @@ export default {
         requireAuth: true,
         paths: [this.id]
       }).then(res => {
-        this.form = res.data
+        this.form = res.data.data
         return this.$http({
           name: 'GetAccountTags',
           requireAuth: true,
@@ -198,7 +198,7 @@ export default {
           }
         })
       }).then(res => {
-        const tag = res.data.data.find(item => {
+        const tag = res.data.data.data.find(item => {
           return item.name === this.form.tag.name
         })
         if (tag) {
@@ -244,7 +244,7 @@ export default {
           order: 'asc'
         }
       }).then(res => {
-        this.tags = res.data.data
+        this.tags = res.data.data.data
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {

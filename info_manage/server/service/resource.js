@@ -3,6 +3,7 @@ const moment = require('moment')
 const path = require('path')
 const fs = require('fs')
 const fse = require('fs-extra')
+const request = require('request')
 
 
 /**
@@ -193,6 +194,27 @@ async function upload (files, parent, uid) {
   }
 }
 
+// 文件上传
+async function saveImg (url, parent, uid) {
+  try {
+    return new Promise((resolve, reject) => {
+      // 20210331151423 + 时间戳 YYYYMMDDHHmmssx
+      const filename = moment().format('YYYYMMDDHHmmss') + '.png'
+      request
+        .get(url)
+        .pipe(fs.createWriteStream(path.join(__dirname, '../resource', uid, parent, filename)))
+        .on('error', (error) => {
+          reject(error)
+        })
+        .on('finish', () => {
+          resolve(path.join(parent, filename))
+        })
+    })
+  } catch (error) {
+    throw error
+  }
+}
+
 module.exports =  {
   add,
   deleteById,
@@ -201,5 +223,6 @@ module.exports =  {
   list,
   move,
   copy,
-  upload
+  upload,
+  saveImg
 }

@@ -63,11 +63,50 @@ router.prefix('/api/test')
 //   fs.createReadStream(dir).pipe(ctx)
 // })
 
+// router.get('/download', async (ctx, next) => {
+//   ctx.body = {
+//     code: 200,
+//     msg: '获取成功',
+//     data: 'data:image/png;base64,' + fs.readFileSync(path.join(__dirname, '../project/01.jpg'), 'base64')
+//   }
+// })
+
+async function test () {
+  // return new Promise((resolve, reject) => {
+  //   request({
+  //     method: 'POST',
+  //     uri: 'http://data.zz.baidu.com/urls?site=https://itchenliang.gitee.io&token=WdhbCVRbA3h4Rumg',
+  //     headers: {
+  //       'Content-Type': 'text/plain'
+  //     },
+  //     function (error, response, body) {
+  //       console.log(error)
+  //       console.log(response)
+  //     }
+  //   })
+  // })
+}
+
+const request = require('request')
 router.get('/download', async (ctx, next) => {
+  request.post({
+    url: 'http://data.zz.baidu.com/urls?site=https://itchenliang.gitee.io&token=WdhbCVRbA3h4Rumg',
+    body: [
+      'https://itchenliang.gitee.io/posts/30efc280-f984-11ea-90b0-c5a83a2f2ef9a0b/',
+      'https://itchenliang.gitee.io/posts/70ba8db0-f72b-11ea-938b-b99af4f0d6b5/',
+      'https://itchenliang.gitee.io/posts/60272b20-49b5-11eb-b4bb-b1a7a3af1020/'
+    ].join('\n'),
+    headers: {
+      'Content-Type': 'text/plain'
+    }
+  }, function (error, response, body) {
+    // console.log(error)
+    // console.log(response)
+    console.log(response.statusCode)
+    console.log(body)
+  })
   ctx.body = {
-    code: 200,
-    msg: '获取成功',
-    data: 'data:image/png;base64,' + fs.readFileSync(path.join(__dirname, '../project/01.jpg'), 'base64')
+    data: 'asdasd'
   }
 })
 

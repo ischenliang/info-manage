@@ -1,5 +1,6 @@
 const crypto = require('crypto')
 const fs = require('fs')
+const fse = require('fs-extra')
 const path = require('path')
 const nodemailer = require('nodemailer')
 
@@ -38,7 +39,11 @@ module.exports = {
   upload: (bpath, file) => {
     // 获取文件后缀
     const suffix = file.name.split('.').pop()
-    // 文件路径: 文件存放目录 + 用户名称.后缀
+    // 为了文件夹上传
+    if (file.name.split('/').length > 1) {
+      fse.mkdirsSync(path.join(__dirname, '../', bpath, file.name.split('/').slice(0, -1).join('/')))
+    }
+    // 文件路径: 文件存放目录 + 用户 + 名称.后缀
     let filePath = path.join(__dirname, '..', bpath,  file.name)
     // 创建可读流
     const render = fs.createReadStream(file.path)

@@ -13,5 +13,6 @@ module.exports = {
   MOVE_SUCCESS: '移动成功',
   COPY_SUCCESS: '复制成功',
   UPLOAD_SUCCESS: '上传成功',
-  DOWNLOAD_SUCCESS: '下载成功'
+  DOWNLOAD_SUCCESS: '下载成功',
+  SAVE_SUCCESS: '保存成功'
 }

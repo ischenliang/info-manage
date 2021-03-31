@@ -137,7 +137,7 @@ export default {
       }).then(res => {
         this.$emit('submit')
         this.close()
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
       }).catch(error => {
         this.$notify.error(error)
       })
@@ -151,7 +151,7 @@ export default {
       }).then(res => {
         this.$emit('submit')
         this.close()
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
       }).catch(error => {
         this.$notify.error(error)
       })
@@ -181,7 +181,7 @@ export default {
         requireAuth: true,
         paths: [this.id]
       }).then(res => {
-        this.form = res.data
+        this.form = res.data.data
         // 后期这里使用ajax获取后台的icons
         // this.list.icons = [{ value: '三全鲜食（北新泾店）', address: '长宁区新渔路144号' }]
       }).catch(error => {

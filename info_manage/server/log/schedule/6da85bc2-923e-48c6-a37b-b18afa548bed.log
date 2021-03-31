@@ -30,3 +30,4 @@
 [2021-03-29 21:37:42] [INFO] tasklog.notification - 任务：测试执行成功
 [2021-03-29 21:37:43] [INFO] tasklog.notification - 任务：测试执行成功
 [2021-03-29 21:37:43] [TRACE] tasklog.cancel - 取消任务
+[2021-03-31 14:45:46] [TRACE] tasklog.cancel - 取消任务

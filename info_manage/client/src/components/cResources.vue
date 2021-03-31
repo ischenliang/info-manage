@@ -73,12 +73,12 @@ export default {
           path
         }
       })
-      res.data.forEach(item => {
+      res.data.data.forEach(item => {
         if (item.type === 'folder') {
           this.$set(item, 'leaf', false)
         }
       })
-      return res.data.filter(item => item.type === 'folder')
+      return res.data.data.filter(item => item.type === 'folder')
     },
     // 获取文件列表
     async loadNode (node, resolve) {

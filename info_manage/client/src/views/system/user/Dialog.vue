@@ -80,7 +80,7 @@ export default {
       }).then(res => {
         this.$emit('submit')
         this.close()
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
       }).catch(error => {
         this.$notify.error(error)
       })
@@ -94,7 +94,7 @@ export default {
       }).then(res => {
         this.$emit('submit')
         this.close()
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
       }).catch(error => {
         this.$notify.error(error)
       })
@@ -118,13 +118,13 @@ export default {
         requireAuth: true,
         paths: [this.id]
       }).then(res => {
-        this.$set(this.form, 'id', res.data.id)
-        this.form.username = res.data.username
-        this.form.nickname = res.data.nickname
-        this.form.avatar = res.data.avatar
-        this.form.status = res.data.status
-        this.form.remark = res.data.remark
-        res.data.ur.forEach(item => {
+        this.$set(this.form, 'id', res.data.data.id)
+        this.form.username = res.data.data.username
+        this.form.nickname = res.data.data.nickname
+        this.form.avatar = res.data.data.avatar
+        this.form.status = res.data.data.status
+        this.form.remark = res.data.data.remark
+        res.data.data.ur.forEach(item => {
           this.form.role.push(item.id)
         })
       }).catch(error => {
@@ -142,7 +142,7 @@ export default {
         },
         requireAuth: true
       }).then(res => {
-        this.roles = res.data.data
+        this.roles = res.data.data.data
       }).catch(error => {
         this.$notify.error(error)
       })

@@ -66,7 +66,7 @@ export default {
             size: 10000
           }
         })
-        return res.data.data
+        return res.data.data.data
       } catch (error) {
         this.$notify.error(error)
       }

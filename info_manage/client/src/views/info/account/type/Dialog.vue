@@ -75,7 +75,7 @@ export default {
       }).then(res => {
         this.$emit('submit')
         this.close()
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
@@ -91,7 +91,7 @@ export default {
       }).then(res => {
         this.$emit('submit')
         this.close()
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
@@ -119,7 +119,7 @@ export default {
         requireAuth: true,
         paths: [this.id]
       }).then(res => {
-        this.form = res.data
+        this.form = res.data.data
       }).catch(error => {
         this.$notify.error(error)
       })

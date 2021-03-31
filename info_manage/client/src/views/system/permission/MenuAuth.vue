@@ -58,7 +58,7 @@ export default {
           status: true
         }
       }).then(res => {
-        this.list.data = res.data.data
+        this.list.data = res.data.data.data
         return this.$http({
           name: 'GetRole',
           requireAuth: true,
@@ -66,7 +66,7 @@ export default {
         })
       }).then(res => {
         const keys = []
-        res.data.rm.forEach(item => {
+        res.data.data.rm.forEach(item => {
           if (item.type === 2) {
             keys.push(item.id)
           }
@@ -90,7 +90,7 @@ export default {
         paths: [this.$route.params.id],
         data: [...this.$refs.tree.getCheckedKeys(), ...this.$refs.tree.getHalfCheckedKeys()]
       }).then(async res => {
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
         this.listGet()
         // 重置路由并更新路由
         resetRouter()

@@ -48,8 +48,8 @@ export default {
         paths: [this.id]
       }).then(res => {
         this.logs = []
-        this.name = res.data.name
-        res.data.logs.forEach(item => {
+        this.name = res.data.data.name
+        res.data.data.logs.forEach(item => {
           const reg = /\[(\d{4}-\d{2}-\d{2})\s(\d{2}:\d{2}:\d{2})\]/
           const tmp = reg.exec(item)
           item = item.replace(reg, `<span style="color: #409EFF;">${tmp[0]}</span>&nbsp;`)

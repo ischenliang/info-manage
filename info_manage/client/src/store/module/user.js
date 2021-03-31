@@ -43,7 +43,7 @@ export default {
         }
       })
       const routes = []
-      res.data.sort((a, b) => a.order - b.order).forEach(item1 => {
+      res.data.data.sort((a, b) => a.order - b.order).forEach(item1 => {
         // 第一层
         const tmp1 = {
           path: item1.path,
@@ -133,7 +133,7 @@ export default {
         paths: [state.uid]
       })
       const perms = []
-      res.data.forEach(item => perms.push(item.perms))
+      res.data.data.forEach(item => perms.push(item.perms))
       commit('SET_PERMS', perms)
     },
     CLEAR_INFO ({ commit }) {

@@ -78,16 +78,16 @@ export default {
             data: formData,
             requireAuth: false
           }).then(res => {
-            this.$Cookies.set('token', res.data.token, {
+            this.$Cookies.set('token', res.data.data.token, {
               expires: this.expires,
               sameSite: 'lax'
             })
-            this.$Cookies.set('uid', res.data.user.id, {
+            this.$Cookies.set('uid', res.data.data.user.id, {
               expires: this.expires,
               sameSite: 'lax'
             })
             this.$router.push({ path: this.path })
-            this.$notify.success(res.msg)
+            this.$notify.success(res.data.msg)
           }).catch(error => {
             this.$notify.error(error)
           }).finally(() => {

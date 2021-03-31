@@ -175,8 +175,8 @@ export default {
           tid: this.list.filters.tid
         }
       }).then(res => {
-        this.list.total = res.data.total
-        this.list.data = res.data.data
+        this.list.total = res.data.data.total
+        this.list.data = res.data.data.data
         return this.$http({
           name: 'GetApiTypes',
           requireAuth: true,
@@ -186,7 +186,7 @@ export default {
           }
         })
       }).then(res => {
-        this.list.apiTypes = res.data.data
+        this.list.apiTypes = res.data.data.data
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
@@ -221,7 +221,7 @@ export default {
           requireAuth: true,
           paths: [row.id]
         }).then(res => {
-          this.$notify.success(res.msg)
+          this.$notify.success(res.data.msg)
         }).catch(error => {
           this.$notify.error(error)
         }).finally(() => {
@@ -239,7 +239,7 @@ export default {
             paths: [item]
           }).then(res => {
             if (index === this.list.selected.length - 1) {
-              this.$notify.success(res.msg)
+              this.$notify.success(res.data.msg)
               this.list.selected = []
             }
           }).catch(error => {

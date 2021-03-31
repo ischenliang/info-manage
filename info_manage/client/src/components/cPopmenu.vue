@@ -47,7 +47,7 @@ export default {
         },
         requireAuth: true
       }).then(res => {
-        this.menus = res.data.data
+        this.menus = res.data.data.data
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {

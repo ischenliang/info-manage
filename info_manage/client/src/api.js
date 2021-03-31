@@ -1,10 +1,9 @@
-/* eslint-disable no-unused-vars */
 import axios from 'axios'
 import Cookies from 'js-cookie'
-const baseURL = 'http://localhost:3000/api/'
-const http = axios.create({
-  baseURL
-})
+localStorage.setItem('baidu-token', 'WdhbCVRbA3h4Rumg')
+// 这样做的方法是为了如果有多个后台
+const baseURL = ['http://localhost:3000/api', 'http://data.zz.baidu.com']
+const http = axios.create()
 
 // 定义所有的请求
 const list = {
@@ -12,217 +11,225 @@ const list = {
    * 角色管理
   */
   // 角色列表 请求类型：get 请求地址：/role/list
-  GetRoles: { method: 'get', url: '/role/list' },
+  GetRoles: { method: 'get', url: baseURL[0] + '/role/list' },
   // 更新角色 请求类型：put 请求地址：/role/update
-  UpdateRole: { method: 'put', url: '/role/update' },
+  UpdateRole: { method: 'put', url: baseURL[0] + '/role/update' },
   // 删除角色 请求类型：delete 请求地址：/role/deleteById/:id
-  DeleteRole: { method: 'delete', url: '/role/deleteById' },
+  DeleteRole: { method: 'delete', url: baseURL[0] + '/role/deleteById' },
   // 新增角色 请求类型：post 请求地址：/role/add
-  AddRole: { method: 'post', url: '/role/add' },
+  AddRole: { method: 'post', url: baseURL[0] + '/role/add' },
   // 角色详情 请求类型：get 请求地址：/role/detail/:id
-  GetRole: { method: 'get', url: '/role/detail' },
+  GetRole: { method: 'get', url: baseURL[0] + '/role/detail' },
   // 角色菜单 请求类型：post 请求地址：/role/roleMenu/:id
-  UpdateRoleMenu: { method: 'post', url: '/role/roleMenu' },
+  UpdateRoleMenu: { method: 'post', url: baseURL[0] + '/role/roleMenu' },
   // 角色接口 请求类型：post 请求地址：/role/roleApi/:id
-  UpdateRoleApi: { method: 'post', url: '/role/roleApi' },
+  UpdateRoleApi: { method: 'post', url: baseURL[0] + '/role/roleApi' },
 
   /**
    * 菜单管理
   */
   // 菜单列表 请求类型：get 请求地址：/menu/list
-  GetMenus: { method: 'get', url: '/menu/list' },
+  GetMenus: { method: 'get', url: baseURL[0] + '/menu/list' },
   // 更新菜单 请求类型：put 请求地址：/menu/update
-  UpdateMenu: { method: 'put', url: '/menu/update' },
+  UpdateMenu: { method: 'put', url: baseURL[0] + '/menu/update' },
   // 更新菜单 请求类型：delete 请求地址：/menu/deleteById/:id
-  DeleteMenu: { method: 'delete', url: '/menu/deleteById' },
+  DeleteMenu: { method: 'delete', url: baseURL[0] + '/menu/deleteById' },
   // 获取菜单 请求类型：get 请求地址：/menu/detail/:id
-  GetMenu: { method: 'get', url: '/menu/detail' },
+  GetMenu: { method: 'get', url: baseURL[0] + '/menu/detail' },
   // 新增菜单 请求类型：post 请求地址：/menu/add
-  AddMenu: { method: 'post', url: '/menu/add' },
+  AddMenu: { method: 'post', url: baseURL[0] + '/menu/add' },
 
   /**
    * 用户管理
   */
   // 用户列表 请求类型：get 请求地址：/user/list
-  GetUsers: { method: 'get', url: '/user/list' },
+  GetUsers: { method: 'get', url: baseURL[0] + '/user/list' },
   // 用户详情 请求类型：get 请求地址：/user/detail
-  GetUser: { method: 'get', url: '/user/detail' },
+  GetUser: { method: 'get', url: baseURL[0] + '/user/detail' },
   // 新增用户 请求类型：post 请求地址：/user/add
-  AddUser: { method: 'post', url: '/user/add' },
+  AddUser: { method: 'post', url: baseURL[0] + '/user/add' },
   // 更新用户 请求类型：put 请求地址：/user/update
-  UpdateUser: { method: 'put', url: '/user/update' },
+  UpdateUser: { method: 'put', url: baseURL[0] + '/user/update' },
   // 删除用户 请求类型：delete 请求地址：/user/deleteById/:id
-  DeleteUser: { method: 'delete', url: '/user/deleteById' },
+  DeleteUser: { method: 'delete', url: baseURL[0] + '/user/deleteById' },
   // 用户菜单 请求类型：get 请求地址：/user/userMenu/:id
-  GetUserMenu: { method: 'get', url: '/user/userMenu' },
+  GetUserMenu: { method: 'get', url: baseURL[0] + '/user/userMenu' },
   // 用户权限 请求类型：get 请求地址：/user/userApi/:id
-  GetUserApi: { method: 'get', url: '/user/userApi' },
+  GetUserApi: { method: 'get', url: baseURL[0] + '/user/userApi' },
 
   /**
    * 接口类别管理
   */
   // 接口类别列表 请求类型：get 请求地址：/apitype/list
-  GetApiTypes: { method: 'get', url: '/apitype/list' },
+  GetApiTypes: { method: 'get', url: baseURL[0] + '/apitype/list' },
   // 更新接口类别 请求类型：put 请求地址：/apitype/update
-  UpdateApiType: { method: 'put', url: '/apitype/update' },
+  UpdateApiType: { method: 'put', url: baseURL[0] + '/apitype/update' },
   // 新增接口类别 请求类型：post 请求地址：/apitype/add
-  AddApiType: { method: 'post', url: '/apitype/add' },
+  AddApiType: { method: 'post', url: baseURL[0] + '/apitype/add' },
   // 接口类别详情 请求类型：get 请求地址：/apitype/detail
-  GetApiType: { method: 'get', url: '/apitype/detail' },
+  GetApiType: { method: 'get', url: baseURL[0] + '/apitype/detail' },
   // 删除接口类别 请求类型：delete 请求地址：/apitype/deleteById/:id
-  DeleteApiType: { method: 'delete', url: '/apitype/deleteById' },
+  DeleteApiType: { method: 'delete', url: baseURL[0] + '/apitype/deleteById' },
 
   /**
    * 接口管理
   */
   // 接口列表 请求类型：get 请求地址：/api/list
-  GetApis: { method: 'get', url: '/api/list' },
+  GetApis: { method: 'get', url: baseURL[0] + '/api/list' },
   // 更新接口 请求类型：put 请求地址：/api/update
-  UpdateApi: { method: 'put', url: '/api/update' },
+  UpdateApi: { method: 'put', url: baseURL[0] + '/api/update' },
   // 新增接口 请求类型：post 请求地址：/api/add
-  AddApi: { method: 'post', url: '/api/add' },
+  AddApi: { method: 'post', url: baseURL[0] + '/api/add' },
   // 接口详情 请求类型：get 请求地址：/api/detail
-  GetApi: { method: 'get', url: '/api/detail' },
+  GetApi: { method: 'get', url: baseURL[0] + '/api/detail' },
   // 删除接口 请求类型：delete 请求地址：/api/deleteById/:id
-  DeleteApi: { method: 'delete', url: '/api/deleteById' },
+  DeleteApi: { method: 'delete', url: baseURL[0] + '/api/deleteById' },
 
   /**
    * 收藏类别管理
   */
   // 收藏类别列表 请求类型：get 请求地址：/ctype/list
-  GetCollectTypes: { method: 'get', url: '/ctype/list' },
+  GetCollectTypes: { method: 'get', url: baseURL[0] + '/ctype/list' },
   // 更新收藏类别 请求类型：put 请求地址：/ctype/update
-  UpdateCollectType: { method: 'put', url: '/ctype/update' },
+  UpdateCollectType: { method: 'put', url: baseURL[0] + '/ctype/update' },
   // 删除收藏类别 请求类型：delete 请求地址：/ctype/deleteById/:id
-  DeleteCollectType: { method: 'delete', url: '/ctype/deleteById' },
+  DeleteCollectType: { method: 'delete', url: baseURL[0] + '/ctype/deleteById' },
   // 收藏类别详情 请求类型：get 请求地址：/ctype/detail/:id
-  GetCollectType: { method: 'get', url: '/ctype/detail' },
+  GetCollectType: { method: 'get', url: baseURL[0] + '/ctype/detail' },
   // 新增收藏类别 请求类型：post 请求地址：/ctype/add
-  AddCollectType: { method: 'post', url: '/ctype/add' },
+  AddCollectType: { method: 'post', url: baseURL[0] + '/ctype/add' },
 
   /**
    * 收藏管理
   */
   // 收藏列表 请求类型：get 请求地址：/collect/list
-  GetCollects: { method: 'get', url: '/collect/list' },
+  GetCollects: { method: 'get', url: baseURL[0] + '/collect/list' },
   // 更新收藏 请求类型：put 请求地址：/collect/update
-  UpdateCollect: { method: 'put', url: '/collect/update' },
+  UpdateCollect: { method: 'put', url: baseURL[0] + '/collect/update' },
   // 删除收藏 请求类型：delete 请求地址：/collect/deleteById/:id
-  DeleteCollect: { method: 'delete', url: '/collect/deleteById' },
+  DeleteCollect: { method: 'delete', url: baseURL[0] + '/collect/deleteById' },
   // 收藏详情 请求类型：get 请求地址：/collect/detail/:id
-  GetCollect: { method: 'get', url: '/collect/detail' },
+  GetCollect: { method: 'get', url: baseURL[0] + '/collect/detail' },
   // 新增收藏 请求类型：post 请求地址：/collect/add
-  AddCollect: { method: 'post', url: '/collect/add' },
+  AddCollect: { method: 'post', url: baseURL[0] + '/collect/add' },
 
   /**
    * 资源管理
   */
   // 资源列表 请求类型：get 请求地址：/resource/list
-  GetResources: { method: 'get', url: '/resource/list' },
+  GetResources: { method: 'get', url: baseURL[0] + '/resource/list' },
   // 新增资源 请求类型：post 请求地址：/resource/add
-  AddResource: { method: 'post', url: '/resource/add' },
+  AddResource: { method: 'post', url: baseURL[0] + '/resource/add' },
   // 更新资源 请求类型：put 请求地址：/resource/update
-  UpdateResource: { method: 'put', url: '/resource/update' },
+  UpdateResource: { method: 'put', url: baseURL[0] + '/resource/update' },
   // 更新资源 请求类型：get 请求地址：/resource/info
-  GetResource: { method: 'get', url: '/resource/info' },
+  GetResource: { method: 'get', url: baseURL[0] + '/resource/info' },
   // 删除资源 请求类型：delete 请求地址：/resource/delete
-  DeleteResource: { method: 'delete', url: '/resource/delete' },
+  DeleteResource: { method: 'delete', url: baseURL[0] + '/resource/delete' },
   // 上传资源 请求类型：post 请求地址：/resource/upload
-  UploadResource: { method: 'post', url: '/resource/upload' },
+  UploadResource: { method: 'post', url: baseURL[0] + '/resource/upload' },
   // 移动资源 请求类型：post 请求地址：/resource/move
-  MoveResource: { method: 'post', url: '/resource/move' },
+  MoveResource: { method: 'post', url: baseURL[0] + '/resource/move' },
   // 复制资源 请求类型：post 请求地址：/resource/copy
-  CopyResource: { method: 'post', url: '/resource/copy' },
+  CopyResource: { method: 'post', url: baseURL[0] + '/resource/copy' },
   // 下载资源 请求类型：get 请求地址：/resource/download
-  DownloadResource: { method: 'get', url: '/resource/download' },
+  DownloadResource: { method: 'get', url: baseURL[0] + '/resource/download' },
+  // 保存网络图片资源 请求类型：post 请求地址：/resource/saveImg
+  SaveResource: { method: 'post', url: baseURL[0] + '/resource/saveImg' },
 
   /**
    * 账目类别管理
   */
   // 账目类别列表 请求类型：get 请求地址：/accountTag/list
-  GetAccountTags: { method: 'get', url: '/accountTag/list' },
+  GetAccountTags: { method: 'get', url: baseURL[0] + '/accountTag/list' },
   // 新增账目类别 请求类型：post 请求地址：/accountTag/add
-  AddAccountTag: { method: 'post', url: '/accountTag/add' },
+  AddAccountTag: { method: 'post', url: baseURL[0] + '/accountTag/add' },
   // 账目类别详情 请求类型：get 请求地址：/accountTag/detail
-  GetAccountTag: { method: 'get', url: '/accountTag/detail' },
+  GetAccountTag: { method: 'get', url: baseURL[0] + '/accountTag/detail' },
   // 更新账目类别 请求类型：put 请求地址：/accountTag/update
-  UpdateccountTag: { method: 'put', url: '/accountTag/update' },
+  UpdateccountTag: { method: 'put', url: baseURL[0] + '/accountTag/update' },
   // 删除账目类别 请求类型：delete 请求地址：/accountTag/deleteById
-  DeleteAccountTag: { method: 'delete', url: '/accountTag/deleteById' },
+  DeleteAccountTag: { method: 'delete', url: baseURL[0] + '/accountTag/deleteById' },
   // 移动账目类别顺序 请求类型：get 请求地址：/accountTag/moveOrder
-  MoveAccountTag: { method: 'get', url: '/accountTag/moveOrder' },
+  MoveAccountTag: { method: 'get', url: baseURL[0] + '/accountTag/moveOrder' },
   // 重置账目类别顺序 请求类型：put 请求地址：/accountTag/resetOrder
-  ResetAccountTag: { method: 'put', url: '/accountTag/resetOrder' },
+  ResetAccountTag: { method: 'put', url: baseURL[0] + '/accountTag/resetOrder' },
 
   /**
    * 账目管理
   */
   // 账目列表 请求类型：get 请求地址：/account/list
-  GetAccounts: { method: 'get', url: '/account/list' },
+  GetAccounts: { method: 'get', url: baseURL[0] + '/account/list' },
   // 新增账目 请求类型：post 请求地址：/account/add
-  AddAccount: { method: 'post', url: '/account/add' },
+  AddAccount: { method: 'post', url: baseURL[0] + '/account/add' },
   // 账目详情 请求类型：get 请求地址：/account/detail
-  GetAccount: { method: 'get', url: '/account/detail' },
+  GetAccount: { method: 'get', url: baseURL[0] + '/account/detail' },
   // 更新账目 请求类型：put 请求地址：/account/update
-  UpdateAccount: { method: 'put', url: '/account/update' },
+  UpdateAccount: { method: 'put', url: baseURL[0] + '/account/update' },
   // 删除账目 请求类型：delete 请求地址：/account/deleteById
-  DeleteAccount: { method: 'delete', url: '/account/deleteById' },
+  DeleteAccount: { method: 'delete', url: baseURL[0] + '/account/deleteById' },
 
   /**
    * 密码管理
   */
   // 密码列表 请求类型：get 请求地址：/password/list
-  GetPasswords: { method: 'get', url: '/password/list' },
+  GetPasswords: { method: 'get', url: baseURL[0] + '/password/list' },
   // 新增密码 请求类型：post 请求地址：/password/add
-  AddPassword: { method: 'post', url: '/password/add' },
+  AddPassword: { method: 'post', url: baseURL[0] + '/password/add' },
   // 更新密码 请求类型：put 请求地址：/password/update
-  UpdatePassword: { method: 'put', url: '/password/update' },
+  UpdatePassword: { method: 'put', url: baseURL[0] + '/password/update' },
   // 密码详情 请求类型：get 请求地址：/password/detail
-  GetPassword: { method: 'get', url: '/password/detail' },
+  GetPassword: { method: 'get', url: baseURL[0] + '/password/detail' },
   // 删除密码 请求类型：delete 请求地址：/password/deleteById
-  DeletePassword: { method: 'delete', url: '/password/deleteById' },
+  DeletePassword: { method: 'delete', url: baseURL[0] + '/password/deleteById' },
 
   /**
    * 备忘录管理
   */
   // 备忘录列表 请求类型：get 请求地址：/memory/list
-  GetMemories: { method: 'get', url: '/memory/list' },
+  GetMemories: { method: 'get', url: baseURL[0] + '/memory/list' },
   // 新增备忘录 请求类型：post 请求地址：/memory/add
-  AddMemory: { method: 'post', url: '/memory/add' },
+  AddMemory: { method: 'post', url: baseURL[0] + '/memory/add' },
   // 删除备忘录 请求类型：delete 请求地址：/memory/deleteById
-  DeleteMemory: { method: 'delete', url: '/memory/deleteById' },
+  DeleteMemory: { method: 'delete', url: baseURL[0] + '/memory/deleteById' },
   // 备忘录详情 请求类型：get 请求地址：/memory/detail
-  GetMemory: { method: 'get', url: '/memory/detail' },
+  GetMemory: { method: 'get', url: baseURL[0] + '/memory/detail' },
   // 更新备忘录 请求类型：put 请求地址：/memory/update
-  UpdateMemory: { method: 'put', url: '/memory/update' },
+  UpdateMemory: { method: 'put', url: baseURL[0] + '/memory/update' },
 
   /**
    * 定时任务管理
   */
   // 任务列表 请求类型：get 请求地址：/task/list
-  GetTasks: { method: 'get', url: '/task/list' },
+  GetTasks: { method: 'get', url: baseURL[0] + '/task/list' },
   // 更新任务 请求类型：put 请求地址：/task/update
-  UpdateTask: { method: 'put', url: '/task/update' },
+  UpdateTask: { method: 'put', url: baseURL[0] + '/task/update' },
   // 删除任务 请求类型：delete 请求地址：/task/deleteById
-  DeleteTask: { method: 'delete', url: '/task/deleteById' },
+  DeleteTask: { method: 'delete', url: baseURL[0] + '/task/deleteById' },
   // 新增任务 请求类型：post 请求地址：/task/add
-  AddTask: { method: 'post', url: '/task/add' },
+  AddTask: { method: 'post', url: baseURL[0] + '/task/add' },
   // 任务详情 请求类型：get 请求地址：/task/detail
-  GetTask: { method: 'get', url: '/task/detail' },
+  GetTask: { method: 'get', url: baseURL[0] + '/task/detail' },
   // 任务执行日志 请求类型：get 请求地址：/task/log
-  GetTaskLog: { method: 'get', url: '/task/log' },
+  GetTaskLog: { method: 'get', url: baseURL[0] + '/task/log' },
 
   /**
    * 公共接口
   */
   // 登录 请求类型：post 请求地址：/login
-  Login: { method: 'post', url: '/login' },
+  Login: { method: 'post', url: baseURL[0] + '/login' },
   // 系统监控 请求类型：get 请求地址：/monitor/server
-  MonitorSystem: { method: 'get', url: '/monitor/server' },
+  MonitorSystem: { method: 'get', url: baseURL[0] + '/monitor/server' },
   // 服务监控 请求类型：get 请求地址：/monitor/process
-  MonitorServer: { method: 'get', url: '/monitor/process' },
+  MonitorServer: { method: 'get', url: baseURL[0] + '/monitor/process' },
   // 服下载 请求类型：get 请求地址：/test/download
-  Download: { method: 'get', url: '/test/download' }
+  Download: { method: 'get', url: baseURL[0] + '/test/download' },
+
+  /**
+   * 百度收录接口
+  */
+  // 百度收录 请求类型：get 请求地址：/urls
+  BaiduIncluded: { method: 'get', url: baseURL[1] + '/urls' }
 }
 
 export default (config) => {
@@ -266,11 +273,12 @@ export default (config) => {
     // 发送请求
     http(requestConfig).then(res => {
       if (res.data) {
-        if (res.data.code === 200) {
-          resolve(res.data)
-        } else {
-          reject(res.data)
-        }
+        // if (res.data.code === 200) {
+        //   resolve(res.dat)
+        // } else {
+        //   reject(res.data)
+        // }
+        resolve(res)
       }
     }).catch(error => {
       reject(error)

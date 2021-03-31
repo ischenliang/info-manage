@@ -155,8 +155,8 @@ export default {
         },
         requireAuth: true
       }).then(res => {
-        this.list.total = res.data.total
-        this.list.data = res.data.data
+        this.list.total = res.data.data.total
+        this.list.data = res.data.data.data
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
@@ -186,7 +186,7 @@ export default {
         requireAuth: true,
         data: row
       }).then(res => {
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
@@ -221,7 +221,7 @@ export default {
           requireAuth: true,
           paths: [row.id]
         }).then(async res => {
-          this.$notify.success(res.msg)
+          this.$notify.success(res.data.msg)
           // 重置路由并更新路由
           resetRouter()
           const dynamicRoutes = await this.setUser(routes) // 注意：要将静态路由拼接到menus中
@@ -245,7 +245,7 @@ export default {
             paths: [item]
           }).then(async res => {
             if (index === this.list.selected.length - 1) {
-              this.$notify.success(res.msg)
+              this.$notify.success(res.data.msg)
               this.list.selected = []
               // 重置路由并更新路由
               resetRouter()

@@ -74,8 +74,8 @@ export default {
         requireAuth: true,
         paths: [this.id]
       }).then(res => {
-        this.memory = res.data
-        this.memory.tag = res.data.tag.split(',')
+        this.memory = res.data.data
+        this.memory.tag = res.data.data.tag.split(',')
       }).catch(error => {
         this.$notify.error(error)
       })

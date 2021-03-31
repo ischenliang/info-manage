@@ -27,7 +27,8 @@
         @imgAdd="imgAdd"/> -->
         <!-- <c-fork-me /> -->
         <!-- <el-button type="primary" size="medumn" v-perms="'system:resource:upload'">上传</el-button> -->
-      <img :src="url" alt="">
+      <!-- <img :src="url" alt=""> -->
+      <el-button type="primary" @click="included">百度收录</el-button>
     </div>
   </div>
 </template>
@@ -102,17 +103,30 @@ export default {
     },
     handleHtmlCode (status, value) {
       console.log(status, value)
+    },
+    included () {
+      this.$http({
+        name: 'BaiduIncluded',
+        params: {
+          site: 'https://itchenliang.gitee.io',
+          token: localStorage.getItem('baidu-token')
+        }
+      }).then(res => {
+        console.log(res)
+      }).catch(error => {
+        console.log(error)
+      })
     }
   },
   created () {
-    this.$http({
-      name: 'Download'
-    }).then(res => {
-      console.log(res)
-      this.url = res.data
-    }).catch(error => {
-      console.log(error)
-    })
+    // this.$http({
+    //   name: 'Download'
+    // }).then(res => {
+    //   console.log(res)
+    //   this.url = res.data.data
+    // }).catch(error => {
+    //   console.log(error)
+    // })
   }
 }
 </script>

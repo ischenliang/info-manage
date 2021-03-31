@@ -68,8 +68,8 @@ export default {
               item.loadData()
             })
           })
-          this.list.data = res.data.data
-          return resolve(res.data.data)
+          this.list.data = res.data.data.data
+          return resolve(res.data.data.data)
         } catch (error) {
           this.$notify.error(error)
         }
@@ -86,11 +86,11 @@ export default {
             }
           })
           // 因为不涉及到更深层次的节点：所以这里就将二层节点设置为叶子节点，别忘记了设置 isLeaf: 'leaf' 的prop
-          res.data.data.forEach(item => {
+          res.data.data.data.forEach(item => {
             this.$set(item, 'leaf', true)
           })
-          node.data.children = res.data.data
-          return resolve(res.data.data)
+          node.data.children = res.data.data.data
+          return resolve(res.data.data.data)
         } catch (error) {
           this.$notify.error(error)
         }
@@ -104,7 +104,7 @@ export default {
         paths: [this.$route.params.id]
       }).then(res => {
         const keys = []
-        res.data.ra.forEach(item => {
+        res.data.data.ra.forEach(item => {
           keys.push(item.id)
         })
         this.$nextTick(() => {
@@ -138,7 +138,7 @@ export default {
         paths: [this.$route.params.id],
         data: result
       }).then(async res => {
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
         this.itemGet()
         // 这里需要重置下权限
         await this.setPerms()

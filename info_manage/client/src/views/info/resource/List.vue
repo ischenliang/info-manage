@@ -4,18 +4,32 @@
       <el-input v-model="list.filters.search" placeholder="请输入内容" suffix-icon="el-icon-search" @input="listGet"/>
       <c-flex-auto />
       <el-button
-        type="warning"
-        size="medium"
-        v-perms="'system:resource:upload'"
-        @click="$router.push({ path: '/info/resource/upload', query: { path: list.filters.path } })">
-        上传
-      </el-button>
-      <el-button
         type="primary"
         size="medium"
         v-perms="'system:resource:add'"
         @click="itemAdd">
         新增
+      </el-button>
+      <el-dropdown trigger="click" @command="handleCommond">
+        <el-button
+          type="warning"
+          v-perms="'system:resource:upload'"
+          style="margin: 0 10px;"
+          size="medium">
+          上传
+        </el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item :command="() => toUpload('file')">文件上传</el-dropdown-item>
+          <el-dropdown-item :command="() => toUpload('folder')">文件夹上传</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <el-button
+        type="info"
+        size="medium"
+        title="保存网路图片"
+        v-perms="'system:resource:saveImg'"
+        @click="itemSave">
+        网络
       </el-button>
       <el-button
         type="danger"
@@ -86,7 +100,9 @@
           </template>
         </el-table-column>
         <el-table-column v-if="show[1].value" label="路径" prop="path" min-width="160" align="center"/>
-        <el-table-column v-if="show[2].value" label="大小" prop="size" width="80" align="center"/>
+        <el-table-column v-if="show[2].value" label="大小" prop="size" width="100" align="center">
+          <template v-slot="{ row }">{{ row.size | sizeFormat }}</template>
+        </el-table-column>
         <el-table-column v-if="show[3].value" label="扩展名" prop="extension" width="80" align="center">
           <template v-slot="{ row }">{{ row.extension === '' ? '-' : row.extension }}</template>
         </el-table-column>
@@ -121,12 +137,12 @@
                   复制到
                 </el-dropdown-item>
                 <el-dropdown-item
-                  v-perms="'system:respurce:update'"
+                  v-perms="'system:resource:update'"
                   :command="() => itemEdit(row)">
                   重命名
                 </el-dropdown-item>
                 <el-dropdown-item
-                  v-perms="'system:respurce:delete'"
+                  v-perms="'system:resource:delete'"
                   :command="() => itemDelete(row)">
                   删除
                 </el-dropdown-item>
@@ -182,6 +198,9 @@ export default {
     }
   },
   methods: {
+    handleCommond (func) {
+      func()
+    },
     // 获取数据
     listGet () {
       this.list.loading = true
@@ -193,7 +212,7 @@ export default {
           search: this.list.filters.search
         }
       }).then(res => {
-        this.list.data = res.data
+        this.list.data = res.data.data
         this.list.data.forEach(item => this.$set(item, 'editable', false))
       }).catch(error => {
         this.$notify.error(error)
@@ -238,9 +257,36 @@ export default {
           }
         }).then(res => {
           _this.listGet()
-          _this.$notify.success(res.msg)
+          _this.$notify.success(res.data.msg)
         }).catch(error => {
-          _this.close().$notify.error(error)
+          _this.$notify.error(error)
+        })
+      }).catch(() => {})
+    },
+    // 保存网络图片
+    itemSave () {
+      const _this = this
+      this.$prompt('请输入图片地址', '保存网络图片', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^((ht|f)tps?):\/\/[\w\\-]+(\.[\w\\-]+)+([\w\-\\.,@?^=%&:\\/~\\+#]*[\w\-\\@?^=%&\\/~\\+#])?$/,
+        inputErrorMessage: '图片地址格式不正确'
+      }).then(({ value }) => {
+        _this.$http({
+          name: 'SaveResource',
+          requireAuth: true,
+          data: value,
+          params: {
+            path: _this.$route.query.path ? _this.$route.query.path : '/'
+          },
+          headers: {
+            'Content-Type': 'text/plain'
+          }
+        }).then(res => {
+          _this.listGet()
+          _this.$notify.success(res.data.msg)
+        }).catch(error => {
+          _this.$notify.error(error)
         })
       }).catch(() => {})
     },
@@ -264,7 +310,7 @@ export default {
           }
         }).then(res => {
           _this.listGet()
-          _this.$notify.success(res.msg)
+          _this.$notify.success(res.data.msg)
         }).catch(error => {
           _this.$notify.error(error)
         })
@@ -285,7 +331,7 @@ export default {
           'Content-Type': 'application/octet-stream'
         }
       }).then(res => {
-        window.open(`${res.baseURL}${res.url.substring(1)}?path=${res.params.path}&token=${res.params.token}`, '_self')
+        window.open(`${res.data.url}?path=${res.data.params.path}&token=${res.data.params.token}`, '_self')
       }).catch(error => {
         this.$notify.error(error)
       })
@@ -300,7 +346,7 @@ export default {
             path: row.path
           }
         }).then(res => {
-          this.$notify.success(res.msg)
+          this.$notify.success(res.data.msg)
         }).catch(error => {
           this.$notify.error(error)
         }).finally(() => {
@@ -320,7 +366,7 @@ export default {
             }
           }).then(res => {
             if (index === this.list.selected.length - 1) {
-              this.$notify.success(res.msg)
+              this.$notify.success(res.data.msg)
               this.list.selected = []
             }
           }).catch(error => {
@@ -376,7 +422,7 @@ export default {
         },
         data: this.current
       }).then(res => {
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
         this.listGet()
       }).catch(error => {
         this.$notify.error(error)
@@ -397,10 +443,19 @@ export default {
         },
         data: this.current
       }).then(res => {
-        this.$notify.success(res.msg)
+        this.$notify.success(res.data.msg)
         this.listGet()
       }).catch(error => {
         this.$notify.error(error)
+      })
+    },
+    toUpload (type) {
+      this.$router.push({
+        path: '/info/resource/upload',
+        query: {
+          path: this.$route.query.path,
+          type
+        }
       })
     }
   },
@@ -429,6 +484,26 @@ export default {
         this.breadcrumbs = [...['全部文件'], ...val.query.path.split('/').slice(1)]
       }
       this.listGet()
+    }
+  },
+  filters: {
+    sizeFormat (val) {
+      if (val === 0) {
+        return 0
+      }
+      if (val / (1024 * 1024 * 1024 * 1024 * 1024) > 1) {
+        return (val / (1024 * 1024 * 1024 * 1024 * 1024)).toFixed(2) + ' P'
+      } else if (val / (1024 * 1024 * 1024 * 1024) > 1) {
+        return (val / (1024 * 1024 * 1024 * 1024)).toFixed(2) + ' T'
+      } else if (val / (1024 * 1024 * 1024) > 1) {
+        return (val / (1024 * 1024 * 1024)).toFixed(2) + ' G'
+      } else if (val / (1024 * 1024) > 1) {
+        return (val / (1024 * 1024)).toFixed(2) + ' M'
+      } else if (val / 1024 > 1) {
+        return (val / 1024).toFixed(2) + ' K'
+      } else {
+        return (val / 1024).toFixed(2) + ' K'
+      }
     }
   }
 }

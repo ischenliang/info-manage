@@ -7,7 +7,7 @@ const archiver = require('archiver')
 const send = require('koa-send')
 router.prefix('/api/resource')
 const resConfig = require('../config/app.res')
-const { add, deleteById, update, detail, list, move, copy, upload } = require('../service/resource')
+const { add, deleteById, update, detail, list, move, copy, upload, saveImg } = require('../service/resource')
 
 // 新增
 router.post('/add', async(ctx, next) => {
@@ -153,6 +153,20 @@ router.get('/download', async(ctx, next) => {
       const name = ctx.query.path.split('/').pop()
       ctx.attachment(name)
       await send(ctx, `/resource/${uid}/${ctx.query.path}`, { root: path.join(__dirname, '..') })
+    }
+  } catch (error) {
+    ctx.throw(error.status, error)
+  }
+})
+
+// 保存图片
+router.post('/saveImg', async(ctx, next) => {
+  try {
+    ctx.status = 200
+    ctx.body = {
+      code: 200,
+      msg: resConfig['SAVE_SUCCESS'],
+      data: await saveImg(ctx.request.body, ctx.query.path, ctx.uid)
     }
   } catch (error) {
     ctx.throw(error.status, error)
