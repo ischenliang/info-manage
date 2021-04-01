@@ -36,7 +36,7 @@ module.exports = {
     return origin + '/avatar/' + `${uid}.${suffix}`
   },
   // 上传文件
-  upload: (bpath, file) => {
+  upload: (bpath, file, name) => {
     // 获取文件后缀
     const suffix = file.name.split('.').pop()
     // 为了文件夹上传
@@ -44,7 +44,7 @@ module.exports = {
       fse.mkdirsSync(path.join(__dirname, '../', bpath, file.name.split('/').slice(0, -1).join('/')))
     }
     // 文件路径: 文件存放目录 + 用户 + 名称.后缀
-    let filePath = path.join(__dirname, '..', bpath,  file.name)
+    let filePath = path.join(__dirname, '..', bpath,  name ? `${name}.${suffix}` : file.name)
     // 创建可读流
     const render = fs.createReadStream(file.path)
     // 默认会覆盖文件
@@ -52,8 +52,8 @@ module.exports = {
     // 将文件写入到指定的位置
     render.pipe(upStream)
     return {
-      name: file.name,
-      path: bpath + '\\' + file.name,
+      name: name ? `${name}.${suffix}` : file.name,
+      path: name ?  `${bpath}\\${name}.${suffix}` :  bpath + '\\' + file.name,
       extension: suffix
     }
   },

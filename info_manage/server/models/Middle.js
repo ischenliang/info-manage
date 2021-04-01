@@ -12,6 +12,9 @@ const AccountTag = require('./AccountTag')
 const Password = require('./Password')
 const Memory = require('./Memory')
 const Task = require('./Task')
+const Project = require('./Project')
+const ProjectImage = require('./ProjectImage')
+const ProjectIssue = require('./ProjectIssue')
 
 // 用户角色表
 User.belongsToMany(Role, { through: 'user_role', as:'ur' })
@@ -58,6 +61,17 @@ Memory.belongsTo(User, { foreignKey: 'uid', sourceKey: 'id' })
 User.hasMany(Task, { foreignKey: 'uid', sourceKey: 'id' })
 Task.belongsTo(User, { foreignKey: 'uid', sourceKey: 'id' })
 
+// Project 与 User 关联
+User.hasMany(Project, { foreignKey: 'uid', sourceKey: 'id' })
+Project.belongsTo(User, { foreignKey: 'uid', sourceKey: 'id' })
+
+// Project 与 ProjectImage 关联
+Project.hasMany(ProjectImage, { foreignKey: 'pid', sourceKey: 'id' })
+ProjectImage.belongsTo(Project, { foreignKey: 'pid', sourceKey: 'id' })
+
+// Project 与 ProjectIssue 关联
+Project.hasMany(ProjectIssue, { foreignKey: 'pid', sourceKey: 'id' })
+ProjectIssue.belongsTo(Project, { foreignKey: 'pid', sourceKey: 'id' })
 
 
 // 向外抛出所有的model：后续使用就只需要引入这一个 model 即可
@@ -75,5 +89,8 @@ module.exports = {
   AccountTag,
   Password,
   Memory,
-  Task
+  Task,
+  Project,
+  ProjectImage,
+  ProjectIssue
 }
