@@ -3,14 +3,11 @@ const moment = require('moment')
 const seq = require('../utils/seq')
 
 /**
- * 项目任务管理表
+ * 项目文档管理表
  * id: 主键 UUID
  * pid：项目id UUID
- * name：任务名称 String
- * description：任务描述 Text
- * tag：任务标签 String bug,feature
- * priority：优先级 Integer 1无优先级/2不重要/3次要/4主要/5重要
- * status：状态 Integer 1打开/0关闭
+ * name：文档名称 String
+ * content：文档内容 Text
  * ctime：创建时间 String
  * mtime：更新时间 String
  */
@@ -27,10 +24,10 @@ const ProjectDocument = seq.define('project_document', {
     allowNull: false,
     comment: '名称'
   },
-  path: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    comment: '图片存放位置'
+  content: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+    comment: '文档内容'
   },
   pid: {
     type: DataTypes.UUID,

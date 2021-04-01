@@ -15,6 +15,7 @@ const Task = require('./Task')
 const Project = require('./Project')
 const ProjectImage = require('./ProjectImage')
 const ProjectIssue = require('./ProjectIssue')
+const ProjectDocument = require('./ProjectDocument')
 
 // 用户角色表
 User.belongsToMany(Role, { through: 'user_role', as:'ur' })
@@ -73,6 +74,10 @@ ProjectImage.belongsTo(Project, { foreignKey: 'pid', sourceKey: 'id' })
 Project.hasMany(ProjectIssue, { foreignKey: 'pid', sourceKey: 'id' })
 ProjectIssue.belongsTo(Project, { foreignKey: 'pid', sourceKey: 'id' })
 
+// Project 与 ProjectDocument 关联
+Project.hasMany(ProjectDocument, { foreignKey: 'pid', sourceKey: 'id' })
+ProjectDocument.belongsTo(Project, { foreignKey: 'pid', sourceKey: 'id' })
+
 
 // 向外抛出所有的model：后续使用就只需要引入这一个 model 即可
 module.exports = {
@@ -92,5 +97,6 @@ module.exports = {
   Task,
   Project,
   ProjectImage,
-  ProjectIssue
+  ProjectIssue,
+  ProjectDocument
 }
