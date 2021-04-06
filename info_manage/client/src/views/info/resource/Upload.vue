@@ -111,7 +111,7 @@ export default {
         name: 'UploadResource',
         requireAuth: true,
         params: {
-          path: this.$route.query.path
+          path: this.$route.query.path ? this.$route.query.path : '/'
         },
         headers: {
           'Content-Type': 'multipart/form-data'

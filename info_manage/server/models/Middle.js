@@ -16,6 +16,8 @@ const Project = require('./Project')
 const ProjectImage = require('./ProjectImage')
 const ProjectIssue = require('./ProjectIssue')
 const ProjectDocument = require('./ProjectDocument')
+const Chart = require('./Chart')
+const Dashboard = require('./Dashboard')
 
 // 用户角色表
 User.belongsToMany(Role, { through: 'user_role', as:'ur' })
@@ -98,5 +100,7 @@ module.exports = {
   Project,
   ProjectImage,
   ProjectIssue,
-  ProjectDocument
+  ProjectDocument,
+  Dashboard,
+  Chart
 }

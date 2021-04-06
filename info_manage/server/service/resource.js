@@ -181,7 +181,6 @@ async function upload (files, parent, uid) {
   try {
     // 需要判断是否上传的多个文件
     if (files.length) {
-      const res = []
       files.forEach(item => {
         util.upload(path.join('/resource', uid, parent), item)
       })

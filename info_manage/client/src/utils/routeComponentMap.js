@@ -21,7 +21,10 @@ export default {
   SystemRole: () => import('@/views/system/role/List'),
   SystemUser: () => import('@/views/system/user/List'),
   SystemApi: () => import('@/views/system/api/List'),
-  ToolDns: () => import('@/views/tool/Dns')
+  ToolDns: () => import('@/views/tool/Dns'),
+  SystemChart: () => import('@/views/system/chart/List'),
+  SystemDashList: () => import('@/views/system/dash/List'),
+  SystemDashLayout: () => import('@/views/system/dash/Layout')
   // ProjectList: () => import('@/views/info/project/List'),
   // ProjectList: () => import('@/views/info/project/List'),
 }

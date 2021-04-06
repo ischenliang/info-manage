@@ -1,4 +1,4 @@
-const { Project, ProjectImage } = require('../models/Middle')
+const { Dashboard } = require('../models/Middle')
 const { Op } = require("sequelize")
 const sequelize = require('../utils/seq')
 const moment = require('moment')
@@ -7,24 +7,11 @@ const path = require('path')
 const fse = require('fs-extra')
 
 // 新增
-async function add (file, obj) {
+async function add (obj) {
   obj.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
   obj.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
   try {
-    const res = await Project.create(obj)
-    const result = util.upload(path.join('/project/code'), file, res.id)
-    await Project.update({
-      path: result.path
-    }, {
-      where: {
-        id: res.id
-      }
-    })
-    return await Project.findOne({
-      where: {
-        id: res.id
-      }
-    })
+    return await Dashboard.create(obj)
   } catch (error) {
     throw error
   }
@@ -36,13 +23,11 @@ async function add (file, obj) {
  * 首先项目文件
  * 然后删除数据以及关联数据
  */
-async function deleteById (id, uid) {
+async function deleteById (id) {
   try {
-    fse.removeSync(path.join(__dirname, '../project/code', `${id}.zip`))
-    return await Project.destroy({
+    return await Dashboard.destroy({
       where: {
-        id,
-        uid
+        id
       }
     })
   } catch (error) {
@@ -51,17 +36,11 @@ async function deleteById (id, uid) {
 }
 
 // 修改
-async function update (file, obj, uid) {
+async function update (obj) {
   try {
-    if (file) {
-      // 这里更新文件
-      util.upload(path.join('/project/code'), file, obj.id)
-    }
-    obj.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
-    return await Project.update(obj, {
+    return await Dashboard.update(obj, {
       where: {
-        id: obj.id,
-        uid
+        id: obj.id
       }
     })
   } catch (error) {
@@ -70,12 +49,11 @@ async function update (file, obj, uid) {
 }
 
 // 查询
-async function detail (id, uid) {
+async function detail (id) {
   try {
-    return await Project.findOne({
+    return await Dashboard.findOne({
       where: {
-        id,
-        uid
+        id
       }
     })
   } catch (error) {
@@ -97,36 +75,23 @@ async function detail (id, uid) {
 async function list (query, uid) {
   try {
     const limit = query.size ? parseInt(query.size) : 10
-    const { count, rows } = await Project.findAndCountAll({
+    const { count, rows } = await Dashboard.findAndCountAll({
       where: {
         [Op.or]: [
           { name:  { [Op.like]: query.search ? `%${query.search}%` :　'%%' } },
           { description:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
-          { path:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
-          { url:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
-          { tag:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
+          { identify:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
+          { layout:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
           { ctime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
           { mtime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } }
-        ],
-        type: {
-          [Op.like]: query.type ? `%${query.type}%` : '%%'
-        },
-        status: {
-          [Op.like]: query.status ? `%${query.status}%` : '%%'
-        },
-        uid
+        ]
       },
       order: [
         [query.sort ? query.sort : 'mtime', query.order ? query.order : 'desc']
       ],
+      uid,
       limit: limit,
-      offset: query.page ? (parseInt(query.page) - 1) * limit : 0,
-      include: [
-        {
-          model: ProjectImage,
-          required: false
-        }
-      ]
+      offset: query.page ? (parseInt(query.page) - 1) * limit : 0
     })
     return {
       total: count,

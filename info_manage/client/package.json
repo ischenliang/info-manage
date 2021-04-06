@@ -17,6 +17,7 @@
     "mavon-editor": "^2.9.1",
     "moment": "^2.29.1",
     "vue": "^2.6.11",
+    "vue-grid-layout": "^2.3.12",
     "vue-json-excel": "^0.3.0",
     "vue-particles": "^1.0.9",
     "vue-quill-editor": "^3.0.6",

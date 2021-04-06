@@ -331,7 +331,7 @@ export default {
           'Content-Type': 'application/octet-stream'
         }
       }).then(res => {
-        window.open(`${res.data.url}?path=${res.data.params.path}&token=${res.data.params.token}`, '_self')
+        window.open(`${res.url}?path=${res.params.path}&token=${res.params.token}`, '_self')
       }).catch(error => {
         this.$notify.error(error)
       })

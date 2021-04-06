@@ -1,6 +1,8 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 localStorage.setItem('baidu-token', 'WdhbCVRbA3h4Rumg')
+// 用于后续图表预览时使用
+localStorage.setItem('baseUrl', 'http://localhost:3000/')
 // 这样做的方法是为了如果有多个后台
 const baseURL = ['http://localhost:3000/api', 'http://data.zz.baidu.com']
 const http = axios.create()
@@ -214,6 +216,34 @@ const list = {
   GetTaskLog: { method: 'get', url: baseURL[0] + '/task/log' },
 
   /**
+   * 仪表盘管理
+  */
+  // 新增仪表盘 请求类型：post 请求地址：/dash/add
+  AddDash: { method: 'post', url: baseURL[0] + '/dash/add' },
+  // 更新仪表盘 请求类型：put 请求地址：/dash/update
+  UpdateDash: { method: 'put', url: baseURL[0] + '/dash/update' },
+  // 仪表盘详情 请求类型：get 请求地址：/dash/detail
+  GetDash: { method: 'get', url: baseURL[0] + '/dash/detail' },
+  // 仪表盘列表 请求类型：get 请求地址：/dash/list
+  GetDashs: { method: 'get', url: baseURL[0] + '/dash/list' },
+  // 删除仪表盘 请求类型：delete 请求地址：/dash/deleteById
+  DeleteDash: { method: 'delete', url: baseURL[0] + '/dash/deleteById' },
+
+  /**
+   * 图表管理
+  */
+  // 图表列表 请求类型：get 请求地址：/chart/list
+  GetCharts: { method: 'get', url: baseURL[0] + '/chart/list' },
+  // 新增图表 请求类型：post 请求地址：/chart/add
+  AddChart: { method: 'post', url: baseURL[0] + '/chart/add' },
+  // 删除图表 请求类型：delete 请求地址：/chart/deleteById
+  DeleteChart: { method: 'delete', url: baseURL[0] + '/chart/deleteById' },
+  // 图表详情 请求类型：get 请求地址：/chart/detail
+  GetChart: { method: 'get', url: baseURL[0] + '/chart/detail' },
+  // 更新图表 请求类型：put 请求地址：/chart/update
+  UpdateChart: { method: 'put', url: baseURL[0] + '/chart/update' },
+
+  /**
    * 公共接口
   */
   // 登录 请求类型：post 请求地址：/login
@@ -222,8 +252,10 @@ const list = {
   MonitorSystem: { method: 'get', url: baseURL[0] + '/monitor/server' },
   // 服务监控 请求类型：get 请求地址：/monitor/process
   MonitorServer: { method: 'get', url: baseURL[0] + '/monitor/process' },
-  // 服下载 请求类型：get 请求地址：/test/download
+  // 服务下载 请求类型：get 请求地址：/test/download
   Download: { method: 'get', url: baseURL[0] + '/test/download' },
+  // 获取ip和前缀 请求类型：get 请求地址：/
+  GetIP: { method: 'get', url: baseURL[0] + '/' },
 
   /**
    * 百度收录接口
