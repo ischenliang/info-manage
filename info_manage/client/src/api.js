@@ -244,6 +244,40 @@ const list = {
   UpdateChart: { method: 'put', url: baseURL[0] + '/chart/update' },
 
   /**
+   * 项目管理
+  */
+  // 项目列表 请求类型：get 请求地址：/project/list
+  GetProjects: { method: 'get', url: baseURL[0] + '/project/list' },
+  // 新增项目 请求类型：post 请求地址：/project/add
+  AddProject: { method: 'post', url: baseURL[0] + '/project/add' },
+  // 项目详情 请求类型：get 请求地址：/project/detail
+  GetProject: { method: 'get', url: baseURL[0] + '/project/detail' },
+  // 更新项目 请求类型：put 请求地址：/project/update
+  UpdateProject: { method: 'put', url: baseURL[0] + '/project/update' },
+  // 删除项目 请求类型：delete 请求地址：/project/deleteById
+  DeleteProject: { method: 'delete', url: baseURL[0] + '/project/deleteById' },
+  /**
+   * 项目图集
+  */
+  // 项目图集列表 请求类型：get 请求地址：/pimage/list
+  GetProjectImages: { method: 'get', url: baseURL[0] + '/pimage/list' },
+  // 新增项目图集 请求类型：post 请求地址：/pimage/upload
+  AddProjectImage: { method: 'post', url: baseURL[0] + '/pimage/upload' },
+  // 更新项目图集 请求类型：put 请求地址：/pimage/update
+  UpdateProjectImage: { method: 'put', url: baseURL[0] + '/pimage/update' },
+  // 删除项目图集 请求类型：delete 请求地址：/pimage/deleteById
+  DeleteProjectImage: { method: 'delete', url: baseURL[0] + '/pimage/deleteById' },
+  // 项目图集详情 请求类型：get 请求地址：/pimage/detail
+  GetProjectImage: { method: 'get', url: baseURL[0] + '/pimage/detail' },
+  /**
+   * 项目文档
+  */
+  // 项目文档列表 请求类型：get 请求地址：/pdocument/list
+  GetProjectDocument: { method: 'get', url: baseURL[0] + '/pdocument/list' },
+  // 新增项目文档 请求类型：post 请求地址：/pdocument/upload
+  AddProjectDocument: { method: 'post', url: baseURL[0] + '/pdocument/add' },
+
+  /**
    * 公共接口
   */
   // 登录 请求类型：post 请求地址：/login

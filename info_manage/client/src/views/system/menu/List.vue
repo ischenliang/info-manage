@@ -109,7 +109,19 @@ export default {
   data () {
     return {
       // 用于dropdown的循环和动态切换el-table-column的显示
-      show: [],
+      show: [
+        { label: '菜单名称', disabled: true, value: true },
+        { label: '图标', disabled: true, value: true },
+        { label: '组件路径', disabled: true, value: true },
+        { label: '路由地址', disabled: true, value: true },
+        { label: '显示顺序', disabled: false, value: false },
+        { label: '是否外链', disabled: false, value: false },
+        { label: '类型', disabled: false, value: true },
+        { label: '状态', disabled: false, value: true },
+        { label: '创建时间', disabled: false, value: true },
+        { label: '修改时间', disabled: false, value: false },
+        { label: '备注', disabled: false, value: false }
+      ],
       list: {
         total: 0,
         size: 10,
@@ -162,22 +174,6 @@ export default {
       }).finally(() => {
         this.list.loading = false
       })
-    },
-    // 设置动态显示el-table-column想
-    setShow () {
-      this.show = [
-        { label: '角色名称', disabled: true, value: true },
-        { label: '图标', disabled: true, value: true },
-        { label: '组件路径', disabled: true, value: true },
-        { label: '路由地址', disabled: true, value: true },
-        { label: '显示顺序', disabled: false, value: false },
-        { label: '是否外链', disabled: false, value: false },
-        { label: '类型', disabled: false, value: true },
-        { label: '状态', disabled: false, value: true },
-        { label: '创建时间', disabled: false, value: true },
-        { label: '修改时间', disabled: false, value: false },
-        { label: '备注', disabled: false, value: false }
-      ]
     },
     // 更新role
     updateRow (row) {
@@ -264,7 +260,6 @@ export default {
     }
   },
   created () {
-    this.setShow()
     this.listGet()
   },
   // 解决：el-table抖动问题

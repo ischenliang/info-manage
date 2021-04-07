@@ -1,6 +1,7 @@
 export default {
   Layout: () => import('@/views/Layout'),
   Index: () => import('@/views/Index'),
+  Home: () => import('@/views/home/Home'),
   MonitorJob: () => import('@/views/monitor/job/List'),
   MonitorJobDialog: () => import('@/views/monitor/job/Dialog'),
   MonitorJobLog: () => import('@/views/monitor/job/Log'),
@@ -9,7 +10,6 @@ export default {
   CollectList: () => import('@/views/info/collect/List'),
   ResourceUpload: () => import('@/views/info/resource/Upload'),
   ResourceList: () => import('@/views/info/resource/List'),
-  ProjectList: () => import('@/views/info/project/List'),
   MemoryDetail: () => import('@/views/info/memory/Detail'),
   MemoryList: () => import('@/views/info/memory/List'),
   MemoryAdd: () => import('@/views/info/memory/Dialog'),
@@ -24,7 +24,11 @@ export default {
   ToolDns: () => import('@/views/tool/Dns'),
   SystemChart: () => import('@/views/system/chart/List'),
   SystemDashList: () => import('@/views/system/dash/List'),
-  SystemDashLayout: () => import('@/views/system/dash/Layout')
-  // ProjectList: () => import('@/views/info/project/List'),
-  // ProjectList: () => import('@/views/info/project/List'),
+  SystemDashLayout: () => import('@/views/system/dash/Layout'),
+  ToolInclude: () => import('@/views/system/include/Baidu'),
+  ProjectList: () => import('@/views/info/project/List'),
+  ProjectDialog: () => import('@/views/info/project/Dialog'),
+  ProjectImage: () => import('@/views/info/project/image/List.vue'),
+  ProjectDocument: () => import('@/views/info/project/document/List.vue'),
+  ProjectIssues: () => import('@/views/info/project/issues/List.vue')
 }

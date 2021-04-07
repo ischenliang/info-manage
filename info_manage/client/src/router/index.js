@@ -21,32 +21,6 @@ Vue.use(VueRouter)
 
 export const routes = [
   {
-    path: '/',
-    redirect: '/home',
-    name: 'Layout',
-    component: () => import('@/views/Layout'),
-    children: [
-      {
-        path: 'home',
-        title: 'Home',
-        name: 'Home',
-        component: () => import('@/views/home/Home'),
-        meta: {
-          title: '首页',
-          hidden: 1,
-          is_frame: 0,
-          icon: 'el-icon-s-home'
-        }
-      }
-    ],
-    meta: {
-      title: '首页',
-      hidden: 1,
-      is_frame: 0,
-      icon: 'el-icon-s-home'
-    }
-  },
-  {
     path: '/login',
     component: () => import('@/views/Login'),
     meta: {

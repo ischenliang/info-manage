@@ -80,10 +80,11 @@ async function list (query) {
           { content:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
           { ctime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
           { mtime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } }
-        ]
+        ],
+        pid: query.pid
       },
       order: [
-        [query.sort ? query.sort : 'ctime', query.order ? query.order : 'desc']
+        [query.sort ? query.sort : 'mtime', query.order ? query.order : 'desc']
       ]
     })
     return {
