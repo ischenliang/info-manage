@@ -21,18 +21,34 @@
               <span class="el-icon-document"></span>
               <span :title="item.name">{{ item.name }}</span>
             </div>
-            <div class="document-item-delete el-icon-delete"></div>
+            <div class="document-item-delete el-icon-delete" @click="itemDelete(item)"></div>
           </div>
         </div>
       </div>
-      <div class="document-right c-scrollbar"></div>
+      <div class="document-right c-scrollbar">
+        <com-preview
+          v-if="preview"
+          :preview.sync="preview"
+          :document.sync="current"/>
+        <com-edit
+          v-else
+          :preview.sync="preview"
+          :document.sync="current"
+          @submit="handleSubmit"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import ComPreview from './Preview'
+import ComEdit from './Edit'
 export default {
   name: 'ProjectDocument',
+  components: {
+    ComPreview,
+    ComEdit
+  },
   data () {
     return {
       list: {
@@ -42,7 +58,8 @@ export default {
         }
       },
       loading: false,
-      current: null
+      current: null,
+      preview: true
     }
   },
   computed: {
@@ -56,7 +73,8 @@ export default {
         name: 'GetProjectDocument',
         requireAuth: true,
         params: {
-          pid: this.pid
+          pid: this.pid,
+          search: this.list.filters.search
         }
       }).then(res => {
         this.list.data = res.data.data.data
@@ -74,6 +92,7 @@ export default {
         data: {
           name: '未命名文档',
           content: '',
+          text: '',
           pid: this.pid
         }
       }).then(res => {
@@ -85,9 +104,30 @@ export default {
         this.listGet()
       })
     },
+    // 删除
+    itemDelete (row) {
+      this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
+        this.$http({
+          name: 'DeleteProjectDocument',
+          requireAuth: true,
+          paths: [row.id]
+        }).then(res => {
+          this.$notify.success(res.data.msg)
+        }).catch(error => {
+          this.$notify.error(error)
+        }).finally(() => {
+          this.listGet()
+        })
+      }).catch(() => {})
+    },
     // 点击节点
     itemClick (row) {
       this.current = row
+      this.preview = true
+    },
+    // 回调
+    handleSubmit (data) {
+      this.current = data
     }
   },
   created () {

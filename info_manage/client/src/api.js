@@ -276,6 +276,10 @@ const list = {
   GetProjectDocument: { method: 'get', url: baseURL[0] + '/pdocument/list' },
   // 新增项目文档 请求类型：post 请求地址：/pdocument/upload
   AddProjectDocument: { method: 'post', url: baseURL[0] + '/pdocument/add' },
+  // 更新项目文档 请求类型：put 请求地址：/pdocument/update
+  UpdateProjectDocument: { method: 'put', url: baseURL[0] + '/pdocument/update' },
+  // 删除项目文档 请求类型：delete 请求地址：/pdocument/deleteById
+  DeleteProjectDocument: { method: 'delete', url: baseURL[0] + '/pdocument/deleteById' },
 
   /**
    * 公共接口
