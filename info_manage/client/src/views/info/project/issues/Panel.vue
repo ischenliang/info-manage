@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     toggle () {
-      this.$emit('update:show', !this.showTable)
+      this.$emit('update:showTable', !this.showTable)
     }
   }
 }

@@ -287,6 +287,8 @@ const list = {
   */
   // 项目任务列表 请求类型：get 请求地址：/pissue/list
   GetProjectIssues: { method: 'get', url: baseURL[0] + '/pissue/list' },
+  // 更新项目任务 请求类型：put 请求地址：/pissue/update
+  UpdateProjectIssue: { method: 'put', url: baseURL[0] + '/pissue/update' },
 
   /**
    * 公共接口

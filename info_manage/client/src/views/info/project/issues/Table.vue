@@ -12,19 +12,34 @@
         :data="list.data">
         <el-table-column prop="selection" width="60" align="center" label="状态">
           <template v-slot="{ row }">
-            <el-dropdown trigger="hover" placement="bottom-start">
-              <span class="el-dropdown-link">
-                <span v-if="row.status === 0" class="my-status el-icon-circle-close" style="color: rgb(236, 0, 25);"></span>
-                <span v-if="row.status === 1" class="my-status el-icon-bangzhu" style="color: rgb(140, 146, 164)"></span>
-                <span v-if="row.status === 2" class="my-status el-icon-video-pause" style="color: rgb(0, 89, 128);"></span>
-                <span v-if="row.status === 3" class="my-status el-icon-circle-check" style="color: rgb(75, 175, 80);"></span>
+            <el-dropdown trigger="hover" placement="bottom-start" @command="handleCommand">
+              <span class="el-dropdown-link issues-tag">
+                <span v-if="row.status === 0" class="my-status el-icon-circle-close"></span>
+                <span v-if="row.status === 1" class="my-status el-icon-bangzhu"></span>
+                <span v-if="row.status === 2" class="my-status el-icon-video-pause"></span>
+                <span v-if="row.status === 3" class="my-status el-icon-circle-check"></span>
               </span>
-              <el-dropdown-menu slot="dropdown" class="issues-status-dropdown">
-                <el-dropdown-item icon="el-icon-plus">黄金糕</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-circle-plus">狮子头</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-circle-plus-outline">螺蛳粉</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-check">双皮奶</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-circle-check">蚵仔煎</el-dropdown-item>
+              <el-dropdown-menu slot="dropdown" class="issues-status-dropdown issues-tag">
+                <el-dropdown-item
+                  :class="row.status === 1 ? 'active' : ''"
+                  :command="() => itemEdit(row, 1)">
+                  <i class="el-icon-bangzhu"></i>待办的
+                </el-dropdown-item>
+                <el-dropdown-item
+                  :class="row.status === 2 ? 'active' : ''"
+                  :command="() => itemEdit(row, 2)">
+                  <i class="el-icon-video-pause"></i>进行中
+                </el-dropdown-item>
+                <el-dropdown-item
+                  :class="row.status === 3 ? 'active' : ''"
+                  :command="() => itemEdit(row, 3)">
+                  <i class="el-icon-circle-check"></i>已完成
+                </el-dropdown-item>
+                <el-dropdown-item
+                  :class="row.status === 0 ? 'active' : ''"
+                  :command="() => itemEdit(row, 0)">
+                  <i class="el-icon-circle-close"></i>已拒绝
+                </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -64,8 +79,11 @@ export default {
     }
   },
   methods: {
+    handleCommand (func) {
+      func()
+    },
     toggle () {
-      this.$emit('update:show', !this.showTable)
+      this.$emit('update:showTable', !this.showTable)
     },
     listGet () {
       this.$http({
@@ -178,6 +196,20 @@ export default {
         res.push(tmp)
       })
       return res
+    },
+    // 编辑
+    itemEdit (row, status) {
+      row.status = status
+      this.$http({
+        name: 'UpdateProjectIssue',
+        requireAuth: true,
+        data: row
+      }).then(res => {
+      }).catch(error => {
+        this.$notify.error(error)
+      }).finally(() => {
+        this.listGet()
+      })
     }
   },
   created () {
@@ -208,8 +240,30 @@ export default {
 }
 .issues-status-dropdown {
   margin-top: 0px !important;
+  padding: 0 !important;
   .popper__arrow {
     display: none !important;
+  }
+  .active {
+    background: #fef8f2;
+  }
+  .el-dropdown-menu__item:hover {
+    background: #fef8f2;
+    color: #606266;
+  }
+}
+.issues-tag {
+  .el-icon-circle-close {
+    color: rgb(236, 0, 25);
+  }
+  .el-icon-bangzhu {
+    color: rgb(140, 146, 164)
+  }
+  .el-icon-video-pause {
+    color: rgb(0, 89, 128);
+  }
+  .el-icon-circle-check {
+    color: rgb(75, 175, 80);
   }
 }
 </style>
