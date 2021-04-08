@@ -273,13 +273,20 @@ const list = {
    * 项目文档
   */
   // 项目文档列表 请求类型：get 请求地址：/pdocument/list
-  GetProjectDocument: { method: 'get', url: baseURL[0] + '/pdocument/list' },
+  GetProjectDocuments: { method: 'get', url: baseURL[0] + '/pdocument/list' },
   // 新增项目文档 请求类型：post 请求地址：/pdocument/upload
   AddProjectDocument: { method: 'post', url: baseURL[0] + '/pdocument/add' },
   // 更新项目文档 请求类型：put 请求地址：/pdocument/update
   UpdateProjectDocument: { method: 'put', url: baseURL[0] + '/pdocument/update' },
   // 删除项目文档 请求类型：delete 请求地址：/pdocument/deleteById
   DeleteProjectDocument: { method: 'delete', url: baseURL[0] + '/pdocument/deleteById' },
+  // 项目文档详情 请求类型：get 请求地址：/pdocument/detail
+  GetProjectDocument: { method: 'get', url: baseURL[0] + '/pdocument/detail' },
+  /**
+   * 项目任务
+  */
+  // 项目任务列表 请求类型：get 请求地址：/pissue/list
+  GetProjectIssues: { method: 'get', url: baseURL[0] + '/pissue/list' },
 
   /**
    * 公共接口

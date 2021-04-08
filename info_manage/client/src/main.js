@@ -12,6 +12,7 @@ import http from './api'
 import VueParticles from 'vue-particles'
 import Cookies from 'js-cookie'
 import moment from 'moment'
+moment.locale('zh-cn')
 
 Vue.config.productionTip = false
 Vue.prototype.$http = http

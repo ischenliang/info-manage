@@ -70,7 +70,7 @@ export default {
   methods: {
     listGet () {
       this.$http({
-        name: 'GetProjectDocument',
+        name: 'GetProjectDocuments',
         requireAuth: true,
         params: {
           pid: this.pid,
