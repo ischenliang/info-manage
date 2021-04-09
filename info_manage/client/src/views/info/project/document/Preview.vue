@@ -6,7 +6,7 @@
         <el-button type="primary" size="small" icon="el-icon-edit" @click="togglePreview">编辑</el-button>
       </div>
     </div>
-    <div class="document-preview-content">
+    <div class="document-preview-content markdown-body">
       <div v-html="document.content"></div>
     </div>
   </div>

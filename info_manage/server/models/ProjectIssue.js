@@ -8,6 +8,7 @@ const seq = require('../utils/seq')
  * pid：项目id UUID
  * name：任务名称 String
  * description：任务描述 Text
+ * text：任务描述 Text
  * tag：任务标签 String bug,feature
  * priority：优先级 Integer 1无优先级/2不重要/3次要/4主要/5重要
  * status：状态 Integer 1代办/2进行中/3已完成/0已拒绝
@@ -28,6 +29,11 @@ const ProjectIssue = seq.define('project_issue', {
     comment: '名称'
   },
   description: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+    comment: '描述'
+  },
+  text: {
     type: DataTypes.TEXT,
     allowNull: true,
     comment: '描述'

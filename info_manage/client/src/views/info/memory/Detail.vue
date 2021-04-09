@@ -29,7 +29,7 @@
           </div>
         </div>
       </div>
-      <div class="memory-content">
+      <div class="memory-content markdown-body">
         <article v-html="setContent()"></article>
       </div>
       <div class="memory-footer">

@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%;height: 100%;display:flex;flex-direction: column;justify-content: center;align-items: center;user-select: none;">
-    <div style="width: 100%;height: 400px;">
+    <!-- <div style="width: 100%;height: 400px;"> -->
       <!-- <mavon-editor
         v-model="value"
         language="zh-CN"
@@ -28,8 +28,13 @@
         <!-- <c-fork-me /> -->
         <!-- <el-button type="primary" size="medumn" v-perms="'system:resource:upload'">上传</el-button> -->
       <!-- <img :src="url" alt=""> -->
-      <el-button type="primary" @click="included">百度收录</el-button>
-    </div>
+      <!-- <el-button type="primary" @click="included">百度收录</el-button> -->
+    <!-- </div> -->
+    <mavon-editor
+      :value="content"
+      language="zh-CN"
+      fontSize="14px">
+    </mavon-editor>
   </div>
 </template>
 
@@ -73,7 +78,8 @@ export default {
         subfield: true, // 单双栏模式
         preview: true // 预览
       },
-      url: ''
+      url: '',
+      content: '<p>啊啊啊啊啊啊啊</p>\n<h1><a id="_1"></a>一级标题</h1>\n'
     }
   },
   methods: {

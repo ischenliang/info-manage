@@ -1,8 +1,10 @@
 <template>
   <div class="app-page issues">
     <div class="toolbar">
+      <el-input v-model="list.filters.search" @input="listGet" placeholder="请输入内容" suffix-icon="el-icon-search" />
       <c-flex-auto />
-      <el-button type="primary" @click="toggle" size="small">切换</el-button>
+      <el-button type="primary" size="medium" @click="drawer = true">新建任务</el-button>
+      <el-button type="info" @click="toggle" size="medium">看板模式</el-button>
     </div>
     <div class="table" style="background-color: #f0f2f5;">
       <el-table
@@ -46,7 +48,7 @@
         </el-table-column>
         <el-table-column label="任务名称" prop="name" min-width="100" align="left">
           <template v-slot="{ row }">
-            <span :style="setStatus(row.status)">{{ row.name }}</span>
+            <span :style="setStatus(row.status)" class="issue-name" @click="itemEditDrawer(row)">{{ row.name }}</span>
             <span class="tag" :style="setPriority(row.priority).style">{{ setPriority(row.priority).text }}</span>
             <span
               class="tag tag-other"
@@ -60,12 +62,17 @@
         <el-table-column label="创建时间" prop="ctime" width="200" align="left" :formatter="(row) => $moment(row.ctime).format('lll')" />
       </el-table>
     </div>
+    <com-issue :drawer.sync="drawer" v-if="drawer" :id="id" :pid="pid" />
   </div>
 </template>
 
 <script>
+import ComIssue from './Issue.vue'
 export default {
   name: 'Table',
+  components: {
+    ComIssue
+  },
   props: {
     showTable: Boolean,
     pid: String
@@ -74,8 +81,13 @@ export default {
     return {
       list: {
         loading: false,
-        data: []
-      }
+        data: [],
+        filters: {
+          search: ''
+        }
+      },
+      drawer: false,
+      id: ''
     }
   },
   methods: {
@@ -86,16 +98,20 @@ export default {
       this.$emit('update:showTable', !this.showTable)
     },
     listGet () {
+      this.list.loading = true
       this.$http({
         name: 'GetProjectIssues',
         requireAuth: true,
         params: {
-          pid: this.pid
+          pid: this.pid,
+          search: this.list.filters.search
         }
       }).then(res => {
         this.list.data = res.data.data.data
       }).catch(error => {
-        console.log(error)
+        this.$notify.error(error)
+      }).finally(() => {
+        this.list.loading = false
       })
     },
     // 设置状态
@@ -210,6 +226,10 @@ export default {
       }).finally(() => {
         this.listGet()
       })
+    },
+    itemEditDrawer (row) {
+      this.drawer = true
+      this.id = row.id
     }
   },
   created () {
@@ -236,6 +256,9 @@ export default {
   .my-status {
     cursor: pointer;
     font-size: 16px;
+  }
+  .issue-name {
+    cursor: pointer;
   }
 }
 .issues-status-dropdown {
