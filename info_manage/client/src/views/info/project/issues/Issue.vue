@@ -14,7 +14,7 @@
             </el-form-item>
             <el-form-item label="任务描述" prop="content" class="rich-text" style="position: relative;">
               <c-mavon-editor
-                v-model="form.content"
+                v-model="form.description"
                 :text.sync="form.text"
                 style="height: 460px;" />
             </el-form-item>
@@ -48,8 +48,10 @@
             </el-form-item>
           </el-form>
         </div>
-        <div class="pagination">
-          <el-button type="primary" size="medium" @click="submit">保存</el-button>
+        <div class="pagination" style="justify-content: flex-start;">
+          <el-button v-if="this.id" type="danger" size="medium" @click="itemDelete">删除</el-button>
+          <c-flex-auto />
+          <el-button type="primary" size="medium" @click="submit" :loading="loading">保存</el-button>
           <el-button type="danger" size="medium" @click="cancle">取消</el-button>
         </div>
       </div>
@@ -73,7 +75,8 @@ export default {
         tag: [],
         priority: 1,
         content: '',
-        text: ''
+        text: '',
+        pid: ''
       },
       rules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
@@ -98,18 +101,104 @@ export default {
         { name: '次要', value: 3, color: 'rgb(0, 138, 255)' },
         { name: '不重要', value: 2, color: 'rgb(115, 224, 111)' },
         { name: '无优先级', value: 1, color: 'rgb(176, 176, 176)' }
-      ]
+      ],
+      loading: false
     }
   },
   methods: {
+    // 关闭
     handleClose (done) {
       done()
       this.$emit('update:drawer', !this.drawer)
     },
+    // 取消
     cancle () {
       this.$emit('update:drawer', !this.drawer)
     },
-    submit () {}
+    // 新增提交
+    addSubmit () {
+      const data = JSON.parse(JSON.stringify(this.form))
+      data.tag = data.tag.join(',')
+      this.$http({
+        name: 'AddProjectIssue',
+        requireAuth: true,
+        data: data
+      }).then(res => {
+        this.$notify.success(res.data.msg)
+        this.$emit('update:drawer', !this.drawer)
+        this.$emit('submit')
+      }).catch(error => {
+        this.$notify.error(error)
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    // 更新提交
+    editSubmit () {
+      const data = JSON.parse(JSON.stringify(this.form))
+      data.tag = data.tag.join(',')
+      this.$http({
+        name: 'UpdateProjectIssue',
+        requireAuth: true,
+        data: data
+      }).then(res => {
+        this.$notify.success(res.data.msg)
+        this.$emit('update:drawer', !this.drawer)
+        this.$emit('submit')
+      }).catch(error => {
+        this.$notify.error(error)
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    // 提交
+    submit () {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.loading = true
+          if (this.id === '' || this.id === undefined) {
+            this.addSubmit()
+          } else {
+            this.editSubmit()
+          }
+        }
+      })
+    },
+    // 获取任务详情
+    itemGet () {
+      this.$http({
+        name: 'GetProjectIssue',
+        requireAuth: true,
+        paths: [this.id]
+      }).then(res => {
+        this.form = res.data.data
+        this.form.tag = this.form.tag.split(',')
+      }).catch(error => {
+        this.$notify.error(error)
+      })
+    },
+    // 删除
+    itemDelete () {
+      this.$confirm.warning('此操作将永久删除该数据, 是否继续?', '提示').then(() => {
+        this.$http({
+          name: 'DeleteProjectIssue',
+          requireAuth: true,
+          paths: [this.id]
+        }).then(res => {
+          this.$notify.success(res.data.msg)
+          this.$emit('update:drawer', !this.drawer)
+          this.$emit('submit')
+        }).catch(error => {
+          this.$notify.error(error)
+        })
+      }).catch(() => {})
+    }
+  },
+  created () {
+    this.form.pid = this.pid
+    if (this.id) {
+      this.itemGet()
+    }
   }
 }
 </script>

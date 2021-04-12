@@ -48,21 +48,23 @@
         </el-table-column>
         <el-table-column label="任务名称" prop="name" min-width="100" align="left">
           <template v-slot="{ row }">
-            <span :style="setStatus(row.status)" class="issue-name" @click="itemEditDrawer(row)">{{ row.name }}</span>
-            <span class="tag" :style="setPriority(row.priority).style">{{ setPriority(row.priority).text }}</span>
-            <span
-              class="tag tag-other"
-              v-for="(item, index) in formatTag(row.tag)"
-              :style="{ background: item.style }"
-              :key="index">
-              {{ item.text }}
-            </span>
+            <div style="word-break: break-word;">
+              <span :style="setStatus(row.status)" class="issue-name" @click="itemEditDrawer(row)">{{ row.name }}</span>
+              <span class="tag" :style="setPriority(row.priority).style">{{ setPriority(row.priority).text }}</span>
+              <span
+                class="tag tag-other"
+                v-for="(item, index) in formatTag(row.tag)"
+                :style="{ background: item.style }"
+                :key="index">
+                {{ item.text }}
+              </span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column label="创建时间" prop="ctime" width="200" align="left" :formatter="(row) => $moment(row.ctime).format('lll')" />
       </el-table>
     </div>
-    <com-issue :drawer.sync="drawer" v-if="drawer" :id="id" :pid="pid" />
+    <com-issue :drawer.sync="drawer" v-if="drawer" :id="id" :pid="pid" @submit="listGet" />
   </div>
 </template>
 
@@ -97,6 +99,7 @@ export default {
     toggle () {
       this.$emit('update:showTable', !this.showTable)
     },
+    // 获取列表
     listGet () {
       this.list.loading = true
       this.$http({
@@ -227,6 +230,7 @@ export default {
         this.listGet()
       })
     },
+    // 任务编辑
     itemEditDrawer (row) {
       this.drawer = true
       this.id = row.id

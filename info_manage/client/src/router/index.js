@@ -129,13 +129,13 @@ router.beforeEach(async (to, from, next) => {
       }
     }
     try {
-      // 获取用户菜单信息以及用户接口信息
-      store.dispatch('user/SET_UID', uid)
-      store.dispatch('user/SET_TOKEN', token)
       // 判断当前数据是否已有，有就不必再获取，避免每次都需要去请求获取
       if (perms && perms.length > 0) {
         next()
       } else {
+        // 获取用户菜单信息以及用户接口信息
+        store.dispatch('user/SET_UID', uid)
+        store.dispatch('user/SET_TOKEN', token)
         // 一定要加await，否则后续再使用指令过程中拿不到数据
         await store.dispatch('user/SET_PERMS')
         const dynamicRoutes = await store.dispatch('user/SET_MENUS', routes) // 注意：要将静态路由拼接到menus中

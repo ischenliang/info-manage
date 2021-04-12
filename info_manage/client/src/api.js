@@ -289,6 +289,12 @@ const list = {
   GetProjectIssues: { method: 'get', url: baseURL[0] + '/pissue/list' },
   // 更新项目任务 请求类型：put 请求地址：/pissue/update
   UpdateProjectIssue: { method: 'put', url: baseURL[0] + '/pissue/update' },
+  // 项目任务详情 请求类型：get 请求地址：/pissue/detail
+  GetProjectIssue: { method: 'get', url: baseURL[0] + '/pissue/detail' },
+  // 新增项目任务 请求类型：post 请求地址：/pissue/add
+  AddProjectIssue: { method: 'post', url: baseURL[0] + '/pissue/add' },
+  // 删除项目任务 请求类型：delete 请求地址：/pissue/deleteById
+  DeleteProjectIssue: { method: 'delete', url: baseURL[0] + '/pissue/deleteById' },
 
   /**
    * 公共接口
