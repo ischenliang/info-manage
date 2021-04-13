@@ -6,10 +6,18 @@
     </div>
     <div class="table">
       <div class="resource-list">
-        <div class="resource-item">
-          <div class="resource-item-icon"></div>
+        <div class="resource-item" v-for="(item, index) in 25" :key="index">
+          <div class="resource-item-icon">
+            <img src="@/assets/icon/folder.png" alt="">
+          </div>
+          <div class="resource-item-name">文件名称文件名称文件名称文件名称文件名称</div>
         </div>
-        <div class="resource-item" v-for="(item, index) in 25" :key="index"></div>
+        <div class="resource-item">
+          <div class="resource-item-icon">
+            <img src="@/assets/icon/7z.png" alt="">
+          </div>
+          <div class="resource-item-name">文件名称文件名称文件名称文件名称文件名称</div>
+        </div>
       </div>
     </div>
   </div>
@@ -42,10 +50,32 @@ export default {
     display: flex;
     flex-wrap: wrap;
     .resource-item {
-      width: 100px;
+      width: 90px;
       height: 130px;
-      border: 1px solid #99d1ff;
-      margin: 0 15px 15px 0;
+      // border: 1px solid #99d1ff;
+      margin: 0 25px 15px 0;
+      cursor: pointer;
+      .resource-item-icon {
+        width: 100%;
+        height: 90px;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .resource-item-name {
+        width: 100%;
+        height: 36px;
+        line-height: 17px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        font-size: 12px;
+        padding: 1px 4px;
+        word-break: break-all;
+      }
     }
   }
 }
