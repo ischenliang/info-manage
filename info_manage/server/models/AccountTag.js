@@ -10,8 +10,8 @@ const seq = require('../utils/seq')
  * order：顺序 Integer 后端直接定义
  * type：类别 TinyInteger 1收入/0支出
  * uid：用户 UUID
- * ctime：api创建时间 String
- * mtime：api更新时间 String
+ * ctime：创建时间 String
+ * mtime：更新时间 String
  */
 const AccountTag = seq.define('account_tag', {
   id: {

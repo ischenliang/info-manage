@@ -14,8 +14,8 @@ const seq = require('../utils/seq')
  * remark：备注 TEXT
  * uid：用户 UUID
  * template：模板 Boolean false
- * ctime：api创建时间 String
- * mtime：api更新时间 String
+ * ctime：创建时间 String
+ * mtime：更新时间 String
  */
 const Account = seq.define('account', {
   id: {

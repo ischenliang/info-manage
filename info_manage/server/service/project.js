@@ -126,7 +126,8 @@ async function list (query, uid) {
           model: ProjectImage,
           required: false
         }
-      ]
+      ],
+      distinct: true
     })
     return {
       total: count,

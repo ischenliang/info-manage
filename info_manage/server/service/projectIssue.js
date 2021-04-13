@@ -90,6 +90,7 @@ async function list (query) {
         }
       },
       order: [
+        ['priority', 'desc'],
         [query.sort ? query.sort : 'ctime', query.order ? query.order : 'desc']
       ]
     })

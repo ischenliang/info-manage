@@ -3,15 +3,19 @@
     <div class="toolbar">
       <el-input v-model="list.filters.search" @input="listGet" placeholder="请输入内容" suffix-icon="el-icon-search" />
       <c-flex-auto />
-      <el-button type="primary" size="medium" @click="drawer = true">新建任务</el-button>
+      <el-button type="primary" size="medium" @click="drawer = true;id = ''">新建任务</el-button>
       <el-button type="info" @click="toggle" size="medium">列表模式</el-button>
     </div>
-    <div class="table issues-table c-scrollbar" style="background-color: #f0f2f5;">
+    <div class="table issues-table c-scrollbar" style="background-color: #f0f2f5;" v-loading="list.loading">
       <el-card class="issue-card" shadow="never" :body-style="{ padding: '10px 15px' }">
         <div slot="header" class="clearfix issues-tag">
           <span><i class="el-icon-bangzhu"></i>待办的</span>
         </div>
-        <div class="issue-item issue-item-agent" v-for="(row, index) in list.data.agent" :key="'agent' + index">
+        <div
+          class="issue-item issue-item-agent"
+          v-for="(row, index) in list.data.agent"
+          :key="'agent' + index"
+          @click="itemEditDrawer(row)">
           <div class="issue-title">{{ row.name }}</div>
           <div class="issue-tags">
             <span class="tag" :style="setPriority(row.priority).style">{{ setPriority(row.priority).text }}</span>
@@ -23,14 +27,21 @@
               {{ item.text }}
             </span>
           </div>
-          <div class="issue-time">{{ row.ctime }}</div>
+          <div class="issue-time">
+            <span>创建:{{ row.ctime }}</span>
+            <span>修改:{{ row.mtime }}</span>
+          </div>
         </div>
       </el-card>
       <el-card class="issue-card" shadow="never" :body-style="{ padding: '10px 15px' }">
         <div slot="header" class="clearfix issues-tag">
           <span><i class="el-icon-video-pause"></i>进行中</span>
         </div>
-        <div class="issue-item issue-item-running" v-for="(row, index) in list.data.running" :key="'running' + index">
+        <div
+          class="issue-item issue-item-running"
+          v-for="(row, index) in list.data.running"
+          :key="'running' + index"
+          @click="itemEditDrawer(row)">
           <div class="issue-title">{{ row.name }}</div>
           <div class="issue-tags">
             <span class="tag" :style="setPriority(row.priority).style">{{ setPriority(row.priority).text }}</span>
@@ -42,14 +53,21 @@
               {{ item.text }}
             </span>
           </div>
-          <div class="issue-time">{{ row.ctime }}</div>
+          <div class="issue-time">
+            <span>创建:{{ row.ctime }}</span>
+            <span>修改:{{ row.mtime }}</span>
+          </div>
         </div>
       </el-card>
       <el-card class="issue-card" shadow="never" :body-style="{ padding: '10px 15px' }">
         <div slot="header" class="clearfix issues-tag">
           <span><i class="el-icon-circle-check"></i>已完成</span>
         </div>
-        <div class="issue-item issue-item-completed" v-for="(row, index) in list.data.completed" :key="'completed' + index">
+        <div
+          class="issue-item issue-item-completed"
+          v-for="(row, index) in list.data.completed"
+          :key="'completed' + index"
+          @click="itemEditDrawer(row)">
           <div class="issue-title">{{ row.name }}</div>
           <div class="issue-tags">
             <span class="tag" :style="setPriority(row.priority).style">{{ setPriority(row.priority).text }}</span>
@@ -61,14 +79,21 @@
               {{ item.text }}
             </span>
           </div>
-          <div class="issue-time">{{ row.ctime }}</div>
+          <div class="issue-time">
+            <span>创建:{{ row.ctime }}</span>
+            <span>修改:{{ row.mtime }}</span>
+          </div>
         </div>
       </el-card>
       <el-card class="issue-card" shadow="never" :body-style="{ padding: '10px 15px' }">
         <div slot="header" class="clearfix issues-tag">
           <span><i class="el-icon-circle-close"></i>已拒绝</span>
         </div>
-        <div class="issue-item issue-item-rejected" v-for="(row, index) in list.data.rejected" :key="'rejected' + index">
+        <div
+          class="issue-item issue-item-rejected"
+          v-for="(row, index) in list.data.rejected"
+          :key="'rejected' + index"
+          @click="itemEditDrawer(row)">
           <div class="issue-title">{{ row.name }}</div>
           <div class="issue-tags">
             <span class="tag" :style="setPriority(row.priority).style">{{ setPriority(row.priority).text }}</span>
@@ -124,6 +149,7 @@ export default {
     handleCommand (func) {
       func()
     },
+    // 切换模式
     toggle () {
       this.$emit('update:showTable', !this.showTable)
     },
@@ -350,6 +376,7 @@ export default {
       margin-bottom: 12px;
       background: #fff;
       border-radius: 4px;
+      cursor: pointer;
       &.issue-item-agent {
         border-color: rgb(140, 146, 164);
       }

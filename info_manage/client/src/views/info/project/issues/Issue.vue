@@ -12,7 +12,7 @@
             <el-form-item label="任务名称" prop="name">
               <el-input v-model="form.name"/>
             </el-form-item>
-            <el-form-item label="任务描述" prop="content" class="rich-text" style="position: relative;">
+            <el-form-item label="任务描述" prop="description" class="rich-text" style="position: relative;">
               <c-mavon-editor
                 v-model="form.description"
                 :text.sync="form.text"
@@ -32,7 +32,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="优先级" prop="name">
+            <el-form-item label="优先级" prop="priority">
               <el-select v-model="form.priority" filterable placeholder="优先级" style="width: 100%;">
                 <el-option
                   v-for="(item, index) in prioritys"
@@ -41,6 +41,20 @@
                   :value="item.value">
                   <div class="form-tags">
                     <span :style="{background: item.color}"></span>
+                    <span>{{ item.name }}</span>
+                  </div>
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="状态" prop="status">
+              <el-select v-model="form.status" filterable placeholder="任务状态" style="width: 100%;">
+                <el-option
+                  v-for="(item, index) in statuses"
+                  :key="index"
+                  :label="item.name"
+                  :value="item.value">
+                  <div class="form-tags">
+                    <span :style="{color: item.color}" :class="item.icon"></span>
                     <span>{{ item.name }}</span>
                   </div>
                 </el-option>
@@ -74,13 +88,15 @@ export default {
         name: '',
         tag: [],
         priority: 1,
-        content: '',
+        description: '',
         text: '',
-        pid: ''
+        pid: '',
+        status: 1
       },
       rules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
         tag: [{ required: true, message: '请输入标签', trigger: 'blur' }],
+        status: [{ required: true, message: '请选择状态', trigger: 'blur' }],
         priority: [
           { required: true, message: '请选择重要性' },
           { type: 'number', message: '重要性必须为number' }
@@ -101,6 +117,12 @@ export default {
         { name: '次要', value: 3, color: 'rgb(0, 138, 255)' },
         { name: '不重要', value: 2, color: 'rgb(115, 224, 111)' },
         { name: '无优先级', value: 1, color: 'rgb(176, 176, 176)' }
+      ],
+      statuses: [
+        { name: '代办的', value: 1, color: 'rgb(140, 146, 164)', icon: 'el-icon-bangzhu' },
+        { name: '进行中', value: 2, color: 'rgb(0, 89, 128)', icon: 'el-icon-video-pause' },
+        { name: '已完成', value: 3, color: 'rgb(75, 175, 80)', icon: 'el-icon-circle-check' },
+        { name: '已拒绝', value: 0, color: 'rgb(236, 0, 25)', icon: 'el-icon-circle-close' }
       ],
       loading: false
     }
