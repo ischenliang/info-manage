@@ -3,7 +3,7 @@
     <div class="toolbar">
       <el-input v-model="list.filters.search" placeholder="请输入内容" suffix-icon="el-icon-search" @input="listGet"/>
       <c-flex-auto />
-      <el-button type="info" @click="toggle" size="medium" icon="el-icon-reading">面板</el-button>
+      <!-- <el-button type="info" @click="toggle" size="medium" icon="el-icon-reading">面板</el-button> -->
       <el-button
         type="primary"
         size="medium"

@@ -10,12 +10,15 @@ export default {
   name: 'ResourceList',
   data () {
     return {
-      showTable: false
+      showTable: true
     }
   },
   components: {
     ComTable,
     ComPanel
+  },
+  created () {
+    console.log(this.showTable)
   }
 }
 </script>
