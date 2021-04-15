@@ -63,26 +63,22 @@ router.get('/dnsip', async (ctx, next) => {
 
 // 百度收录
 const request = require('request')
-router.get('/baidu', async (ctx, next) => {
-  request.post({
-    // url: 'http://data.zz.baidu.com/urls?site=https://itchenliang.gitee.io&token=WdhbCVRbA3h4Rumg',
-    url: '',
-    body: [
-      'https://itchenliang.gitee.io/posts/30efc280-f984-11ea-90b0-c5a83a2f2ef9a0b/',
-      'https://itchenliang.gitee.io/posts/70ba8db0-f72b-11ea-938b-b99af4f0d6b5/',
-      'https://itchenliang.gitee.io/posts/60272b20-49b5-11eb-b4bb-b1a7a3af1020/'
-    ].join('\n'),
-    headers: {
-      'Content-Type': 'text/plain'
-    }
-  }, function (error, response, body) {
-    // console.log(error)
-    // console.log(response)
-    console.log(response.statusCode)
-    console.log(body)
-  })
-  ctx.body = {
-    data: '哈哈哈哈哈'
+router.post('/baidu', async (ctx, next) => {
+  try {
+    ctx.body = await new Promise((resolve, reject) => {
+      request.post({
+        url: `http://data.zz.baidu.com/urls?site=${ctx.query.site}&token=${ctx.query.token}`,
+        body: ctx.request.body.join('\n'),
+        headers: {
+          'Content-Type': 'text/plain'
+        }
+      }, function (error, response, body) {
+        if (error) reject(error)
+        resolve({ code: response.statusCode, data: JSON.parse(body) })
+      })
+    })
+  } catch (error) {
+    ctx.throw(500, error)
   }
 })
 
