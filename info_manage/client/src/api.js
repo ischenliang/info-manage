@@ -314,7 +314,7 @@ const list = {
    * 百度收录接口
   */
   // 百度收录 请求类型：get 请求地址：/urls
-  BaiduIncluded: { method: 'get', url: baseURL[1] + '/urls' }
+  BaiduIncluded: { method: 'post', url: baseURL[0] + '/tool/baidu' }
 }
 
 export default (config) => {
