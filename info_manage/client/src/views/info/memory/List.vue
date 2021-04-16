@@ -46,24 +46,24 @@
         @selection-change="selectChange"
         :data="list.data">
         <el-table-column type="selection" width="60" align="center"/>
-        <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="100" align="center" sortable="custom"/>
+        <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="300" align="left" sortable="custom"/>
         <el-table-column v-if="show[1].value" label="类型" prop="name" min-width="100" align="center" sortable="custom">
           <template v-slot="{ row }">
             <el-tag v-if="row.type === 1" type="success">富文本</el-tag>
             <el-tag v-else type="warning">markdown</el-tag>
           </template>
         </el-table-column>
-        <el-table-column v-if="show[2].value" label="标签" prop="tag" min-width="150" align="center" sortable="custom"/>
-        <el-table-column v-if="show[3].value" label="重要性" prop="priority" min-width="180" align="center" sortable="custom">
+        <el-table-column v-if="show[2].value" label="标签" prop="tag" min-width="180" align="center" sortable="custom"/>
+        <el-table-column v-if="show[3].value" label="重要性" prop="priority" min-width="160" align="center" sortable="custom">
           <template v-slot="{ row }">
             <el-rate v-model="row.priority" disabled show-score text-color="#ff9900" score-template="{value}" />
           </template>
         </el-table-column>
-        <el-table-column v-if="show[4].value" label="内容" prop="content" min-width="200" align="center" sortable="custom">
+        <!-- <el-table-column v-if="show[4].value" label="内容" prop="content" min-width="200" align="center" sortable="custom">
           <template v-slot="{ row }">
             <div class="over-ellipsis" style="max-height: 42px;line-clamp: 2;">{{ row.content }}</div>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column v-if="show[5].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom" />
         <el-table-column v-if="show[6].value" label="修改时间" prop="mtime" min-width="160" align="center" sortable="custom" />
         <el-table-column label="操作" width="220" align="center">

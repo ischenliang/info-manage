@@ -1,6 +1,6 @@
 <template>
   <div class="app-page">
-    dns工具
+    <div class="table"></div>
   </div>
 </template>
 
@@ -10,6 +10,6 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 
 </style>
