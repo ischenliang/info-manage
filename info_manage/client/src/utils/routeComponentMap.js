@@ -23,6 +23,7 @@ export default {
   SystemApi: () => import('@/views/system/api/List'),
   ToolDns: () => import('@/views/tool/dns/Dns'),
   ToolMap: () => import('@/views/tool/map/Map'),
+  ToolForm: () => import('@/views/tool/form/Form'),
   ToolInclude: () => import('@/views/tool/include/Include'),
   SystemChart: () => import('@/views/system/chart/List'),
   SystemDashList: () => import('@/views/system/dash/List'),
