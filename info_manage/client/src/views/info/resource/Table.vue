@@ -409,6 +409,8 @@ export default {
         return '/'
       } else {
         return '/' + tmp.slice(1).slice(0, index).join('/')
+        // 方式二
+        // return tmp.slice(0, index + 1).join('/')
       }
     },
     // dropdown指令调用回调：传入方法，然后直接调用
