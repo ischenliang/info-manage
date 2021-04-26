@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="./jquery.js"></script>
+  <script src="./jquery.waypoints.min.js"></script>
+  <script src="./jquery.countup.min.js"></script>
+</head>
+<body>
+  <span class="counter">1,498,547.00</span>
+  <script>
+    $('.counter').countUp();
+    /**
+     * 也可以设置参数
+     * delay：每个数字动画的延迟时间，单位毫秒。
+     * time：计数动画总的持续时间。
+     * */
+    // $('.counter').countUp({
+    //   delay: 10,
+    //   time: 2000
+    // });
+  </script>
+</body>
+</html>

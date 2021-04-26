@@ -33,7 +33,7 @@
                 <span class="allow-drag el-icon-setting" @click.stop="itemClick(item.i, index)"></span>
                 <iframe
                   v-if="item.url.url"
-                  :src="item.url.type === 1 ? baseUrl + item.url.url : item.url.url"
+                  :src="item.url.type === 1 ? `${baseUrl}${item.url.url}?baseUrl=${item.url.query.baseUrl}&${item.url.query.data}&token=${$Cookies.get('token')}` : item.url.url"
                   frameborder="0"></iframe>
                 <span class="remove el-icon-close" @click.stop="removeItem(item.i)"></span>
               </div>
