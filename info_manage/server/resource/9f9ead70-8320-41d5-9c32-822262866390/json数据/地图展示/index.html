@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+      *{
+        margin: 0px;
+        height: 0px;
+      }
+      html,body,#map{
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <script src="./echarts.js"></script>
+    <script src="./axios.js"></script>
+    <script src="./jquery.js"></script>
+    <script src="./theme.js"></script>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    var province = ''
+    var index = 0
+    // JSON
+    var chart = echarts.init(document.getElementById('map'), 'theme');
+    var option = {
+      title: {
+        text: '中国地图',
+      },
+      itemStyle: {
+        areaColor: '#2E72BF',
+        borderColor: '#333'
+      }
+    };
+    chart.setOption(option)
+    this.initMap()
+
+    async function initMap () {
+      var res = await axios.get('./geojson/china.geojson')
+      echarts.registerMap('china', res.data)
+      chart.setOption({
+        geo: {
+          type: 'map',
+          map: 'china',
+          top: '5%',
+          bottom: '5%',
+          roam: true, // 开启鼠标缩放和平移漫游
+          label: {
+            color: '#888',
+            show: true, // 显示标签，主要是开启省份名称
+            position: 'insideBottom'
+          }
+        }
+      })
+    }
+    
+    // 图表点击进到下一个层级
+    chart.on('click', async function (arg) {
+      var res = ''
+      switch (index) {
+        case 0:
+          res = await axios.get(`./geojson/province/${arg.name}.geojson`)
+          province = arg.name
+          echarts.registerMap(arg.name, res.data)
+          chart.setOption({
+            geo: {
+              type: 'map',
+              map: arg.name
+            }
+          })
+          break
+        case 1:
+          res = await axios.get(`./geojson/province/${province}/${arg.name}.geojson`)
+          echarts.registerMap(arg.name, res.data)
+          chart.setOption({
+            geo: {
+              type: 'map',
+              map: arg.name
+            }
+          })
+          break
+      }
+      index++
+    })
+
+    // 双击回到初始地图
+    $('html').dblclick(function () {
+      index = 0
+      chart.setOption({
+        geo: {
+          type: 'map',
+          map: 'china'
+        }
+      })
+    })
+</script>
+</body>
+</html>
