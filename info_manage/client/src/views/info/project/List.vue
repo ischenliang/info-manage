@@ -125,7 +125,17 @@ export default {
     },
     // 下载
     itemDownload (row) {
-      console.log(row)
+      this.$http({
+        name: 'DownloadProject',
+        params: {
+          id: row.id,
+          token: this.$Cookies.get('token')
+        }
+      }).then(res => {
+        window.open(`${res.config.url}?id=${res.config.params.id}&token=${res.config.params.token}`, '_self')
+      }).catch(error => {
+        this.$notify.error(error)
+      })
     },
     formatTags (tags) {
       return tags.split(',')

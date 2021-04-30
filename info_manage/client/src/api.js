@@ -256,6 +256,8 @@ const list = {
   UpdateProject: { method: 'put', url: baseURL[0] + '/project/update' },
   // 删除项目 请求类型：delete 请求地址：/project/deleteById
   DeleteProject: { method: 'delete', url: baseURL[0] + '/project/deleteById' },
+  // 删除项目 请求类型：get 请求地址：/project/download
+  DownloadProject: { method: 'get', url: baseURL[0] + '/project/download' },
   /**
    * 项目图集
   */
