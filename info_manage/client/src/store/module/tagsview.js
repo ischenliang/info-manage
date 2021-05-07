@@ -28,7 +28,7 @@ export default {
     },
     // 删除标签
     DEL_TAG (state, tag) {
-      const index = state.tags.findIndex(item => item.name === tag.name)
+      const index = state.tags.findIndex(item => item.fullPath === tag.fullPath)
       state.tags.splice(index, 1)
     },
     // 删除其他标签

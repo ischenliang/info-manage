@@ -111,9 +111,9 @@ export default {
     // 删除tabs，同时需要将vuex中的也给删除
     delTag (tag) {
       const { name } = this.$route
-      const index = this.tags.findIndex(item => item.name === tag.name)
+      const index = this.tags.findIndex(item => item.fullPath === tag.fullPath)
       if (name === tag.name) {
-        this.$router.push({ name: this.tags[index - 1].name })
+        this.$router.push({ path: this.tags[index - 1].fullPath })
       }
       this.del_tag(tag)
     },

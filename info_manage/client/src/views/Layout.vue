@@ -114,6 +114,7 @@
           </div>
           <!-- 右侧菜单栏 -->
           <div class="app-rightmenu">
+            <iframe width="350" height="25" frameborder="0" scrolling="no" hspace="0" src="https://i.tianqi.com/?c=code&id=40"></iframe>
             <el-button
               type="primary"
               size="small"

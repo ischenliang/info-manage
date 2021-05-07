@@ -125,7 +125,7 @@ export default {
     },
     style () {
       return {
-        width: this.layout.width + 'px',
+        width: '100%', // this.layout.width + 'px'
         border: '1px dashed #81D4FA'
       }
     }
@@ -339,6 +339,10 @@ export default {
     .vue-grid-layout {
       height: 100% !important;
       overflow: hidden auto;
+      flex-shrink: 0;
+      &::-webkit-scrollbar {
+        display: none;
+      }
       .vue-grid-item{
         border: 1px solid #C0C0C0;
         &.active {

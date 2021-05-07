@@ -66,6 +66,7 @@ export default {
   .document-preview-content {
     flex: 1 1 auto;
     padding: 20px;
+    overflow: auto;
     .markdown-body {
       border-width: 1px 0 1px 0 !important;
     }

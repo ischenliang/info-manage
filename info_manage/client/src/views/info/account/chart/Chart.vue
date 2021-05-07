@@ -12,7 +12,8 @@
         :vertical-compact="true"
         :use-style-cursor="false"
         :use-css-transforms="false"
-        :style="{ width: layout.width + 'px' }">
+        style="100%">
+        <!-- :style="{ width: layout.width + 'px' }" -->
           <grid-item
             v-for="(item, index) in layout.layout"
             :key="index"
@@ -104,6 +105,10 @@ export default {
     .vue-grid-layout {
       height: 100% !important;
       overflow: hidden auto;
+      flex-shrink: 0;
+      &::-webkit-scrollbar {
+        display: none;
+      }
       .vue-grid-item{
         background: #fff;
         box-shadow: 4px 4px 40px rgb(0 0 0 / 5%);
