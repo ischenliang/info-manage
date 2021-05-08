@@ -29,7 +29,9 @@ export default {
     // 删除标签
     DEL_TAG (state, tag) {
       const index = state.tags.findIndex(item => item.fullPath === tag.fullPath)
-      state.tags.splice(index, 1)
+      if (index !== 0) {
+        state.tags.splice(index, 1)
+      }
     },
     // 删除其他标签
     DEL_OTHER_TAG (state, tags) {
@@ -72,14 +74,25 @@ export default {
     },
     // 删除其他标签
     del_other_tag ({ commit }, tag) {
-      commit('DEL_OTHER_TAG', [{
-        name: 'Home',
-        params: {},
-        query: {},
-        title: '首页',
-        path: '/home',
-        fullPath: '/home'
-      }, tag])
+      if (tag.name === 'Home') {
+        commit('DEL_OTHER_TAG', [{
+          name: 'Home',
+          params: {},
+          query: {},
+          title: '首页',
+          path: '/home',
+          fullPath: '/home'
+        }])
+      } else {
+        commit('DEL_OTHER_TAG', [{
+          name: 'Home',
+          params: {},
+          query: {},
+          title: '首页',
+          path: '/home',
+          fullPath: '/home'
+        }, tag])
+      }
       commit('DEL_OTHER_CACHED_TAG', ['Home', tag.name])
     },
     // 删除

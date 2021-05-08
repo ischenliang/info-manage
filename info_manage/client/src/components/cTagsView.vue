@@ -1,15 +1,15 @@
 <template>
   <div class="tags-view">
-    <div class="tags-view-list">
+    <div class="tags-view-list" id="tagsview" ref="tagsview">
       <!--
         <el-scrollbar :native="false" ref="tagsview" id="tagsview" :vertical="false" style="height: 34px;">
        -->
-      <el-scrollbar
+      <!-- <el-scrollbar
         :native="false"
         ref="tagsview"
         id="tagsview"
         :noresize="true"
-        :vertical="false">
+        :vertical="false"> -->
         <router-link
           tag="span"
           v-for="(item, index) in tags"
@@ -20,7 +20,7 @@
           {{ item.title }}
           <i v-if="item.path !== '/home'" class="el-icon-close" @click.stop="delTag(item)"></i>
         </router-link>
-      </el-scrollbar>
+      <!-- </el-scrollbar> -->
     </div>
     <el-dropdown class="tags-view-opt" trigger="hover" placement="bottom-start" @command="handleCommand">
       <span class="el-dropdown-link">
@@ -113,7 +113,9 @@ export default {
       const { name } = this.$route
       const index = this.tags.findIndex(item => item.fullPath === tag.fullPath)
       if (name === tag.name) {
-        this.$router.push({ path: this.tags[index - 1].fullPath })
+        if (index !== 0) {
+          this.$router.push({ path: this.tags[index - 1].fullPath })
+        }
       }
       this.del_tag(tag)
     },
@@ -182,10 +184,12 @@ export default {
     width: 100%;
     height: 34px;
     display: flex;
+    padding-left: 5px;
     .tags-view-list {
       flex: 1 1 auto;
       overflow: hidden;
       height: 100%;
+      white-space: nowrap;
       .el-scrollbar {
         width: 100%;
         height: 100%;
@@ -267,6 +271,55 @@ export default {
           }
         }
       }
+      .tags-view-item {
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+        height: 26px;
+        line-height: 26px;
+        border: 1px solid #d8dce5;
+        color: #495060;
+        background: #fff;
+        padding: 0 8px;
+        font-size: 12px;
+        &:not(first-child) {
+          margin-left: 5px;
+        }
+        margin-top: 4px;
+        > .el-icon-close {
+          width: 16px;
+          height: 16px;
+          line-height: 16px;
+          vertical-align: middle;
+          border-radius: 50%;
+          text-align: center;
+          transition: all .3s cubic-bezier(.645,.045,.355,1);
+          transform-origin: 100% 50%;
+        }
+        &:last-of-type{
+          margin-right: 15px;
+        }
+        // .router-link-exact-active
+        &.active{
+          background: #42b983 !important;
+          border-color: #42b983 !important;
+          color: #fff;
+          > .el-icon-close {
+            color: #fff;
+          }
+          // 实现那个小点点
+          &:before {
+            content: "";
+            background: #fff;
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: relative;
+            margin-right: 2px;
+          }
+        }
+      }
     }
     .tags-view-opt {
       flex-shrink: 0;
@@ -275,10 +328,11 @@ export default {
       justify-content: center;
       align-items: center;
       padding: 0 15px;
+      background: #42b983;
       border-bottom: 1px solid #c9cbcd;
       .el-dropdown-link {
         cursor: pointer;
-        color: #606266;
+        color: #fff;
       }
       .el-icon-arrow-down {
         font-size: 14px;
