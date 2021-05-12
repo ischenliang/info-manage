@@ -24,7 +24,7 @@
     </div>
     <el-dropdown class="tags-view-opt" trigger="hover" placement="bottom-start" @command="handleCommand">
       <span class="el-dropdown-link">
-        更多操作<i class="el-icon-arrow-down el-icon--right"></i>
+        标签选项<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown" class="tags-view-dropdown">
         <el-dropdown-item :command="() => close('current')"><i class="el-icon-circle-close"></i>关闭当前</el-dropdown-item>
