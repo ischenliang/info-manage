@@ -3,18 +3,16 @@ const moment = require('moment')
 const seq = require('../utils/seq')
 
 /**
- * 图标：管理员维护
- * id：图标主键 UUID
- * pid：图标项目id UUID
- *    外键：IconProject 的id
- * name：图标名称 String
- * code：图标code即font_class String
- * status：图标状态 Boolean 默认true
- *    true：启用  false：禁用
- * ctime：图标创建时间 String
- * mtime：图标修改时间 String
+ * 服务注册管理表
+ * id: 主键 UUID
+ * name：名称 String
+ * description：描述 String
+ * type：服务类型 String 地图服务/运动服务
+ * information：服务详情 json
+ * ctime：创建时间 String
+ * mtime：更新时间 String
  */
-const Icon = seq.define('icon', {
+const MapService = seq.define('map_service', {
   id: {
     type: DataTypes.UUID,
     allowNull: false,
@@ -22,27 +20,26 @@ const Icon = seq.define('icon', {
     defaultValue: Sequelize.UUIDV4,
     comment: 'uuid'
   },
-  pid: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    defaultValue: Sequelize.UUIDV4,
-    comment: '图标项目id'
-  },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
-    comment: '图标名称'
+    comment: '名称'
   },
-  code: {
+  description: {
     type: DataTypes.STRING,
-    allowNull: false,
-    comment: '图标的code'
+    allowNull: true,
+    comment: '描述'
   },
-  status:{
-    type: DataTypes.BOOLEAN,
+  type: {
+    type: DataTypes.INTEGER,
     allowNull: false,
-    defaultValue: true,
-    comment: '图标状态'
+    defaultValue: 1,
+    comment: '服务类型'
+  },
+  information: {
+    type: DataTypes.JSON,
+    allowNull: false,
+    comment: '服务详情'
   },
   ctime: {
     type: DataTypes.STRING,
@@ -54,10 +51,10 @@ const Icon = seq.define('icon', {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: moment().format('YYYY-MM-DD HH:mm:ss'),
-    comment: '图标更新时间'
+    comment: '更新时间'
   }
 }, {
   freezeTableName: true
 })
 
-module.exports = Icon
+module.exports = MapService
