@@ -116,6 +116,7 @@ router.beforeEach(async (to, from, next) => {
   // 使用localStorage 还是使用 Cookies
   const token = Cookies.get('token')
   const uid = Cookies.get('uid')
+  const user = Cookies.get('user')
   const perms = store.getters.perms
   // 判断登录状态
   if (token && uid) {
@@ -136,6 +137,7 @@ router.beforeEach(async (to, from, next) => {
         // 获取用户菜单信息以及用户接口信息
         store.dispatch('user/SET_UID', uid)
         store.dispatch('user/SET_TOKEN', token)
+        store.dispatch('user/SET_USER', JSON.parse(user))
         // 一定要加await，否则后续再使用指令过程中拿不到数据
         await store.dispatch('user/SET_PERMS')
         const dynamicRoutes = await store.dispatch('user/SET_MENUS', routes) // 注意：要将静态路由拼接到menus中

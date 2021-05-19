@@ -55,7 +55,8 @@ const store = new Vuex.Store({
   getters: {
     perms: state => state.user.perms,
     menus: state => state.user.menus,
-    tags: state => state.tagsview.tags
+    tags: state => state.tagsview.tags,
+    user: state => state.user.user
   }
 })
 export default store

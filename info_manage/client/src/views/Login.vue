@@ -86,6 +86,10 @@ export default {
               expires: this.expires,
               sameSite: 'lax'
             })
+            this.$Cookies.set('user', JSON.stringify(res.data.data.user), {
+              expires: this.expires,
+              sameSite: 'lax'
+            })
             this.$router.push({ path: this.path })
             this.$notify.success(res.data.msg)
           }).catch(error => {

@@ -112,3 +112,16 @@ input:-webkit-autofill:focus {
 //   opacity: 0;
 //   transform: translateX(30px);
 // }
+
+a, a:focus, a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+
+.none-scroller {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

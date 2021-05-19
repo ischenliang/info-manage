@@ -1,7 +1,13 @@
 <template>
   <div class="document-preview" v-if="document">
     <div class="document-preview-header">
-      <div class="header-left">{{ document.name }}</div>
+      <div class="header-left">
+        <div class="document-name">{{ document.name }}</div>
+        <div class="document-time">
+          <span>创建时间：{{ document.ctime }}</span>
+          <span style="margin-left: 10px;">修改时间：{{ document.mtime }}</span>
+        </div>
+      </div>
       <div class="header-right">
         <el-button type="primary" size="small" icon="el-icon-edit" @click="togglePreview">编辑</el-button>
       </div>
@@ -45,14 +51,29 @@ export default {
       flex: 1 1 auto;
       height: 100%;
       display: flex;
-      align-items: center;
-      font-size: 18px;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-      font-weight: bold;
-      color: #40485b;
       padding: 0 14px;
+      width: 0px;
+      flex-direction: column;
+      justify-content: center;
+      .document-name {
+        font-size: 18px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        font-weight: bold;
+        color: #40485b;
+      }
+      .document-time {
+        width: 100%;
+        height: 20px;
+        line-height: 20px;
+        font-size: 12px;
+        color: #999;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        margin-top: 5px;
+      }
     }
     .header-right{
       width: 125px;

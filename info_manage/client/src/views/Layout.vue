@@ -115,10 +115,29 @@
           <!-- 右侧菜单栏 -->
           <div class="app-rightmenu">
             <iframe width="350" height="25" frameborder="0" scrolling="no" hspace="0" src="https://i.tianqi.com/?c=code&id=40"></iframe>
-            <el-button
-              type="primary"
-              size="small"
-              @click="logout">退出</el-button>
+            <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+              <div class="avatar-wrapper">
+                <img :src="user.avatar" class="user-avatar">
+                <i class="el-icon-caret-bottom" />
+              </div>
+              <el-dropdown-menu slot="dropdown">
+                <router-link to="/profile/index">
+                  <el-dropdown-item>个人中心</el-dropdown-item>
+                </router-link>
+                <router-link to="/">
+                  <el-dropdown-item>首页</el-dropdown-item>
+                </router-link>
+                <a target="_blank" href="https://gitee.com/itchenliang">
+                  <el-dropdown-item>Gitee</el-dropdown-item>
+                </a>
+                <a target="_blank" href="https://gitee.com/itchenliang/xapi">
+                  <el-dropdown-item>项目文档</el-dropdown-item>
+                </a>
+                <el-dropdown-item divided @click.native="logout">
+                  <span style="display:block;">退出登录</span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </div>
         </div>
         <div class="app-tagsview">
@@ -160,7 +179,8 @@ export default {
       return this.$store.state.tagsview.cachedTags
     },
     ...mapGetters({
-      menus: 'menus'
+      menus: 'menus',
+      user: 'user'
     }),
     activeMenu () {
       const route = this.$route
@@ -202,5 +222,41 @@ export default {
 <style lang="scss">
 .el-submenu .el-menu-item {
   background-color: #1f2d3d !important;
+}
+.avatar-container {
+  margin-right: 30px;
+  .avatar-wrapper {
+    margin-top: 5px;
+    position: relative;
+    .user-avatar {
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+    }
+    .el-icon-caret-bottom {
+      cursor: pointer;
+      position: absolute;
+      right: -20px;
+      top: 25px;
+      font-size: 12px;
+    }
+  }
+}
+
+.right-menu-item {
+  display: inline-block;
+  padding: 0 8px;
+  height: 100%;
+  font-size: 18px;
+  color: #5a5e66;
+  vertical-align: text-bottom;
+  &.hover-effect {
+    cursor: pointer;
+    transition: background .3s;
+    &:hover {
+      background: rgba(0, 0, 0, .025)
+    }
+  }
 }
 </style>

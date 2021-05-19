@@ -98,6 +98,9 @@ export default {
 <style lang="scss">
 .memory {
   background: #f0f2f5 !important;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   .memory-header {
     background-image: url('https://cdn.jsdelivr.net/gh/helinghands/cdn/img/default_top13.jpg');
     min-height: 150px;

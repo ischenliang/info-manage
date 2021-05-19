@@ -1,19 +1,19 @@
 <template>
   <div class="app-page" style="padding: 0;">
     <div class="toolbar" style="flex: 0 0 3rem;">
+      <div class="menu-tags">
+        <div
+          :class="(current && current.id === item.id) ? 'menu-tag active' : 'menu-tag'"
+          v-for="(item, index) in list.types"
+          :key="index"
+          @click="tagClick(item)">
+          {{ item.name ? item.name : '全部收藏' }}
+        </div>
+      </div>
       <c-flex-auto />
       <el-button type="info" @click="toggle" size="small">列表模式</el-button>
     </div>
-    <div class="menu-tags">
-      <div
-        :class="(current && current.id === item.id) ? 'menu-tag active' : 'menu-tag'"
-        v-for="(item, index) in list.types"
-        :key="index"
-        @click="tagClick(item)">
-        {{ item.name }}
-      </div>
-    </div>
-    <div class="table c-scrollbar" v-loading="list.loading">
+    <div class="table none-scroller" v-loading="list.loading">
       <div class="collect-list">
         <div class="collect-item" v-for="(item, index) in list.data" :key="index" @click="toPath(item)">
           <div class="collect-title">
@@ -98,7 +98,10 @@ export default {
           status: true
         }
       }).then(res => {
-        this.list.types = res.data.data.data
+        this.list.types = [{
+          id: 'a42asd2874a87sd',
+          name: ''
+        }, ...res.data.data.data]
       }).catch(error => {
         this.$notify.error(error)
       })

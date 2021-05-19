@@ -4,7 +4,7 @@
       <el-input v-model="list.filters.search" placeholder="请输入内容" suffix-icon="el-icon-search" @input="listGet"/>
       <c-flex-auto />
     </div>
-    <div class="table" style="background: #f0f2f5;">
+    <div class="table none-scroller" style="background: #f0f2f5;">
       <div class="project-list" v-loading="list.loading">
         <el-card class="project-item" shadow="hover" v-for="(item, index) in list.data" :key="index">
           <div class="project-name" :title="item.name">{{ item.name }}</div>

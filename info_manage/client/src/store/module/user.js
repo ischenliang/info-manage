@@ -4,6 +4,7 @@ export default {
   namespaced: true,
   state: {
     uid: '', // 用户id
+    user: null,
     token: '', // 用户token
     menus: [], // 用户能够访问的菜单
     perms: [] // 用户能够访问的接口
@@ -12,6 +13,10 @@ export default {
     // 设置用户id
     SET_UID (state, arg) {
       state.uid = arg
+    },
+    // 设置用户id
+    SET_USER (state, arg) {
+      state.user = arg
     },
     // 设置token
     SET_TOKEN (state, arg) {
@@ -29,6 +34,9 @@ export default {
   actions: {
     SET_UID ({ commit }, arg) {
       commit('SET_UID', arg)
+    },
+    SET_USER ({ commit }, arg) {
+      commit('SET_USER', arg)
     },
     SET_TOKEN ({ commit }, arg) {
       commit('SET_TOKEN', arg)
