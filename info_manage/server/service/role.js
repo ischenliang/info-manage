@@ -58,6 +58,7 @@ async function update (role) {
  * @param {*} id 
  * 
  */
+// 这里需要改下：关联两个查询十分慢，拆分查询就没有这么慢
 async function detail (id) {
   try {
     // 查询role_menu所有数据

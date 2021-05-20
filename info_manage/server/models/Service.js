@@ -12,7 +12,7 @@ const seq = require('../utils/seq')
  * ctime：创建时间 String
  * mtime：更新时间 String
  */
-const MapService = seq.define('map_service', {
+const Service = seq.define('service', {
   id: {
     type: DataTypes.UUID,
     allowNull: false,
@@ -57,4 +57,4 @@ const MapService = seq.define('map_service', {
   freezeTableName: true
 })
 
-module.exports = MapService
+module.exports = Service
