@@ -13,7 +13,13 @@
       </div>
     </div>
     <div class="document-preview-content markdown-body">
-      <div v-html="document.content"></div>
+      <!-- <div v-html="document.content"></div> -->
+      <c-mavon-editor
+        v-model="document.text"
+        :boxShadow="false"
+        defaultOpen="preview"
+        :toolbarsFlag="false"
+        style="width: 100%;height: 100%;border: none;"/>
     </div>
   </div>
 </template>

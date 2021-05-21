@@ -3,19 +3,19 @@
     :value="content"
     language="zh-CN"
     fontSize="14px"
-    :scrollStyle="true"
-    :boxShadow="false"
+    :scrollStyle="scrollStyle"
+    :boxShadow="boxShadow"
     :boxShadowStyle="'0 2px 12px 0 rgba(0, 0, 0, 0.1)'"
     :transition="true"
     :toolbarsBackground="'#ffffff'"
     :previewBackground="'#fbfbfb'"
     style="border: 1px solid #ccc;border-radius: 0;"
     :subfield="false"
-    :defaultOpen="'edit'"
+    :defaultOpen="defaultOpen"
     :placeholder="'请输入内容......'"
     :editable="true"
     :codeStyle="'code-github'"
-    :toolbarsFlag="true"
+    :toolbarsFlag="toolbarsFlag"
     :navigation="false"
     :shortCut="true"
     :autofocus="false"
@@ -33,7 +33,23 @@ export default {
   name: 'cMavonEditor',
   props: {
     content: String,
-    text: String
+    text: String,
+    toolbarsFlag: {
+      type: Boolean,
+      default: true
+    },
+    defaultOpen: {
+      type: String,
+      default: 'edit'
+    },
+    boxShadow: {
+      type: Boolean,
+      default: false
+    },
+    scrollStyle: {
+      type: Boolean,
+      default: true
+    }
   },
   model: {
     prop: 'content',

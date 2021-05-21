@@ -203,6 +203,7 @@ export default {
     flex: 1 1 auto;
     height: 100%;
     background: #fff;
+    overflow: hidden;
   }
 }
 </style>
