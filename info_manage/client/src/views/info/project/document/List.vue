@@ -143,7 +143,7 @@ export default {
   display: flex;
   flex-direction: row;
   .document-left {
-    width: 240px;
+    width: 260px;
     height: 100%;
     background: #fff;
     flex-shrink: 0;
