@@ -11,6 +11,11 @@ module.exports = {
     },
     externals: '/static'
   },
+  devServer: {
+    host: '0.0.0.0',
+    public: require('os').networkInterfaces()[Object.keys(require('os').networkInterfaces())[0]][1].address + ':8081',
+    port: 8081
+  },
   transpileDependencies: [
     'element-ui'
   ],
