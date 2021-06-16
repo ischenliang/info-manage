@@ -46,6 +46,10 @@ export default {
   },
   created () {
     this.form = this.document
+  },
+  // 在离开的时候自动保存数据
+  beforeDestroy () {
+    this.togglePreview()
   }
 }
 </script>

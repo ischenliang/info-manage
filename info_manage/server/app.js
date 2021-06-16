@@ -77,7 +77,7 @@ app.use(async (ctx, next) => {
 
 // 全局错误处理
 app.on('error', async(error, ctx) => {
-  ctx.status = 200
+  ctx.status = error.status ? error.status : 500
   const code = error.status ? error.status : 500
   ctx.body = {
     code: code,

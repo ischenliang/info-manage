@@ -87,7 +87,8 @@ async function list (query) {
         },
         status: {
           [Op.like]: query.status ? `%${query.status}%` : '%%'
-        }
+        },
+        pid: query.pid
       },
       order: [
         ['priority', 'desc'],

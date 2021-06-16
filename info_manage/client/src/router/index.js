@@ -13,11 +13,11 @@ Vue.use(VueRouter)
 //   if (onResolve || onReject) return originalReplace.call(this, location, onResolve, onReject)
 //   return originalReplace.call(this, location).catch(err => err)
 // }
-// // 重写push方法
-// const routerPush = VueRouter.prototype.push
-// VueRouter.prototype.push = function push (location) {
-//   return routerPush.call(this, location).catch(error => error)
-// }
+// 重写push方法
+const routerPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location) {
+  return routerPush.call(this, location).catch(error => error)
+}
 
 export const routes = [
   {
@@ -121,14 +121,14 @@ router.beforeEach(async (to, from, next) => {
   // 判断登录状态
   if (token && uid) {
     // 解决三级菜单不能缓存的问题
-    if (to.matched && to.matched.length > 2) {
-      for (let i = 0; i < to.matched.length; i++) {
-        const element = to.matched[i]
-        if (element.components.default.name === 'Index') {
-          to.matched.splice(i, 1)
-        }
-      }
-    }
+    // if (to.matched && to.matched.length > 2) {
+    //   for (let i = 0; i < to.matched.length; i++) {
+    //     const element = to.matched[i]
+    //     if (element.components.default.name === 'Index') {
+    //       to.matched.splice(i, 1)
+    //     }
+    //   }
+    // }
     try {
       // 判断当前数据是否已有，有就不必再获取，避免每次都需要去请求获取
       if (perms && perms.length > 0) {
@@ -147,11 +147,22 @@ router.beforeEach(async (to, from, next) => {
         next({ ...to, replace: true })
       }
     } catch (error) {
+      // 清空数据
+      Cookies.remove('token')
+      Cookies.remove('uid')
+      Cookies.remove('user')
+      store.dispatch('user/CLEAR_INFO')
       Message({
         title: '错误',
         message: error,
         type: 'error',
         duration: 1000
+      })
+      next({
+        path: '/login',
+        query: {
+          redirect: to.fullPath
+        }
       })
     }
   } else {

@@ -1,10 +1,7 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
-localStorage.setItem('baidu-token', 'WdhbCVRbA3h4Rumg')
-// 用于后续图表预览时使用
-localStorage.setItem('baseUrl', 'http://localhost:3000/')
 // 这样做的方法是为了如果有多个后台
-const baseURL = ['http://localhost:3000/api', 'http://data.zz.baidu.com']
+const baseURL = ['http://121.199.50.62:3000/api', 'http://data.zz.baidu.com']
 const http = axios.create()
 
 // 定义所有的请求
@@ -360,11 +357,6 @@ export default (config) => {
     // 发送请求
     http(requestConfig).then(res => {
       if (res.data) {
-        // if (res.data.code === 200) {
-        //   resolve(res.dat)
-        // } else {
-        //   reject(res.data)
-        // }
         resolve(res)
       }
     }).catch(error => {

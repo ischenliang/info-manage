@@ -330,6 +330,7 @@ export default {
       padding: 0 15px;
       background: #42b983;
       border-bottom: 1px solid #c9cbcd;
+      margin-left: 5px;
       .el-dropdown-link {
         cursor: pointer;
         color: #fff;

@@ -53,7 +53,7 @@ module.exports = {
     render.pipe(upStream)
     return {
       name: name ? `${name}.${suffix}` : file.name,
-      path: name ?  `${bpath}\\${name}.${suffix}` :  bpath + '\\' + file.name,
+      path: name ?  `${bpath}/${name}.${suffix}` :  bpath + '/' + file.name,
       extension: suffix
     }
   },

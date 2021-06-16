@@ -5,6 +5,8 @@ const { MD5, uploadAvatar } = require('../utils/util')
 const { getMenuTree } = require('./menu')
 const { getApiTree } = require('./api')
 const moment = require('moment')
+const fse = require('fs-extra')
+const path = require('path')
 
 /**
  * 新增
@@ -28,6 +30,9 @@ async function add (user) {
     })
     // 批量插入user_role
     await sequelize.query(`insert into user_role (userId, roleId) values${values.join(',')}`)
+    // 然后创建用户独立空间: 即文件目录
+    const dir = path.join(__dirname, '../resource', res.id)
+    fse.mkdirpSync(dir)
     return res
   } catch (error) {
     throw error
@@ -47,6 +52,8 @@ async function deleteById (id) {
   try {
     // 删除用户关联的表
     await sequelize.query(`delete from user_role where userId='${id}'`)
+    // 删除用户独立空间
+    fse.removeSync(path.join(__dirname, '../resource', id))
     return await User.destroy({
       where: {
         id

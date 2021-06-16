@@ -1,6 +1,6 @@
 <template>
   <div class="app-page" style="padding: 0;">
-    <div class="document">
+    <div class="document" v-loading="loading">
       <div class="document-left">
         <el-page-header
           style="padding-bottom: 10px;"
@@ -11,7 +11,7 @@
           <span>该项目所有文档</span>
           <el-button type="info" size="mini" icon="el-icon-plus" @click="itemAdd" :loading="loading">新增</el-button>
         </div>
-        <div class="document-list c-scrollbar">
+        <div class="document-list c-scrollbar" v-if="list.data.length">
           <div
             v-for="(item, index) in list.data"
             :key="index"
@@ -24,17 +24,25 @@
             <div class="document-item-delete el-icon-delete" @click="itemDelete(item)"></div>
           </div>
         </div>
+        <div class="document-list c-scrollbar" v-else>
+          <span class="c-empty">暂无数据</span>
+        </div>
       </div>
-      <div class="document-right c-scrollbar">
+      <div class="document-right c-scrollbar" v-if="current">
         <com-preview
           v-if="preview"
           :preview.sync="preview"
+          :key="current.id"
           :document.sync="current"/>
         <com-edit
           v-else
           :preview.sync="preview"
           :document.sync="current"
+          :key="current.id"
           @submit="handleSubmit"/>
+      </div>
+      <div class="document-right c-scrollbar" v-else>
+        <span class="c-empty">暂无数据</span>
       </div>
     </div>
   </div>
@@ -69,6 +77,7 @@ export default {
   },
   methods: {
     listGet () {
+      this.loading = true
       this.$http({
         name: 'GetProjectDocuments',
         requireAuth: true,
@@ -78,9 +87,13 @@ export default {
         }
       }).then(res => {
         this.list.data = res.data.data.data
-        this.current = this.list.data[0]
+        if (this.list.data.length) {
+          this.current = JSON.parse(JSON.stringify(this.list.data[0]))
+        }
       }).catch(error => {
         this.$notify.error(error)
+      }).finally(() => {
+        this.loading = false
       })
     },
     // 新增
@@ -122,7 +135,7 @@ export default {
     },
     // 点击节点
     itemClick (row) {
-      this.current = row
+      this.current = JSON.parse(JSON.stringify(row))
       this.preview = true
     },
     // 回调

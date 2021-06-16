@@ -14,7 +14,7 @@
     :defaultOpen="defaultOpen"
     :placeholder="'请输入内容......'"
     :editable="true"
-    :codeStyle="'code-github'"
+    :codeStyle="'hybrid'"
     :toolbarsFlag="toolbarsFlag"
     :navigation="false"
     :shortCut="true"
