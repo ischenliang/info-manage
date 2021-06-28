@@ -107,7 +107,8 @@ async function list (query) {
       include: [
         {
           model: ApiType,
-          required: false
+          required: false,
+          attributes: ['name']
         }
       ]
     })
@@ -133,7 +134,8 @@ async function getApiTree (ids) {
           [Op.in]: ids
         },
       },
-      raw: true
+      raw: true,
+      attributes: ['perms', 'path', 'type']
     })
   } catch (error) {
     throw error

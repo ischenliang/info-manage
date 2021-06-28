@@ -251,6 +251,7 @@ async function list (query) {
         {
           model: Role,
           as: 'ur',
+          attributes: ['id', 'name'],
           through: { attributes: [] }
         }
       ]

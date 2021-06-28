@@ -98,6 +98,7 @@ async function list (query, uid) {
   try {
     const limit = query.size ? parseInt(query.size) : 10
     const { count, rows } = await Project.findAndCountAll({
+      attributes: ['id', 'name', 'description', 'url', 'tag', 'type', 'status'],
       where: {
         [Op.or]: [
           { name:  { [Op.like]: query.search ? `%${query.search}%` :　'%%' } },
@@ -121,12 +122,12 @@ async function list (query, uid) {
       ],
       limit: limit,
       offset: query.page ? (parseInt(query.page) - 1) * limit : 0,
-      include: [
-        {
-          model: ProjectImage,
-          required: false
-        }
-      ],
+      // include: [
+      //   {
+      //     model: ProjectImage,
+      //     required: false
+      //   }
+      // ],
       distinct: true
     })
     return {

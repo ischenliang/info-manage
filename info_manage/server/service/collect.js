@@ -97,6 +97,7 @@ async function list (query, uid) {
       offset: query.page ? (parseInt(query.page) - 1) * limit : 0,
       include: [{
         model: CollectType,
+        attributes: ['name'],
         where: {
           uid,
           name: { [Op.like]: query.type ? `%${query.type}%` : '%%' }

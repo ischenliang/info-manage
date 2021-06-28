@@ -108,8 +108,8 @@ export default {
     }
   },
   created () {
-    this.listGet()
     this.getTypes()
+    this.listGet()
   }
 }
 </script>

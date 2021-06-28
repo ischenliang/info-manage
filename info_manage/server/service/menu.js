@@ -178,7 +178,8 @@ async function getMenuTree (ids) {
           [Op.in]: ids
         }
       },
-      raw: true
+      raw: true,
+      // attributes: ['component', 'icon', 'is_frame', 'name', 'order', 'path', 'pid', 'status', 'type', 'visible', ]
     })
     // 存储父节点
     let parent = []

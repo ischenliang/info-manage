@@ -70,6 +70,7 @@ async function detail (id) {
         {
           model: Menu,
           as: 'rm',
+          attributes: ['id', 'type'],
           required: false,
           through: { attributes: [] }
         },
@@ -77,6 +78,7 @@ async function detail (id) {
           model: Api,
           as: 'ra',
           required: false,
+          attributes: ['id'],
           through: { attributes: [] }
         }
       ]

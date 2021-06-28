@@ -177,20 +177,24 @@ export default {
       }).then(res => {
         this.list.total = res.data.data.total
         this.list.data = res.data.data.data
-        return this.$http({
-          name: 'GetApiTypes',
-          requireAuth: true,
-          params: {
-            page: 1,
-            size: 10000
-          }
-        })
-      }).then(res => {
-        this.list.apiTypes = res.data.data.data
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
         this.list.loading = false
+      })
+    },
+    getApis () {
+      this.$http({
+        name: 'GetApiTypes',
+        requireAuth: true,
+        params: {
+          page: 1,
+          size: 10000
+        }
+      }).then(res => {
+        this.list.apiTypes = res.data.data.data
+      }).catch(error => {
+        this.$notify.error(error)
       })
     },
     // 排序回调
@@ -252,6 +256,7 @@ export default {
     }
   },
   created () {
+    this.getApis()
     this.listGet()
   },
   // 解决：el-table抖动问题
