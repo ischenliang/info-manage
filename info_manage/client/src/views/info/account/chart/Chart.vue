@@ -70,18 +70,13 @@ export default {
     },
     listGet () {
       this.$http({
-        name: 'GetDashs',
+        name: 'GetDashByIdentify',
         requireAuth: true,
         params: {
-          page: 1,
-          size: 100000
+          identify: 'account'
         }
       }).then(res => {
-        res.data.data.data.forEach(item => {
-          if (item.identify === 'account') {
-            this.layout = JSON.parse(item.layout)
-          }
-        })
+        this.layout = JSON.parse(res.data.data.layout)
       }).catch(error => {
         this.$notify.error(error)
       })

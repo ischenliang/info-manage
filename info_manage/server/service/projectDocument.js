@@ -53,6 +53,7 @@ async function update (obj) {
 async function detail (id) {
   try {
     return await ProjectDocument.findOne({
+      attributes: ['id', 'name', 'text', 'ctime', 'mtime'],
       where: {
         id
       }
@@ -74,6 +75,7 @@ async function detail (id) {
 async function list (query) {
   try {
     const { count, rows } = await ProjectDocument.findAndCountAll({
+      attributes: ['id', 'name'],
       where: {
         [Op.or]: [
           { name:  { [Op.like]: query.search ? `%${query.search}%` :　'%%' } },

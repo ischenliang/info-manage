@@ -50,6 +50,7 @@ async function update (memory, uid) {
 async function detail (id, uid) {
   try {
     return await Memory.findOne({
+      attributes: ['id', 'name', 'content', 'priority', 'tag', 'type', 'text'],
       where: {
         id,
         uid

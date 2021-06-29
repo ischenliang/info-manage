@@ -53,6 +53,7 @@ async function update (obj) {
 async function detail (id) {
   try {
     return await ProjectIssue.findOne({
+      attributes: ['id', 'name', 'status', 'tag', 'priority', 'ctime', 'mtime', 'description'],
       where: {
         id
       }
@@ -74,6 +75,7 @@ async function detail (id) {
 async function list (query) {
   try {
     const { count, rows } = await ProjectIssue.findAndCountAll({
+      attributes: ['id', 'name', 'status', 'tag', 'priority', 'ctime', 'mtime'],
       where: {
         [Op.or]: [
           { name:  { [Op.like]: query.search ? `%${query.search}%` :　'%%' } },

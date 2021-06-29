@@ -21,14 +21,14 @@
               <span class="el-icon-document"></span>
               <span :title="item.name">{{ item.name }}</span>
             </div>
-            <div class="document-item-delete el-icon-delete" @click="itemDelete(item)"></div>
+            <div class="document-item-delete el-icon-delete" @click.stop="itemDelete(item)"></div>
           </div>
         </div>
         <div class="document-list c-scrollbar" v-else>
           <span class="c-empty">暂无数据</span>
         </div>
       </div>
-      <div class="document-right c-scrollbar" v-if="current">
+      <div class="document-right c-scrollbar" v-if="current" v-loading="detailLoading">
         <com-preview
           v-if="preview"
           :preview.sync="preview"
@@ -67,7 +67,8 @@ export default {
       },
       loading: false,
       current: null,
-      preview: true
+      preview: true,
+      detailLoading: false
     }
   },
   computed: {
@@ -88,7 +89,8 @@ export default {
       }).then(res => {
         this.list.data = res.data.data.data
         if (this.list.data.length) {
-          this.current = JSON.parse(JSON.stringify(this.list.data[0]))
+          this.current = res.data.data.data[0]
+          this.itemClick(res.data.data.data[0])
         }
       }).catch(error => {
         this.$notify.error(error)
@@ -110,11 +112,13 @@ export default {
         }
       }).then(res => {
         this.$notify.success(res.data.msg)
+        // 直接手动操作数据，减少请求数量
+        this.list.data.unshift({ id: res.data.data.id, name: res.data.data.name })
+        this.itemClick(res.data.data)
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
         this.loading = false
-        this.listGet()
       })
     },
     // 删除
@@ -126,21 +130,42 @@ export default {
           paths: [row.id]
         }).then(res => {
           this.$notify.success(res.data.msg)
+          // 删除完毕手手动处理数据，减少请求数量
+          this.list.data.forEach((item, index) => {
+            if (item.id === row.id) {
+              this.list.data.splice(index, 1)
+            }
+          })
+          this.itemClick(this.list.data[0])
         }).catch(error => {
           this.$notify.error(error)
-        }).finally(() => {
-          this.listGet()
         })
       }).catch(() => {})
     },
     // 点击节点
     itemClick (row) {
-      this.current = JSON.parse(JSON.stringify(row))
+      // 这里获取数据
+      this.detailLoading = true
+      this.$http({
+        name: 'GetProjectDocument',
+        requireAuth: true,
+        paths: [row.id]
+      }).then(res => {
+        this.current = res.data.data
+      }).catch(error => {
+        this.$notify.error(error)
+      }).finally(() => {
+        this.detailLoading = false
+      })
       this.preview = true
     },
-    // 回调
+    // 回调: 直接手动更新数据，减少请求调用次数
     handleSubmit (data) {
-      this.current = data
+      this.list.data.forEach(item => {
+        if (item.id === data.id) {
+          item.name = data.name
+        }
+      })
     }
   },
   created () {
