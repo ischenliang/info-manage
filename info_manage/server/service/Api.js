@@ -135,7 +135,7 @@ async function getApiTree (ids) {
         },
       },
       raw: true,
-      attributes: ['perms', 'path', 'type']
+      attributes: ['perms', 'path', 'type', 'id']
     })
   } catch (error) {
     throw error

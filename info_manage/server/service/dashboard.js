@@ -61,6 +61,20 @@ async function detail (id) {
   }
 }
 
+// 查询
+async function getByIdentify (identify) {
+  try {
+    return await Dashboard.findOne({
+      attributes: ['id', 'layout'],
+      where: {
+        identify
+      }
+    })
+  } catch (error) {
+    throw error
+  }
+}
+
 /**
  * 查询列表
  * @param {*} query
@@ -76,6 +90,7 @@ async function list (query, uid) {
   try {
     const limit = query.size ? parseInt(query.size) : 10
     const { count, rows } = await Dashboard.findAndCountAll({
+      attributes: ['id', 'name', 'description', 'identify', 'mtime', 'ctime'],
       where: {
         [Op.or]: [
           { name:  { [Op.like]: query.search ? `%${query.search}%` :　'%%' } },
@@ -108,5 +123,6 @@ module.exports =  {
   deleteById,
   update,
   detail,
-  list
+  list,
+  getByIdentify
 }

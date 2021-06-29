@@ -96,7 +96,8 @@ async function list (query, uid) {
         [query.sort ? query.sort : 'mtime', query.order ? query.order : 'desc']
       ],
       limit: limit,
-      offset: query.page ? (parseInt(query.page) - 1) * limit : 0
+      offset: query.page ? (parseInt(query.page) - 1) * limit : 0,
+      attributes: ['id', 'name', 'tag', 'type', 'priority', 'tag', 'ctime', 'mtime']
     })
     return {
       total: count,

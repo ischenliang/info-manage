@@ -173,13 +173,13 @@ async function getMenuTree (ids) {
   try {
     // 获取所有数据
     const data = await Menu.findAll({
+      attributes: ['component', 'ctime', 'icon', 'id', 'is_frame', 'mtime', 'name', 'order', 'path', 'pid', 'status', 'type', 'visible'],
       where: {
         id: {
           [Op.in]: ids
         }
       },
-      raw: true,
-      // attributes: ['component', 'icon', 'is_frame', 'name', 'order', 'path', 'pid', 'status', 'type', 'visible', ]
+      raw: true
     })
     // 存储父节点
     let parent = []

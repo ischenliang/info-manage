@@ -3,7 +3,7 @@ module.exports = {
   secret: 'a1b2c3', // jwt加密密钥
   expiresIn: 60 * 60 * 24, // 60 * 60 * 24: 24小时 或者可以使用 1h == 60 * 60
   mysql: {
-    host: '121.199.50.62',
+    host: 'localhost',
     port: '3306',
     dialect: 'mysql',
     database: 'info',

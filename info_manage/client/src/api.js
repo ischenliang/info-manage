@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 // 这样做的方法是为了如果有多个后台
-const baseURL = ['http://localhost:3000/api', 'http://data.zz.baidu.com']
+const baseURL = ['http://121.199.50.62:3000/api', 'http://data.zz.baidu.com']
 const http = axios.create()
 
 // 定义所有的请求
@@ -223,6 +223,8 @@ const list = {
   GetDash: { method: 'get', url: baseURL[0] + '/dash/detail' },
   // 仪表盘列表 请求类型：get 请求地址：/dash/list
   GetDashs: { method: 'get', url: baseURL[0] + '/dash/list' },
+  // 根据标识获取仪表盘 请求类型：get 请求地址：/dash/getByIdentify
+  GetDashByIdentify: { method: 'get', url: baseURL[0] + '/dash/getByIdentify' },
   // 删除仪表盘 请求类型：delete 请求地址：/dash/deleteById
   DeleteDash: { method: 'delete', url: baseURL[0] + '/dash/deleteById' },
 

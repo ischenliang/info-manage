@@ -55,6 +55,7 @@ app.use(async (ctx, next) => {
  * 3. 根据角色获取对应的Api
 */
 app.use(async (ctx, next) => {
+  ctx.compress = true
   if (notauth.includes(ctx.request.url.split('?')[0])) {
     await next()
   } else {

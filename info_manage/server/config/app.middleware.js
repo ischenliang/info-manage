@@ -12,6 +12,8 @@ const koaBody = require('koa-body')
 const jwt = require('koa-jwt')
 // 参数验证
 const parameter = require('koa-parameter')
+// 数据压缩
+const compress = require('koa-compress')
 const path = require('path')
 
 
@@ -42,6 +44,16 @@ function loadMiddleware (app) {
   app.use(jwt({ secret: 'jwt_secret', passthrough: true }).unless({ path: notauth }))
   // 参数验证
   app.use(parameter(app))
+  // 数据压缩
+  // 参考: https://blog.csdn.net/weixin_43352901/article/details/109137516
+  app.use(compress({
+    filter: function(content_type) {
+      // 只有在请求的content-type中有gzip类型，我们才会考虑压缩，因为zlib是压缩成gzip类型的
+      return /text/i.test(content_type)
+    },
+    threshold: 1024, // 阀值，当数据超过1kb的时候，可以压缩
+    flush: require('zlib').Z_SYNC_FLUSH // zlib是node的压缩模块
+  }))
 }
 
 // 自定加载路由：避免了多很多路由文件，而需要一个个去加载

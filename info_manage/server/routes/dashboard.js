@@ -5,7 +5,7 @@ const appConfig = require('../config/app.config')
 const send = require('koa-send')
 const token = require('jsonwebtoken')
 const path = require('path')
-const { add, deleteById, detail, list, update } = require('../service/dashboard')
+const { add, deleteById, detail, list, update, getByIdentify } = require('../service/dashboard')
 
 // 新增
 router.post('/add', async(ctx, next) => {
@@ -77,6 +77,21 @@ router.get('/list', async(ctx, next) => {
       data: await list(ctx.query)
     }
   } catch (error) {
+    ctx.throw(error.status, error)
+  }
+})
+
+// 获取首页的仪表盘
+router.get('/getByIdentify', async(ctx, next) => {
+  try {
+    ctx.status = 200
+    ctx.body = {
+      code: 200,
+      msg: resConfig[ctx.request.method],
+      data:  await getByIdentify(ctx.query.identify)
+    }
+  } catch (error) {
+    error.status = error.status ? error.status : 500
     ctx.throw(error.status, error)
   }
 })
