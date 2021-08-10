@@ -9,16 +9,11 @@
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
+      <el-form-item label="组件名称" prop="component">
+        <el-input v-model="form.component"></el-input>
+      </el-form-item>
       <el-form-item label="描述" prop="description">
         <el-input type="textarea" v-model="form.description"></el-input>
-      </el-form-item>
-      <el-form-item label="上传" prop="fileList">
-        <div class="folder-upload" @click="dispatchUpload">
-          <i class="el-icon-upload"></i>
-          <p>点击选择文件夹进行上传</p>
-          <input ref="uploadFolder" type="file" name="file" multiple="multiple" webkitdirectory @change="folderChange($event)">
-        </div>
-        <div v-if="form.fileList.length">{{ `已选择${form.fileList.length}个文件` }}</div>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -42,7 +37,7 @@ export default {
       form: {
         name: '',
         description: '',
-        fileList: []
+        component: ''
       },
       rules: {
         name: [{ required: true, message: '请输入名称', trigger: 'blur' }]
@@ -57,19 +52,10 @@ export default {
     },
     // 新增提交
     addSubmit () {
-      const formData = new FormData()
-      formData.append('name', this.form.name)
-      formData.append('description', this.form.description)
-      this.form.fileList.forEach(item => {
-        formData.append('files', item.raw)
-      })
       this.$http({
         name: 'AddChart',
         requireAuth: true,
-        data: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+        data: this.form
       }).then(res => {
         this.$emit('submit')
         this.close()
@@ -82,22 +68,10 @@ export default {
     },
     // 编辑提交
     editSubmit () {
-      const formData = new FormData()
-      formData.append('id', this.form.id)
-      formData.append('name', this.form.name)
-      formData.append('description', this.form.description)
-      if (this.form.fileList.length) {
-        this.form.fileList.forEach(item => {
-          formData.append('files', item.raw)
-        })
-      }
       this.$http({
         name: 'UpdateChart',
         requireAuth: true,
-        data: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+        data: this.form
       }).then(res => {
         this.$emit('submit')
         this.close()
@@ -132,38 +106,16 @@ export default {
         this.form.id = res.data.data.id
         this.form.name = res.data.data.name
         this.form.description = res.data.data.description
+        this.form.component = res.data.data.component
       }).catch(error => {
         this.$notify.error(error)
       })
-    },
-    // 触发 file 的点击事件
-    dispatchUpload () {
-      this.$refs.uploadFolder.click()
-    },
-    // 选择文件夹
-    folderChange (event) {
-      const arr = []
-      for (var i = 0; i < event.target.files.length; i++) {
-        const tmp = event.target.files[i]
-        arr.push({
-          name: tmp.name,
-          percentage: 0,
-          raw: tmp,
-          size: tmp.size,
-          status: 'ready'
-        })
-      }
-      this.form.fileList = arr
-      this.$refs.uploadFolder.value = ''
     }
   },
   created () {
     if (this.id !== '') {
       this.listGet()
     } else {
-      // 这里面对一些不同的需求做判断，如：
-      // 新增时：密码不填 修改时：密码不必填
-      this.$set(this.rules, 'fileList', [{ required: true, message: '请上传图表', trigger: 'blur' }])
     }
   }
 }

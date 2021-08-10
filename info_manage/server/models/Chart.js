@@ -29,10 +29,10 @@ const Chart = seq.define('chart', {
     allowNull: true,
     comment: '描述'
   },
-  url: {
+  component: {
     type: DataTypes.STRING,
     allowNull: true,
-    comment: '部署地址'
+    comment: '组件地址'
   },
   ctime: {
     type: DataTypes.STRING,

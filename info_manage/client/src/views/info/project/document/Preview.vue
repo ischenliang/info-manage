@@ -14,11 +14,12 @@
     </div>
     <div class="document-preview-content markdown-body">
       <!-- <div v-html="document.content"></div> -->
-      <c-mavon-editor
+      <c-mavon-preview
         v-model="document.text"
         :boxShadow="false"
         defaultOpen="preview"
-        :toolbarsFlag="false"
+        :toolbarsFlag="true"
+        v-highlight
         style="width: 100%;height: 100%;border: none;"/>
     </div>
   </div>
@@ -92,10 +93,33 @@ export default {
   }
   .document-preview-content {
     flex: 1 1 auto;
-    padding: 20px;
+    padding: 0;
     overflow: auto;
     .markdown-body {
       border-width: 1px 0 1px 0 !important;
+    }
+  }
+  .v-note-navigation-wrapper {
+    background: #ffffff !important;
+    border-left: 1px solid #e4e4e4 !important;
+    .v-note-navigation-title {
+      border-bottom: 1px solid #e4e4e4 !important;
+      text-align: center !important;
+      font-size: 16px !important;
+      line-height: 40px !important;
+      height: 40px !important;
+      .v-note-navigation-close {
+        display: none !important;
+      }
+    }
+    .v-note-navigation-content {
+      h1, h2, h3, h4, h5, h6 {
+        color: #99a9bf !important;
+        font-size: 14px !important;
+        &:hover {
+          color: #00c4b6 !important;
+        }
+      }
     }
   }
 }

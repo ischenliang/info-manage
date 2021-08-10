@@ -14,7 +14,7 @@ router.post('/add', async(ctx, next) => {
     ctx.body = {
       code: 200,
       msg: resConfig[ctx.request.method],
-      data: await add(ctx.request.files.files, ctx.request.body)
+      data: await add(ctx.request.body)
     }
   } catch (error) {
     error.status = error.status ? error.status : 500
@@ -44,7 +44,7 @@ router.put('/update', async(ctx, next) => {
     ctx.body = {
       code: 200,
       msg: resConfig[ctx.request.method],
-      data: await update(ctx.request.files.files, ctx.request.body)
+      data: await update(ctx.request.body)
     }
   } catch (error) {
     error.status = error.status ? error.status : 500

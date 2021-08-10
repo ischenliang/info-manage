@@ -1,141 +1,94 @@
 <template>
   <div style="width: 100%;height: 100%;display:flex;flex-direction: column;justify-content: center;align-items: center;user-select: none;">
-    <!-- <div style="width: 100%;height: 400px;"> -->
-      <!-- <mavon-editor
-        v-model="value"
-        language="zh-CN"
-        fontSize="14px"
-        :scrollStyle="true"
-        :boxShadow="true"
-        :boxShadowStyle="'0 2px 12px 0 rgba(0, 0, 0, 0.1)'"
-        :transition="true"
-        :toolbarsBackground="'#ffffff'"
-        :previewBackground="'#fbfbfb'"
-        :subfield="false"
-        :defaultOpen="'edit'"
-        :placeholder="'请输入内容......'"
-        :editable="true"
-        :codeStyle="'code-github'"
-        :toolbarsFlag="true"
-        :navigation="false"
-        :shortCut="true"
-        :autofocus="false"
-        :ishljs="true"
-        :toolbars="toolbars"
-        @change="handleHtmlCode"
-        ref="md"
-        @imgAdd="imgAdd"/> -->
-        <!-- <c-fork-me /> -->
-        <!-- <el-button type="primary" size="medumn" v-perms="'system:resource:upload'">上传</el-button> -->
-      <!-- <img :src="url" alt=""> -->
-      <!-- <el-button type="primary" @click="included">百度收录</el-button> -->
-    <!-- </div> -->
-    <mavon-editor
-      :value="content"
-      language="zh-CN"
-      fontSize="14px">
-    </mavon-editor>
+    <grid-layout
+      :layout="layout.layout"
+      :col-num="layout.colNum"
+      :row-height="layout.rowHeight"
+      :margin="layout.margin"
+      :is-draggable="false"
+      :is-resizable="false"
+      :is-mirrored="layout.isMirrored"
+      :vertical-compact="true"
+      :use-style-cursor="false"
+      :use-css-transforms="false"
+      style="width: 100%;"
+      v-if="layout.layout">
+        <grid-item
+          v-for="(item, index) in layout.layout"
+          :key="index"
+          :static="item.static"
+          :x="item.x"
+          :y="item.y"
+          :w="item.w"
+          :h="item.h"
+          :i="item.i">
+            <!-- <iframe
+              v-if="item.url.url"
+              :src="item.url.type === 1 ? `${baseUrl}${item.url.url}?baseUrl=${item.url.query.baseUrl}&${item.url.query.data}&token=${$Cookies.get('token')}` : item.url.url"
+              style="border-radius: 0 4px 0 4px;"
+              scrolling="yes"
+              frameborder="0"></iframe> -->
+              <component :is="'cChart1'" :key="index"></component>
+        </grid-item>
+    </grid-layout>
   </div>
 </template>
 
 <script>
+import { GridLayout, GridItem } from 'vue-grid-layout'
 export default {
+  components: {
+    GridLayout,
+    GridItem
+  },
   data () {
     return {
-      value: '',
-      toolbars: {
-        bold: true, // 粗体
-        italic: true, // 斜体
-        header: true, // 标题
-        underline: true, // 下划线
-        strikethrough: true, // 中划线
-        mark: true, // 标记
-        superscript: true, // 上角标
-        subscript: true, // 下角标
-        quote: true, // 引用
-        ol: true, // 有序列表
-        ul: true, // 无序列表
-        link: true, // 链接
-        imagelink: true, // 图片链接
-        code: true, // code
-        table: true, // 表格
-        fullscreen: true, // 全屏编辑
-        readmodel: true, // 沉浸式阅读
-        htmlcode: true, // 展示html源码
-        help: true, // 帮助
-        /* 1.3.5 */
-        undo: true, // 上一步
-        redo: true, // 下一步
-        trash: true, // 清空
-        save: true, // 保存（触发events中的save事件）
-        /* 1.4.2 */
-        navigation: true, // 导航目录
-        /* 2.1.8 */
-        alignleft: true, // 左对齐
-        aligncenter: true, // 居中
-        alignright: true, // 右对齐
-        /* 2.2.1 */
-        subfield: true, // 单双栏模式
-        preview: true // 预览
-      },
-      url: '',
-      content: '<p>啊啊啊啊啊啊啊</p>\n<h1><a id="_1"></a>一级标题</h1>\n'
+      layout: {
+        width: 1680,
+        draggable: true, // 拖拽
+        resizable: true, // 调整大小
+        colNum: 48, // 栅格系统的列数
+        rowHeight: 50, // 每行的高度(px)
+        margin: [10, 10], // 栅格中的元素边距
+        isMirrored: false, // 标识栅格中的元素是否可镜像反转
+        layout: []
+      }
     }
   },
   methods: {
-    handleChange (value) {
-      console.log(value)
-    },
-    imgAdd (pos, file) {
-      console.log(file)
-      // 第一步.将图片上传到服务器.
-      var formdata = new FormData()
-      formdata.append('image', file)
-      // axios({
-      //   url: 'server url',
-      //   method: 'post',
-      //   data: formdata,
-      //   headers: { 'Content-Type': 'multipart/form-data' },
-      // }).then((url) => {
-      //   // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
-      //   /**
-      //  * $vm 指为mavonEditor实例，可以通过如下两种方式获取
-      //  * 1. 通过引入对象获取: `import {mavonEditor} from ...` 等方式引入后，`$vm`为`mavonEditor`
-      //  * 2. 通过$refs获取: html声明ref : `<mavon-editor ref=md ></mavon-editor>，`$vm`为 `this.$refs.md`
-      //  */
-      //   $vm.$img2Url(pos, url)
-      // })
-      this.$refs.md.$imglst2Url([[pos, 'https://camo.githubusercontent.com/1d4f37917e6048582d298221101eec3ac8b63181a5f7cb88d1aab6e3fff0ff27/68747470733a2f2f6e6f6465692e636f2f6e706d2f6d61766f6e2d656469746f722e706e673f646f776e6c6f6164733d7472756526646f776e6c6f616452616e6b3d747275652673746172733d74727565']])
-    },
-    handleHtmlCode (status, value) {
-      console.log(status, value)
-    },
-    included () {
+    listGet () {
       this.$http({
-        name: 'BaiduIncluded',
+        name: 'GetDashByIdentify',
+        requireAuth: true,
         params: {
-          site: 'https://itchenliang.gitee.io',
-          token: localStorage.getItem('baidu-token')
+          identify: 'home'
         }
       }).then(res => {
-        console.log(res)
+        this.layout = JSON.parse(res.data.data.layout)
       }).catch(error => {
-        console.log(error)
+        this.$notify.error(error)
       })
     }
   },
-  created () {
-    // this.$http({
-    //   name: 'Download'
-    // }).then(res => {
-    //   console.log(res)
-    //   this.url = res.data.data
-    // }).catch(error => {
-    //   console.log(error)
-    // })
+  mounted () {
+    this.listGet()
   }
 }
 </script>
 
 <style lang="scss">
+.vue-grid-layout {
+  width: 100%;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  .vue-grid-item{
+    background: #fff;
+    box-shadow: 4px 4px 40px rgb(0 0 0 / 5%);
+    // div,iframe {
+    //   width: 100%;
+    //   height: 100%;
+    // }
+  }
+}
 </style>

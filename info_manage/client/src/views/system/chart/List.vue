@@ -32,7 +32,7 @@
         :data="list.data">
         <el-table-column type="selection" width="60" align="center"/>
         <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="150" align="center" sortable="custom"/>
-        <el-table-column v-if="show[1].value" label="地址" prop="url" min-width="200" align="center" sortable="custom"/>
+        <el-table-column v-if="show[1].value" label="组件名称" prop="component" min-width="200" align="center" sortable="custom"/>
         <el-table-column v-if="show[2].value" label="描述" prop="description" min-width="200" align="center" sortable="custom"/>
         <el-table-column v-if="show[3].value" label="创建时间" prop="ctime" width="160" align="center" sortable="custom"/>
         <el-table-column v-if="show[4].value" label="修改时间" prop="mtime" width="160" align="center" sortable="custom"/>

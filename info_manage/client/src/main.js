@@ -8,10 +8,12 @@ import './plugins/plugin'
 import config from './config/export_fields'
 import '@/assets/css/style.scss'
 import '@/assets/css/global.scss'
+import '@/assets/fonts/iconfont.css'
 import http from './api'
 import VueParticles from 'vue-particles'
 import Cookies from 'js-cookie'
 import moment from 'moment'
+import echarts from 'echarts'
 moment.locale('zh-cn')
 
 Vue.config.productionTip = false
@@ -19,6 +21,7 @@ Vue.prototype.$http = http
 Vue.prototype.$fields = config
 Vue.prototype.$Cookies = Cookies
 Vue.prototype.$moment = moment
+Vue.prototype.$echarts = echarts
 Vue.use(VueParticles)
 
 // 全局指令：按钮级权限指令控制

@@ -1,9 +1,9 @@
 <template>
   <div class="app-page layout">
     <div class="toolbar" style="padding: 0 10px;flex: 0 0 3rem;">
-      <el-input-number v-model="layout.width" controls-position="right" class="width-input" :step="50" />
-      <div style="flex: auto;"></div>
       <el-button type="primary" size="small" @click="drawer = true;current = null">布局配置</el-button>
+      <!-- <el-input-number v-model="layout.width" controls-position="right" class="width-input" :step="50" /> -->
+      <div style="flex: auto;"></div>
       <el-button type="primary" size="small" @click="add">新增</el-button>
       <el-button type="danger" size="small" @click="$router.go(-1)">返回</el-button>
       <el-button type="success" size="small" @click="submit">保存</el-button>
@@ -18,7 +18,8 @@
         :is-mirrored="layout.isMirrored"
         :is-resizable="layout.resizable"
         :style="style"
-        :use-css-transforms="true">
+        :use-css-transforms="true"
+        :use-style-cursor="false">
           <grid-item
             v-for="(item, index) in layout.layout"
             :key="index"
@@ -31,10 +32,11 @@
             :class="item.className">
               <div>
                 <span class="allow-drag el-icon-setting" @click.stop="itemClick(item.i, index)"></span>
-                <iframe
-                  v-if="item.url.url"
-                  :src="item.url.type === 1 ? `${baseUrl}${item.url.url}?baseUrl=${item.url.query.baseUrl}&${item.url.query.data}&token=${$Cookies.get('token')}` : item.url.url"
-                  frameborder="0"></iframe>
+                <component
+                  v-if="item.url.name"
+                  :is="item.url.name"
+                  :index="index"
+                  :params="parseParams(item.url.params)"></component>
                 <span class="remove el-icon-close" @click.stop="removeItem(item.i)"></span>
               </div>
           </grid-item>
@@ -86,20 +88,16 @@
       <div class="line" v-if="current !== null">
         <div class="line-title">图表绑定</div>
         <div class="line-content">
-          <div style="margin-bottom : 15px;">
-            <el-radio v-model="layout.layout[current].url.type" :label="1">内部链接</el-radio>
-            <el-radio v-model="layout.layout[current].url.type" :label="2">外部链接</el-radio>
-          </div>
           <el-select
-            v-model="layout.layout[current].url.url"
+            v-model="layout.layout[current].url.id"
             style="width: 100%;"
             filterable
-            v-if="layout.layout[current].url.type === 1"
-            clearable>
-            <el-option v-for="(item, index) in charts" :key="index" :label="item.name" :value="item.url" />
+            clearable
+            @change="handleChange">
+            <el-option v-for="(item, index) in charts" :key="index" :label="item.name + '-' + item.component" :value="item.id" />
           </el-select>
-          <el-input v-model="layout.layout[current].url.query.data" v-if="layout.layout[current].url.type === 1" placeholder="请输入传递参数" />
-          <el-input v-model="layout.layout[current].url.url" v-if="layout.layout[current].url.type === 2" placeholder="请输入能够访问的外部链接地址" />
+          <el-input type="textarea" :value="placeholder" readonly v-if="placeholder" />
+          <el-input v-model="layout.layout[current].url.params" placeholder="请输入传递参数，如: name=测试&theme=测试" />
         </div>
       </div>
     </el-drawer>
@@ -107,6 +105,7 @@
 </template>
 
 <script>
+import Qs from 'qs'
 import { GridLayout, GridItem } from 'vue-grid-layout'
 export default {
   name: 'SystemDashLayout',
@@ -128,32 +127,37 @@ export default {
         width: '100%', // this.layout.width + 'px'
         border: '1px dashed #81D4FA'
       }
+    },
+    // 所需填写的参数描述
+    placeholder: {
+      get () {
+        if (this.layout.layout[this.current]) {
+          const tmp = this.charts.find(item => item.id === this.layout.layout[this.current].url.id)
+          return tmp ? tmp.description : ''
+        }
+        return ''
+      },
+      set () {
+      }
     }
   },
   data () {
     return {
       drawer: false,
       layout: {
-        width: 1680,
+        // width: 1680,
         draggable: true, // 拖拽
         resizable: true, // 调整大小
         colNum: 48, // 栅格系统的列数
         rowHeight: 50, // 每行的高度(px)
         margin: [10, 10], // 栅格中的元素边距
         isMirrored: false, // 标识栅格中的元素是否可镜像反转
-        layout: [
-          { x: 0, y: 0, w: 16, h: 4, i: 0, className: '', url: { type: 1, url: '', query: { baseUrl: '', data: '' } } },
-          { x: 16, y: 0, w: 16, h: 2, i: 1, className: '', url: { type: 1, url: '', query: { baseUrl: '', data: '' } } },
-          { x: 32, y: 0, w: 16, h: 2, i: 2, className: '', url: { type: 1, url: '', query: { baseUrl: '', data: '' } } },
-          { x: 16, y: 2, w: 16, h: 2, i: 3, className: '', url: { type: 1, url: '', query: { baseUrl: '', data: '' } } },
-          { x: 32, y: 2, w: 16, h: 2, i: 4, className: '', url: { type: 1, url: '', query: { baseUrl: '', data: '' } } }
-        ]
+        layout: []
       },
-      index: 5, // 初始的layout的索引
+      index: 0, // 初始的layout的索引
       current: null, // 当前激活状态的元素
       charts: [], // 所有的chart
       loading: false,
-      baseUrl: '', // 当前项目调用后台的及地址和端口(为了渲染)
       hMargin: 10,
       vMargin: 10,
       dashboard: {
@@ -164,24 +168,21 @@ export default {
     }
   },
   methods: {
-    getIp () {
-      this.baseUrl = localStorage.getItem('baseUrl')
-    },
     // 新增项
     add () {
       this.$nextTick(() => {
         const length = this.layout.layout.length
         const tmp = {
           x: 0,
-          y: this.layout.layout[length - 1].y + this.layout.layout[length - 1].h,
+          y: length === 0 ? 0 : this.layout.layout[length - 1].y + this.layout.layout[length - 1].h,
           w: 16,
           h: 4,
           i: this.index,
           className: '',
           url: {
-            type: 1,
-            url: '',
-            query: { baseUrl: this.baseUrl, data: '' }
+            id: '',
+            name: '',
+            params: ''
           }
         }
         this.layout.layout.push(tmp)
@@ -289,19 +290,31 @@ export default {
         const layout = JSON.parse(res.data.data.layout)
         this.$nextTick(() => {
           this.layout = layout
+          this.hMargin = layout.margin[0]
+          this.vMargin = layout.margin[1]
           this.index = layout.layout.sort((a, b) => b.i - a.i)[0].i + 1
         })
       }).catch(error => {
         this.$notify.error(error)
       })
     },
+    // 删除回调
     handleClose (done) {
+      this.placeholder = ''
       done()
+    },
+    // 选择图表回调
+    handleChange (val) {
+      // 动态为该图表设置名称
+      this.layout.layout[this.current].url.name = this.charts.find(item => item.id === val).component
+    },
+    // 格式化参数
+    parseParams (params) {
+      return Qs.parse(params)
     }
   },
   created () {
     this.getCharts()
-    this.getIp()
     if (this.id) {
       this.itemGet()
     }
@@ -311,13 +324,6 @@ export default {
     //   console.log(event)
     //   // 此处执行事件
     // })
-  },
-  watch: {
-    baseUrl (val, old) {
-      this.layout.layout.forEach(item => {
-        item.url.query.baseUrl = val
-      })
-    }
   }
 }
 </script>
@@ -337,9 +343,10 @@ export default {
     overflow: auto;
     position: relative;
     .vue-grid-layout {
-      height: 100% !important;
+      min-height: 100%; // 这里不能使用height: 100% !important;否则会导致整个仪表盘在拖拽的时候位置有问题的
       overflow: hidden auto;
       flex-shrink: 0;
+      position: relative;
       &::-webkit-scrollbar {
         display: none;
       }
@@ -348,7 +355,7 @@ export default {
         &.active {
           border-color: #00CED1;
         }
-        div {
+        > div {
           width: 100%;
           height: 100%;
           position: relative;
@@ -364,6 +371,7 @@ export default {
             right: 0;
             background: #b1b1b1;
             color: #fff;
+            z-index: 999;
           }
           .allow-drag {
             width: 30px;
@@ -378,16 +386,12 @@ export default {
             color: #fff;
             display: none;
             border-right: 1px dashed #fff;
+            z-index: 999;
           }
           &:hover{
             .allow-drag, .remove {
               display: flex;
             }
-          }
-          iframe {
-            width: 100%;
-            height: 100%;
-            pointer-events: none
           }
         }
       }

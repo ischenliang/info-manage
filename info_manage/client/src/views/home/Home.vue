@@ -12,8 +12,8 @@
         :vertical-compact="true"
         :use-style-cursor="false"
         :use-css-transforms="false"
-        style="100%">
-        <!-- :style="{ width: layout.width + 'px' }" -->
+        style="100%"
+        v-if="layout.layout">
           <grid-item
             v-for="(item, index) in layout.layout"
             :key="index"
@@ -22,13 +22,14 @@
             :y="item.y"
             :w="item.w"
             :h="item.h"
-            :i="item.i">
-              <iframe
-                v-if="item.url.url"
-                :src="item.url.type === 1 ? `${baseUrl}${item.url.url}?baseUrl=${item.url.query.baseUrl}&${item.url.query.data}&token=${$Cookies.get('token')}` : item.url.url"
-                style="border-radius: 0 4px 0 4px;"
-                scrolling="yes"
-                frameborder="0"></iframe>
+            :i="item.i"
+            v-loading="loadings[index]">
+              <component
+                v-if="item.url.name"
+                :is="item.url.name"
+                :index="index"
+                :params="parseParams(item.url.params)"
+                @finished="finishedHandler"></component>
           </grid-item>
       </grid-layout>
     </div>
@@ -36,6 +37,7 @@
 </template>
 
 <script>
+import Qs from 'qs'
 import { GridLayout, GridItem } from 'vue-grid-layout'
 export default {
   name: 'Home',
@@ -53,22 +55,14 @@ export default {
         rowHeight: 50, // 每行的高度(px)
         margin: [10, 10], // 栅格中的元素边距
         isMirrored: false, // 标识栅格中的元素是否可镜像反转
-        layout: [
-          { x: 0, y: 0, w: 16, h: 4, i: 0, className: '', url: { type: 1, url: '', query: { baseUrl: '', data: '' } } },
-          { x: 16, y: 0, w: 16, h: 2, i: 1, className: '', url: { type: 2, url: '', query: { baseUrl: '', data: '' } } },
-          { x: 32, y: 0, w: 16, h: 2, i: 2, className: '', url: { type: 1, url: '', query: { baseUrl: '', data: '' } } },
-          { x: 16, y: 2, w: 16, h: 2, i: 3, className: '', url: { type: 1, url: '', query: { baseUrl: '', data: '' } } },
-          { x: 32, y: 2, w: 16, h: 2, i: 4, className: '', url: { type: 1, url: '', query: { baseUrl: '', data: '' } } }
-        ]
+        layout: []
       },
-      baseUrl: ''
+      loadings: []
     }
   },
   methods: {
-    getIp () {
-      this.baseUrl = localStorage.getItem('baseUrl')
-    },
     listGet () {
+      this.loadings = []
       this.$http({
         name: 'GetDashByIdentify',
         requireAuth: true,
@@ -77,13 +71,23 @@ export default {
         }
       }).then(res => {
         this.layout = JSON.parse(res.data.data.layout)
+        this.layout.layout.forEach((item, index) => {
+          this.$set(this.loadings, index, true)
+        })
       }).catch(error => {
         this.$notify.error(error)
       })
+    },
+    // 渲染完成回调
+    finishedHandler (index) {
+      this.$set(this.loadings, index, false)
+    },
+    // 格式化参数
+    parseParams (params) {
+      return Qs.parse(params)
     }
   },
   created () {
-    this.getIp()
     this.listGet()
   }
 }
@@ -107,10 +111,10 @@ export default {
       .vue-grid-item{
         background: #fff;
         box-shadow: 4px 4px 40px rgb(0 0 0 / 5%);
-        iframe {
-          width: 100%;
-          height: 100%;
-        }
+        // div,iframe {
+        //   width: 100%;
+        //   height: 100%;
+        // }
       }
     }
   }

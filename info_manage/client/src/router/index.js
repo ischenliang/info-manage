@@ -48,16 +48,16 @@ export const routes = [
       icon: ''
     }
   },
-  {
-    path: '/test',
-    component: () => import('@/views/test/Test'),
-    meta: {
-      title: 'Test',
-      hidden: 0,
-      is_frame: 0,
-      icon: ''
-    }
-  },
+  // {
+  //   path: '/test',
+  //   component: () => import('@/views/test/Test'),
+  //   meta: {
+  //     title: 'Test',
+  //     hidden: 0,
+  //     is_frame: 0,
+  //     icon: ''
+  //   }
+  // },
   {
     path: '/redirect',
     component: () => import('@/views/Layout'),

@@ -7,28 +7,11 @@ const path = require('path')
 const fse = require('fs-extra')
 
 // 新增
-async function add (files, obj) {
+async function add (obj) {
   obj.ctime = moment().format('YYYY-MM-DD HH:mm:ss')
   obj.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
   try {
     const res = await Chart.create(obj)
-    // 先创建文件夹
-    fse.mkdirSync(path.join(__dirname, '../', '/public/chart', res.id))
-    // 需要判断是否上传的多个文件
-    if (files && files.length) {
-      files.forEach(item => {
-        util.uploadChart(path.join('/public/chart', res.id), item)
-      })
-    } else {
-      util.uploadChart(path.join('/public/chart', res.id), files)
-    }
-    await Chart.update({
-      url: `chart/${res.id}/index.html`
-    }, {
-      where: {
-        id: res.id
-      }
-    })
     return await Chart.findOne({
       where: {
         id: res.id
@@ -47,7 +30,6 @@ async function add (files, obj) {
  */
 async function deleteById (id) {
   try {
-    fse.removeSync(path.join(__dirname, `../public/chart/${id}`))
     return await Chart.destroy({
       where: {
         id
@@ -59,17 +41,8 @@ async function deleteById (id) {
 }
 
 // 修改
-async function update (files, obj) {
+async function update (obj) {
   try {
-    if (files && files.length) {
-      // 需要判断是否上传的多个文件
-      files.forEach(item => {
-        util.uploadChart(path.join('/public/chart', obj.id), item)
-      })
-    } else {
-      util.uploadChart(path.join('/public/chart', obj.id), files)
-    }
-    obj.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
     return await Chart.update(obj, {
       where: {
         id: obj.id
@@ -112,7 +85,7 @@ async function list (query, uid) {
         [Op.or]: [
           { name:  { [Op.like]: query.search ? `%${query.search}%` :　'%%' } },
           { description:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
-          { url:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
+          { component:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
           { ctime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } },
           { mtime:  { [Op.like]: query.search ?  `%${query.search}%` : '%%' } }
         ]
