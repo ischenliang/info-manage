@@ -10,7 +10,7 @@ import Map from '@arcgis/core/Map'
 import Basemap from '@arcgis/core/Basemap'
 import MapView from '@arcgis/core/views/MapView'
 import Home from '@arcgis/core/widgets/Home'
-import MapImageLayer from '@arcgis/core/layers/MapImageLayer'
+import TileLayer from '@arcgis/core/layers/TileLayer'
 // import LayerList from '@arcgis/core/widgets/LayerList'
 export default {
   name: 'ToolMap',
@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     renderMap () {
-      const mapLayer = new MapImageLayer({
+      const mapLayer = new TileLayer({
         url: 'https://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer',
         title: '哈哈哈哈哈哈哈',
         visible: true,
