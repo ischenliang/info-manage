@@ -5,6 +5,7 @@
         <el-input v-model="form.name" />
       </div>
       <div class="header-right">
+        <el-button type="danger" size="small" icon="el-icon-back" @click="toggleCancel">取消</el-button>
         <el-button type="primary" size="small" icon="el-icon-edit" @click="togglePreview">预览</el-button>
       </div>
     </div>
@@ -26,7 +27,8 @@ export default {
   },
   data () {
     return {
-      form: null
+      form: null,
+      save: false
     }
   },
   methods: {
@@ -37,11 +39,16 @@ export default {
         requireAuth: true,
         data: this.form
       }).then(res => {
+        this.save = true
         this.$emit('update:preview', !this.preview)
         this.$emit('submit', this.form)
       }).catch(error => {
         this.$notify.error(error)
       })
+    },
+    toggleCancel () {
+      this.save = true
+      this.$emit('update:preview', !this.preview)
     }
   },
   created () {
@@ -49,7 +56,9 @@ export default {
   },
   // 在离开的时候自动保存数据
   beforeDestroy () {
-    this.togglePreview()
+    if (!this.save) {
+      this.togglePreview()
+    }
   }
 }
 </script>
@@ -83,7 +92,7 @@ export default {
       }
     }
     .header-right{
-      width: 125px;
+      width: 180px;
       height: 100%;
       flex-shrink: 0;
       display: flex;
