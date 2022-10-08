@@ -13,6 +13,7 @@ import cToggleLook from './cToggleLook.vue'
 import cToggleCopy from './cToggleCopy.vue'
 import cQuillEditor from './cQuillEditor.vue'
 import cMavonEditor from './cMavonEditor.vue'
+import cBytemdEditor from './cBytemdEditor.vue'
 import cMavonPreview from './cMavonPreview.vue'
 import cBackUp from './cBackUp.vue'
 import cMenuItem from './cMenuItem.vue'
@@ -53,6 +54,7 @@ export default {
         cToggleCopy,
         cQuillEditor,
         cMavonEditor,
+        cBytemdEditor,
         cMavonPreview,
         cBackUp,
         cMenuItem,

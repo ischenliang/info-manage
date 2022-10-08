@@ -26,6 +26,8 @@
 </template>
 
 <script>
+// jzman simplicity-green
+import 'juejin-markdown-themes/dist/vuepress.css'
 export default {
   name: 'ProjectDocumentPreview',
   props: {

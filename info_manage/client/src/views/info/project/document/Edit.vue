@@ -10,10 +10,11 @@
       </div>
     </div>
     <div class="document-edit-content">
-      <c-mavon-editor
+      <!-- <c-mavon-editor
         v-model="form.text"
         :text.sync="form.content"
-        style="width: 100%;height: 100%;"/>
+        style="width: 100%;height: 100%;"/> -->
+      <c-bytemd-editor v-model="form.text"/>
     </div>
   </div>
 </template>
@@ -103,7 +104,6 @@ export default {
   .document-edit-content {
     flex: 1 1 auto;
     min-height: 500px;
-    background: red;
     .markdown-body {
       border-width: 1px 0 1px 0 !important;
     }

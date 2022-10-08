@@ -20,3 +20,8 @@
 .el-cascader-menu__wrap {
   height: 100% !important;
 }
+
+.markdown-body .task-list-item input {
+  margin: 0 0.2em 0.25em 0 !important;
+  vertical-align: middle;
+}
