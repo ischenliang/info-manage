@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import Qs from 'qs'
+// import Qs from 'qs'
 import { GridLayout, GridItem } from 'vue-grid-layout'
 export default {
   name: 'Home',
@@ -84,7 +84,8 @@ export default {
     },
     // 格式化参数
     parseParams (params) {
-      return Qs.parse(params)
+      // return Qs.parse(params)
+      return ''
     }
   },
   created () {

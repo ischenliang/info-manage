@@ -16,3 +16,7 @@
 .v-show-content {
   background: #F5F5FA !important;
 }
+
+.el-cascader-menu__wrap {
+  height: 100% !important;
+}

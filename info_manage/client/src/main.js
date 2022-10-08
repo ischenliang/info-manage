@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+// import Qs from 'qs'
+// console.log(Qs.parse("{ code: '1' }"))
 
 import 'element-ui/lib/theme-chalk/index.css'
 import './plugins/elementui'
