@@ -32,6 +32,7 @@
         height="100%"
         stripe
         border
+        size="medium"
         ref="table"
         v-loading="list.loading"
         @sort-change="sortChange"

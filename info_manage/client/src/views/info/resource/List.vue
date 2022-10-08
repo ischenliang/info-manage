@@ -18,7 +18,6 @@ export default {
     ComPanel
   },
   created () {
-    console.log(this.showTable)
   }
 }
 </script>

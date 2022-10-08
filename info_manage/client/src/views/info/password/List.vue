@@ -27,21 +27,22 @@
         stripe
         ref="table"
         border
+        size="medium"
         v-loading="list.loading"
         @sort-change="sortChange"
         @selection-change="selectChange"
         :data="list.data">
         <el-table-column type="selection" width="60" align="center"/>
-        <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="100" align="center" sortable="custom"/>
-        <el-table-column v-if="show[1].value" label="网址" prop="url" min-width="150" align="center" sortable="custom">
+        <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="100" align="center" sortable="custom"  :show-overflow-tooltip="true"/>
+        <el-table-column v-if="show[1].value" label="网址" prop="url" min-width="150" align="center" sortable="custom"  :show-overflow-tooltip="true">
           <template v-slot="{ row }">{{ row.url ? row.url : '-' }}</template>
         </el-table-column>
-        <el-table-column v-if="show[2].value" label="类别" prop="type" min-width="80" align="center" sortable="custom">
+        <el-table-column v-if="show[2].value" label="类别" prop="type" min-width="80" align="center" sortable="custom"  :show-overflow-tooltip="true">
           <template v-slot="{ row }">
-            <el-tag type="success">{{ row.type === 1 ? '网站' : '软件' }}</el-tag>
+            <el-tag type="success" size="mini">{{ row.type === 1 ? '网站' : '软件' }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column v-if="show[3].value" label="账号" prop="account" min-width="150" align="center" sortable="custom">
+        <el-table-column v-if="show[3].value" label="账号" prop="account" min-width="150" align="center" sortable="custom"  :show-overflow-tooltip="true">
           <template v-slot="{ row }">
             {{row.account}}
             <c-toggle-copy
@@ -50,7 +51,7 @@
               :key="row.id + 'copy' + '-account'" />
           </template>
         </el-table-column>
-        <el-table-column v-if="show[4].value" label="密码" prop="password" min-width="220" align="center" sortable="custom">
+        <el-table-column v-if="show[4].value" label="密码" prop="password" min-width="220" align="center" sortable="custom" :show-overflow-tooltip="true">
           <template v-slot="{ row }">
             {{ row.password | passwordFormat(row.look) }}
             <c-toggle-look :look.sync="row.look" :key="row.id + 'look'" />
@@ -244,6 +245,10 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss">
+.el-table {
+    .cell {
+      word-break: normal;
+    }
+  }
 </style>

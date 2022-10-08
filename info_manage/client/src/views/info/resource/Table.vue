@@ -77,18 +77,19 @@
         height="100%"
         stripe
         ref="table"
+        size="medium"
         v-loading="list.loading"
         @selection-change="selectChange"
         @row-click="rowClick"
         :data="list.data"
         :row-style="rowStyle">
         <el-table-column type="selection" label="选择" width="60" align="center"/>
-        <el-table-column label="类型" prop="extension" width="100" align="center">
+        <el-table-column label="" prop="extension" width="100" align="center">
           <template v-slot="{ row }">
-            <img :src="setImg(row.extension, row.type)" alt="" style="width: 35px;height: 35px;" />
+            <img :src="setImg(row.extension, row.type)" alt="" style="width: 30px;height: 30px;" />
           </template>
         </el-table-column>
-        <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="160" align="center">
+        <el-table-column v-if="show[0].value" label="文件名" prop="name" min-width="200" align="left">
           <template v-slot="{ row }">
             <template v-if="row.editable">
               <div style="display: flex;">
@@ -100,12 +101,12 @@
             <template v-else>{{ row.name }}</template>
           </template>
         </el-table-column>
-        <el-table-column v-if="show[1].value" label="路径" prop="path" min-width="160" align="center"/>
+        <!-- <el-table-column v-if="show[1].value" label="路径" prop="path" min-width="160" align="center"/> -->
         <el-table-column v-if="show[2].value" label="大小" prop="size" width="100" align="center">
           <template v-slot="{ row }">{{ row.size | sizeFormat }}</template>
         </el-table-column>
-        <el-table-column v-if="show[3].value" label="扩展名" prop="extension" width="80" align="center">
-          <template v-slot="{ row }">{{ row.extension === '' ? '-' : row.extension }}</template>
+        <el-table-column v-if="show[3].value" label="类型" prop="extension" width="100" align="center">
+          <template v-slot="{ row }">{{ (row.extension === '' || row.type === 'folder') ? '文件夹' : row.extension }}</template>
         </el-table-column>
         <el-table-column v-if="show[4].value" label="创建时间" prop="ctime" width="160" align="center"/>
         <el-table-column v-if="show[5].value" label="修改时间" prop="mtime" width="160" align="center"/>
@@ -120,9 +121,13 @@
               @click="itemDownload(row)" />
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="80" align="center">
+        <el-table-column label="操作" width="300" align="center">
           <template v-slot="{ row }">
-            <el-dropdown style="margin-right: 10px;" trigger="click" @command="handleCommand">
+            <el-button @click="moveFile(row)" size="mini" type="info" v-perms="'system:resource:move'">移动</el-button>
+            <el-button @click="copyFile(row)" size="mini" type="primary" v-perms="'system:resource:copy'">复制</el-button>
+            <el-button @click="itemEdit(row)" size="mini" type="warning" v-perms="'system:resource:update'">重命名</el-button>
+            <el-button @click="itemDelete(row)" size="mini" type="danger" v-perms="'system:resource:delete'">删除</el-button>
+            <!-- <el-dropdown style="margin-right: 10px;" trigger="click" @command="handleCommand">
               <el-button type="primary" size="mini">
                 <i class="el-icon-more"></i>
               </el-button>
@@ -148,7 +153,7 @@
                   删除
                 </el-dropdown-item>
               </el-dropdown-menu>
-            </el-dropdown>
+            </el-dropdown> -->
           </template>
         </el-table-column>
       </el-table>
@@ -171,7 +176,7 @@ export default {
         { label: '路径', disabled: false, value: true },
         { label: '大小', disabled: true, value: true },
         { label: '类型', disabled: true, value: true },
-        { label: '创建时间', disabled: false, value: false },
+        { label: '创建时间', disabled: false, value: true },
         { label: '修改时间', disabled: false, value: true }
       ],
       list: {
@@ -220,7 +225,11 @@ export default {
           search: this.list.filters.search
         }
       }).then(res => {
-        this.list.data = res.data.data
+        const { data } = res.data
+        this.list.data = [
+          ...data.filter(item => item.type === 'folder'),
+          ...data.filter(item => item.type === 'file')
+        ]
         this.list.data.forEach(item => this.$set(item, 'editable', false))
       }).catch(error => {
         this.$notify.error(error)
@@ -499,7 +508,7 @@ export default {
   filters: {
     sizeFormat (val) {
       if (val === 0) {
-        return 0
+        return '-'
       }
       if (val / (1024 * 1024 * 1024 * 1024 * 1024) > 1) {
         return (val / (1024 * 1024 * 1024 * 1024 * 1024)).toFixed(2) + ' P'
@@ -508,11 +517,11 @@ export default {
       } else if (val / (1024 * 1024 * 1024) > 1) {
         return (val / (1024 * 1024 * 1024)).toFixed(2) + ' G'
       } else if (val / (1024 * 1024) > 1) {
-        return (val / (1024 * 1024)).toFixed(2) + ' M'
+        return (val / (1024 * 1024)).toFixed(2) + ' MB'
       } else if (val / 1024 > 1) {
-        return (val / 1024).toFixed(2) + ' K'
+        return (val / 1024).toFixed(2) + ' KB'
       } else {
-        return (val / 1024).toFixed(2) + ' K'
+        return (val / 1024).toFixed(2) + ' KB'
       }
     }
   }

@@ -41,6 +41,7 @@
         stripe
         ref="table"
         border
+        size="medium"
         v-loading="list.loading"
         @sort-change="sortChange"
         @selection-change="selectChange"

@@ -32,6 +32,7 @@
         height="100%"
         stripe
         ref="table"
+        size="medium"
         v-loading="list.loading"
         @sort-change="sortChange"
         row-key="id"

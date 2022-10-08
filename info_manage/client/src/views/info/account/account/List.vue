@@ -46,6 +46,7 @@
         ref="table"
         border
         show-summary
+        size="medium"
         sum-text="总计"
         :summary-method="getSummaries"
         v-loading="list.loading"
