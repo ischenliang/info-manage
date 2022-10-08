@@ -8,13 +8,13 @@
       <div class="resource-list">
         <div class="resource-item" v-for="(item, index) in 25" :key="index">
           <div class="resource-item-icon">
-            <img src="@/assets/icon/folder.png" alt="">
+            <img src="./icon/folder.png" alt="">
           </div>
           <div class="resource-item-name">文件名称文件名称文件名称文件名称文件名称</div>
         </div>
         <div class="resource-item">
           <div class="resource-item-icon">
-            <img src="@/assets/icon/7z.png" alt="">
+            <img src="./icon/7z.png" alt="">
           </div>
           <div class="resource-item-name">文件名称文件名称文件名称文件名称文件名称</div>
         </div>
