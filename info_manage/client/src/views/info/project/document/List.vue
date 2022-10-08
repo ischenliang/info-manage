@@ -32,13 +32,13 @@
         <com-preview
           v-if="preview"
           :preview.sync="preview"
-          :key="current.id"
+          :key="'preview-' + current.id"
           :document.sync="current"/>
         <com-edit
           v-else
           :preview.sync="preview"
           :document.sync="current"
-          :key="current.id"
+          :key="'edit-' + current.id"
           @submit="handleSubmit"/>
       </div>
       <div class="document-right c-scrollbar" v-else>
@@ -49,6 +49,8 @@
 </template>
 
 <script>
+// jzman simplicity-green
+import 'juejin-markdown-themes/dist/vuepress.css'
 import ComPreview from './Preview'
 import ComEdit from './Edit'
 export default {
