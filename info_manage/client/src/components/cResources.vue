@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import folder from '@/views/info/resource/icon/folder.png'
 export default {
   name: 'Resources',
   props: {
@@ -47,7 +48,7 @@ export default {
   },
   data () {
     return {
-      folder: require('@/assets/icon/folder.png'),
+      folder: folder,
       props: {
         label: 'name',
         children: 'children',
