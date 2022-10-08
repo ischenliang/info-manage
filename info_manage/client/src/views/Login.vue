@@ -1,7 +1,7 @@
 <template>
   <!-- 组件wrapper -->
   <div class="login_wrapper">
-    <c-particles />
+    <!-- <c-particles /> -->
     <div class="login-section">
       <div class="login-text">信息管理系统</div>
       <el-form :model="form" :rules="rules" ref="formRef">

@@ -1,77 +1,35 @@
 <template>
   <div style="width: 100%;height: 100%;display:flex;flex-direction: column;justify-content: center;align-items: center;user-select: none;">
-    <grid-layout
-      :layout="layout.layout"
-      :col-num="layout.colNum"
-      :row-height="layout.rowHeight"
-      :margin="layout.margin"
-      :is-draggable="false"
-      :is-resizable="false"
-      :is-mirrored="layout.isMirrored"
-      :vertical-compact="true"
-      :use-style-cursor="false"
-      :use-css-transforms="false"
-      style="width: 100%;"
-      v-if="layout.layout">
-        <grid-item
-          v-for="(item, index) in layout.layout"
-          :key="index"
-          :static="item.static"
-          :x="item.x"
-          :y="item.y"
-          :w="item.w"
-          :h="item.h"
-          :i="item.i">
-            <!-- <iframe
-              v-if="item.url.url"
-              :src="item.url.type === 1 ? `${baseUrl}${item.url.url}?baseUrl=${item.url.query.baseUrl}&${item.url.query.data}&token=${$Cookies.get('token')}` : item.url.url"
-              style="border-radius: 0 4px 0 4px;"
-              scrolling="yes"
-              frameborder="0"></iframe> -->
-              <component :is="'cChart1'" :key="index"></component>
-        </grid-item>
-    </grid-layout>
+    <!-- <editor
+      style="width: 600px;height: 400px;"
+      :value="value"
+      :plugins="plugins"
+      @change="handleChange" /> -->
   </div>
 </template>
 
 <script>
-import { GridLayout, GridItem } from 'vue-grid-layout'
+import 'bytemd/dist/index.css'
+// import { Editor } from '@bytemd/vue'
+// import gfm from '@bytemd/plugin-gfm'
 export default {
   components: {
-    GridLayout,
-    GridItem
+    // Editor
   },
   data () {
     return {
-      layout: {
-        width: 1680,
-        draggable: true, // 拖拽
-        resizable: true, // 调整大小
-        colNum: 48, // 栅格系统的列数
-        rowHeight: 50, // 每行的高度(px)
-        margin: [10, 10], // 栅格中的元素边距
-        isMirrored: false, // 标识栅格中的元素是否可镜像反转
-        layout: []
-      }
+      value: '',
+      plugins: [
+        // gfm()
+      ]
     }
   },
   methods: {
-    listGet () {
-      this.$http({
-        name: 'GetDashByIdentify',
-        requireAuth: true,
-        params: {
-          identify: 'home'
-        }
-      }).then(res => {
-        this.layout = JSON.parse(res.data.data.layout)
-      }).catch(error => {
-        this.$notify.error(error)
-      })
+    handleChange (v) {
+      this.value = v
     }
   },
   mounted () {
-    this.listGet()
   }
 }
 </script>

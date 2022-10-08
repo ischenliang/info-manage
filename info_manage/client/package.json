@@ -6,10 +6,14 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "vite:serve": "vite",
+    "vite:build": "vite build",
     "copy": "ncp ./node_modules/@arcgis/core/assets ./public/assets"
   },
   "dependencies": {
     "@arcgis/core": "^4.18.1",
+    "@bytemd/plugin-gfm": "^1.17.2",
+    "@bytemd/vue": "^1.17.2",
     "axios": "^0.21.1",
     "babel-plugin-component": "^1.1.1",
     "clipboard": "^2.0.7",
@@ -20,7 +24,8 @@
     "js-cookie": "^2.2.1",
     "mavon-editor": "^2.9.1",
     "moment": "^2.29.1",
-    "vue": "^2.6.11",
+    "vite": "^3.1.6",
+    "vue": "^2.7.10",
     "vue-grid-layout": "^2.3.12",
     "vue-json-excel": "^0.3.0",
     "vue-particles": "^1.0.9",
@@ -29,6 +34,7 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
+    "@vitejs/plugin-vue2": "^2.0.0",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",

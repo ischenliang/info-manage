@@ -67,7 +67,7 @@
             :to="{ path: '/info/resource/list', query: { path: setQueryPath(index) } }">
             {{ item }}
           </el-breadcrumb-item>
-          <el-breadcrumb-item v-else :key="index">{{ item }}</el-breadcrumb-item>
+          <el-breadcrumb-item v-else :key="'else-' + index">{{ item }}</el-breadcrumb-item>
         </template>
       </el-breadcrumb>
     </div>
@@ -164,6 +164,8 @@
 </template>
 
 <script>
+import folder from './icon/folder.png'
+import file from './icon/file.png'
 export default {
   name: 'ResourceTable',
   props: {
@@ -398,16 +400,16 @@ export default {
     setImg (extension, type) {
       switch (type) {
         case 'folder':
-          return require('@/assets/icon/folder.png')
+          return folder
         case 'file':
           if (extension !== '') {
             try {
-              return require(`@/assets/icon/${extension}.png`)
+              return new URL(`./icon/${extension}.png`, import.meta.url).href
             } catch (error) {
-              return require('@/assets/icon/file.png')
+              return file
             }
           } else {
-            return require('@/assets/icon/folder.png')
+            return folder
           }
       }
     },

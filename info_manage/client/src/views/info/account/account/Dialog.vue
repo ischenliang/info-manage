@@ -73,7 +73,7 @@
 </template>
 
 <script>
-const citys = require('@/assets/json/pca-code.json')
+import citys from '@/assets/json/pca-code.json'
 export default {
   props: {
     visible: Boolean,
