@@ -6,68 +6,74 @@
     </div>
     <div class="table none-scroller" style="background: #f0f2f5;">
       <div class="project-list" v-loading="list.loading">
-        <el-card class="project-item" shadow="hover" v-for="(item, index) in list.data" :key="index">
-          <div class="project-name" :title="item.name">{{ item.name }}</div>
-          <div class="project-desc">{{ item.description }}</div>
-          <div class="project-deploy">
-            部署地址：<a v-if="item.url" :href="item.url">{{ item.url }}</a><span v-else>暂未部署</span>
-          </div>
-          <div class="project-tags">
-            <el-tag
-              size="small"
-              type="success"
-              v-for="(tag, index) in formatTags(item.tag)"
-              :key="tag + index">
-              {{ tag }}
-            </el-tag>
-          </div>
-          <div class="project-info">
-            <span><b>项目类别：</b>{{ formatType(item.type) }}</span>
-            <span><b>项目状态：</b>{{ formatStatus(item.status) }}</span>
-            <span><b>源代码：</b><i class="el-icon-download" @click="itemDownload(item)"></i></span>
-          </div>
-          <div class="project-other">
-            <el-button
-              type="primary"
-              size="mini"
-              icon="el-icon-picture"
-              @click="$router.push({ path: `/info/project/image/${item.id}` })">
-              图集
-            </el-button>
-            <el-button
-              type="primary"
-              size="mini"
-              icon="el-icon-document"
-              @click="$router.push({ path: `/info/project/document/${item.id}` })">
-              文档
-            </el-button>
-            <el-button
-              type="primary"
-              size="mini"
-              icon="el-icon-s-claim"
-              @click="$router.push({ path: `/info/project/issues/${item.id}` })">
-              任务
-            </el-button>
-            <el-button
-              type="primary"
-              size="mini"
-              icon="el-icon-edit"
-              title="编辑"
-              @click="$router.push({ path: `/info/project/edit/${item.id}` })"/>
-            <el-button
-              type="primary"
-              size="mini"
-              icon="el-icon-delete"
-              title="删除"
-              @click="itemDelete(item)"/>
-          </div>
-        </el-card>
-        <el-card class="project-item" shadow="hover">
-          <div
-            class="project-add el-icon-circle-plus-outline"
-            title="新增项目"
-            @click="$router.push({ path: '/info/project/add' })"></div>
-        </el-card>
+        <el-row>
+          <el-col :xl="6" :lg="8" :md="12" :sm="24">
+            <el-card class="project-item" shadow="hover">
+              <div
+                class="project-add el-icon-circle-plus-outline"
+                title="新增项目"
+                @click="$router.push({ path: '/info/project/add' })"></div>
+            </el-card>
+          </el-col>
+          <el-col :xl="6" :lg="8" :md="12" :sm="24" v-for="(item, index) in list.data" :key="index">
+            <el-card class="project-item" shadow="hover">
+              <div class="project-name" :title="item.name">{{ item.name }}</div>
+              <div class="project-desc">{{ item.description }}</div>
+              <div class="project-deploy">
+                部署地址：<a v-if="item.url" :href="item.url">{{ item.url }}</a><span v-else>暂未部署</span>
+              </div>
+              <div class="project-tags">
+                <el-tag
+                  size="small"
+                  type="success"
+                  v-for="(tag, index) in formatTags(item.tag)"
+                  :key="tag + index">
+                  {{ tag }}
+                </el-tag>
+              </div>
+              <div class="project-info">
+                <span><b>项目类别：</b>{{ formatType(item.type) }}</span>
+                <span><b>项目状态：</b>{{ formatStatus(item.status) }}</span>
+                <span><b>源代码：</b><i class="el-icon-download" @click="itemDownload(item)"></i></span>
+              </div>
+              <div class="project-other">
+                <el-button
+                  type="primary"
+                  size="mini"
+                  icon="el-icon-picture"
+                  @click="$router.push({ path: `/info/project/image/${item.id}` })">
+                  图集
+                </el-button>
+                <el-button
+                  type="primary"
+                  size="mini"
+                  icon="el-icon-document"
+                  @click="$router.push({ path: `/info/project/document/${item.id}` })">
+                  文档
+                </el-button>
+                <el-button
+                  type="primary"
+                  size="mini"
+                  icon="el-icon-s-claim"
+                  @click="$router.push({ path: `/info/project/issues/${item.id}` })">
+                  任务
+                </el-button>
+                <el-button
+                  type="primary"
+                  size="mini"
+                  icon="el-icon-edit"
+                  title="编辑"
+                  @click="$router.push({ path: `/info/project/edit/${item.id}` })"/>
+                <el-button
+                  type="primary"
+                  size="mini"
+                  icon="el-icon-delete"
+                  title="删除"
+                  @click="itemDelete(item)"/>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
       </div>
     </div>
   </div>
@@ -175,12 +181,15 @@ export default {
 .project-list {
   display: flex;
   flex-wrap: wrap;
+  .el-col {
+    padding: 0 5px 10px;
+  }
   .project-item {
-    width: 405px;
+    width: 100%;
     border-color: #23b7e5 #afe7f9 #afe7f9 #afe7f9;
     border-width: 7px 1px 1px 1px;
     border-style: solid;
-    margin: 0 5px 10px 5px;
+    // margin: 0 5px 10px 5px;
     height: 261px;
     cursor: pointer;
     position: relative;
@@ -222,6 +231,9 @@ export default {
       text-align: center;
       line-height: 20px;
       font-size: 14px;
+      overflow: hidden;
+      word-break: keep-all;
+      white-space: nowrap;
       span:not(last-child){
         margin-left: 15px;
       }
@@ -240,6 +252,9 @@ export default {
       width: 100%;
       margin-top: 10px;
       text-align: center;
+      overflow: hidden;
+      word-break: keep-all;
+      white-space: nowrap;
     }
     .el-card__body {
       width: 100%;
