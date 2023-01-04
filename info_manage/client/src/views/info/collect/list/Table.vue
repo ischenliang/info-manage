@@ -2,16 +2,11 @@
   <div class="app-page" style="padding: 0;">
     <div class="toolbar">
       <el-input v-model="list.filters.search" placeholder="请输入内容" suffix-icon="el-icon-search" @input="listGet"/>
-      <el-select v-model="list.filters.type" clearable filterable @change="listGet">
-        <el-option v-for="(item, index) in list.types" :key="index" :label="item.name" :value="item.name" />
+      <el-select v-model="list.filters.tid" clearable filterable @change="handleChange">
+        <el-option v-for="(item, index) in list.types" :key="index" :label="item.name" :value="item.id" />
       </el-select>
       <c-flex-auto />
       <el-button type="info" @click="toggle" size="medium">看板模式</el-button>
-      <!-- <el-button
-        type="primary"
-        size="medium"
-        :icon="showTale ? 'el-icon-tickets' : 'el-icon-menu'"
-        @click="showTale = !showTale">{{showTale ? '表格' : '列表'}}</el-button> -->
       <el-button
         type="primary"
         size="medium"
@@ -41,8 +36,20 @@
         @selection-change="selectChange"
         :data="list.data">
         <el-table-column type="selection" width="60" align="center"/>
-        <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="120" align="center" sortable="custom"/>
-        <el-table-column v-if="show[1].value" label="地址" prop="url" min-width="150" align="center" sortable="custom">
+        <el-table-column v-if="show[0].value" label="logo" prop="repository" width="100" align="center">
+          <template slot-scope="scope">
+            <el-image
+              :src="scope.row.repository"
+              fit="fill"
+              style="width: 30px; height: 30px"></el-image>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="120" align="center" sortable="custom">
+          <template slot-scope="scope">
+            <a :href="scope.row.url" target="_blank" style="color: blue;">{{ scope.row.name }}</a>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column v-if="show[1].value" label="地址" prop="url" min-width="150" align="center" sortable="custom">
           <template slot-scope="scope">
             <el-link
               :type="setLink(scope.row, scope.$index).type"
@@ -51,7 +58,7 @@
               {{ setLink(scope.row, scope.$index).url }}
             </el-link>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column v-if="show[2].value" label="图标" prop="logo" min-width="100" align="center" sortable="custom">
           <template v-slot="{ row }">
             <img :src="row.logo" alt="">
@@ -60,7 +67,7 @@
         <el-table-column v-if="show[3].value" label="类别" prop="collect_type" min-width="150" align="center" sortable="custom">
           <template v-slot="{ row }">{{ row.collect_type.name }}</template>
         </el-table-column>
-        <el-table-column v-if="show[4].value" label="仓库" prop="repository" min-width="150" align="center" sortable="custom">
+        <!-- <el-table-column v-if="show[4].value" label="仓库" prop="repository" min-width="150" align="center" sortable="custom">
           <template slot-scope="scope">
             <el-link
               v-if="scope.row.repository"
@@ -71,8 +78,8 @@
             </el-link>
             <template v-else>-</template>
           </template>
-        </el-table-column>
-        <el-table-column v-if="show[5].value" label="标签" prop="tag" min-width="100" align="center" sortable="custom"/>
+        </el-table-column> -->
+        <!-- <el-table-column v-if="show[5].value" label="标签" prop="tag" min-width="100" align="center" sortable="custom"/> -->
         <el-table-column v-if="show[6].value" label="备注" prop="remark" min-width="200" align="center" sortable="custom"/>
         <el-table-column v-if="show[7].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom"/>
         <el-table-column v-if="show[8].value" label="更新时间" prop="mtime" min-width="160" align="center" sortable="custom"/>
@@ -113,7 +120,8 @@ export default {
     ComDialog
   },
   props: {
-    showTable: Boolean
+    showTable: Boolean,
+    filter: Object
   },
   data () {
     return {
@@ -124,9 +132,9 @@ export default {
         { label: '类别', disabled: false, value: true },
         { label: '仓库', disabled: false, value: true },
         { label: '标签', disabled: false, value: true },
-        { label: '备注', disabled: false, value: false },
+        { label: '备注', disabled: false, value: true },
         { label: '创建时间', disabled: false, value: false },
-        { label: '更新时间', disabled: false, value: false }
+        { label: '更新时间', disabled: false, value: true }
       ],
       list: {
         page: 1,
@@ -135,7 +143,7 @@ export default {
         loading: false,
         filters: {
           search: '',
-          type: '',
+          tid: '',
           sort: '',
           order: ''
         },
@@ -156,6 +164,10 @@ export default {
     }
   },
   methods: {
+    handleChange (e) {
+      this.listGet()
+      this.$emit('update:filter', this.list.types.find(el => el.id === e))
+    },
     toggle () {
       this.$emit('update:showTable', !this.showTable)
     },
@@ -171,7 +183,7 @@ export default {
           search: this.list.filters.search,
           sort: this.list.filters.sort,
           order: this.list.filters.order,
-          type: this.list.filters.type
+          tid: this.list.filters.tid
         }
       }).then(res => {
         this.list.total = res.data.data.total
@@ -293,6 +305,9 @@ export default {
     }
   },
   created () {
+    if (this.filter) {
+      this.list.filters.tid = this.filter.id
+    }
     this.getTypes()
     this.listGet()
   },

@@ -19,8 +19,8 @@
       <el-form-item label="网址" prop="url">
         <el-input v-model="form.url" placeholder="请输入网址"></el-input>
       </el-form-item>
-      <el-form-item label="仓库地址" prop="repository">
-        <el-input v-model="form.repository" placeholder="请输入仓库地址"></el-input>
+      <el-form-item label="logo地址" prop="repository">
+        <el-input v-model="form.repository" placeholder="请输入logo地址"></el-input>
       </el-form-item>
       <el-form-item label="图标" prop="logo">
         <el-input v-model="form.logo" placeholder="请输入内容">

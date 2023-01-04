@@ -1,6 +1,6 @@
 <template>
-  <com-table v-if="showTable" :showTable.sync="showTable" />
-  <com-panel v-else :showTable.sync="showTable" />
+  <com-table v-if="showTable" :showTable.sync="showTable" :filter.sync="filter" />
+  <com-panel v-else :showTable.sync="showTable" :filter.sync="filter" />
 </template>
 
 <script>
@@ -10,7 +10,11 @@ export default {
   name: 'CollectTable',
   data () {
     return {
-      showTable: false
+      showTable: false,
+      filter: {
+        id: '',
+        name: ''
+      }
     }
   },
   components: {

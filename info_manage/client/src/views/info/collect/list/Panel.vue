@@ -14,24 +14,29 @@
       <el-button type="info" @click="toggle" size="small">列表模式</el-button>
     </div>
     <div class="table none-scroller" v-loading="list.loading">
-      <div class="collect-list">
-        <div class="collect-item" v-for="(item, index) in list.data" :key="index" @click="toPath(item)">
-          <div class="collect-title">
-            <el-image class="collect-icon">
-              <div slot="error" class="image-slot">
-                <i class="el-icon-picture-outline"></i>
+      <el-row class="collect-list">
+        <el-col
+          v-for="(item, index) in list.data"
+          :key="index"
+          :xl="4">
+          <div class="collect-item" @click="toPath(item)">
+            <div class="collect-title">
+              <el-image :src="item.repository" class="collect-icon">
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+              <div class="collect-name">{{ item.name }}</div>
+            </div>
+            <div class="collect-remark">{{ item.remark === null || item.remark === '' ? '暂无描述.....' : item.remark }}</div>
+            <div class="collect-footer" v-if="setTags(item.tag).length">
+              <div>
+                <el-tag type="success" size="mini" v-for="(tag, i) in setTags(item.tag)" :key="i">{{ tag }}</el-tag>
               </div>
-            </el-image>
-            <div class="collect-name">{{ item.name }}</div>
-          </div>
-          <div class="collect-remark">{{ item.remark === null || item.remark === '' ? '暂无描述.....' : item.remark }}</div>
-          <div class="collect-footer">
-            <div>
-              <el-tag type="success" size="mini" v-for="(tag, i) in setTags(item.tag)" :key="i">{{ tag }}</el-tag>
             </div>
           </div>
-        </div>
-      </div>
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
@@ -40,7 +45,8 @@
 export default {
   name: 'CollectPanel',
   props: {
-    showTable: Boolean
+    showTable: Boolean,
+    filter: Object
   },
   data () {
     return {
@@ -49,7 +55,7 @@ export default {
         data: [],
         types: []
       },
-      current: null
+      current: this.filter
     }
   },
   methods: {
@@ -66,7 +72,7 @@ export default {
         params: {
           page: 1,
           size: 10000,
-          type: this.current === null ? '' : this.current.name
+          tid: this.current === null ? '' : this.current.id
         }
       }).then(res => {
         this.list.data = res.data.data.data
@@ -79,10 +85,15 @@ export default {
     tagClick (row) {
       this.current = row
       this.listGet()
+      this.$emit('update:filter', row)
     },
     // 格式化tags
     setTags (tag) {
-      return tag.split(',')
+      if (tag) {
+        return tag.split(',')
+      } else {
+        return []
+      }
     },
     // 前往网址地方
     toPath (item) {
@@ -98,10 +109,10 @@ export default {
           status: true
         }
       }).then(res => {
-        this.list.types = [{
-          id: 'a42asd2874a87sd',
-          name: ''
-        }, ...res.data.data.data]
+        this.list.types = [
+          { id: '', name: '' },
+          ...res.data.data.data
+        ]
       }).catch(error => {
         this.$notify.error(error)
       })
@@ -121,8 +132,7 @@ export default {
   .menu-tag {
     padding: 4px 7px;
     font-size: 12px;
-    // background: red;
-    border-radius: 14px;
+    border-radius: 4px;
     margin: 0 7px 5px 0;
     border: 1px solid #c3c5cf;
     color: #3e3f65;
@@ -135,16 +145,18 @@ export default {
   }
 }
 .collect-list {
-  display: flex;
-  flex-wrap: wrap;
   width: 100%;
   height: 100%;
-  align-content: flex-start;
+  .el-col {
+    padding: 10px;
+  }
   .collect-item {
-    width: 250px;
+    width: 100%;
     height: 122px;
-    border: 1px solid #ddd;
-    margin: 15px 7px 0 8px;
+    // border: 1px solid #ddd;
+    box-shadow: 0 2px 12px #0000001a;
+    border: 1px solid #e9ecef;
+    // margin: 15px 7px 0 8px;
     border-radius: 6px;
     cursor: pointer;
     .collect-title {
@@ -171,11 +183,12 @@ export default {
         height: 100%;
         font-size: 16px;
         color: #3273dc;
-        font-weight: bold;
+        font-weight: bolder;
         line-height: 40px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        margin-left: 5px;
       }
     }
     .collect-remark {
