@@ -108,8 +108,8 @@
         <el-table-column v-if="show[3].value" label="类型" prop="extension" width="100" align="center">
           <template v-slot="{ row }">{{ (row.extension === '' || row.type === 'folder') ? '文件夹' : row.extension }}</template>
         </el-table-column>
-        <el-table-column v-if="show[4].value" label="创建时间" prop="ctime" width="160" align="center"/>
-        <el-table-column v-if="show[5].value" label="修改时间" prop="mtime" width="160" align="center"/>
+        <el-table-column v-if="show[4].value" label="创建时间" prop="mtime" width="160" align="center"/>
+        <el-table-column v-if="show[5].value" label="修改时间" prop="ctime" width="160" align="center"/>
         <el-table-column prop="download" label="下载"  width="80" align="center">
           <template v-slot="{ row }">
             <el-button
@@ -229,14 +229,23 @@ export default {
       }).then(res => {
         const { data } = res.data
         this.list.data = [
-          ...data.filter(item => item.type === 'folder'),
-          ...data.filter(item => item.type === 'file')
+          ...data.filter(item => item.type === 'folder').sort((a, b) => {
+            const aTime = new Date(a.ctime).getTime()
+            const bTime = new Date(b.ctime).getTime()
+            return bTime - aTime
+          }),
+          ...data.filter(item => item.type === 'file').sort((a, b) => {
+            const aTime = new Date(a.ctime).getTime()
+            const bTime = new Date(b.ctime).getTime()
+            return bTime - aTime
+          })
         ]
         this.list.data.forEach(item => this.$set(item, 'editable', false))
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
         this.list.loading = false
+        new Date().getTime()
       })
     },
     // 选择回调
