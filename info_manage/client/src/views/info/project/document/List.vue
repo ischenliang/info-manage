@@ -235,6 +235,12 @@ export default {
           line-height: 30px;
           font-size: 16px;
           color: #40485B;
+          display: none;
+        }
+        &:hover {
+          .document-item-delete {
+            display: block;
+          }
         }
       }
     }
