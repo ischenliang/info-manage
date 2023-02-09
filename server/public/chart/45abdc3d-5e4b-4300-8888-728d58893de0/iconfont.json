@@ -1,0 +1,58 @@
+{
+  "id": "2510010",
+  "name": "datax",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1996275",
+      "name": "文本",
+      "font_class": "currency",
+      "unicode": "e6d3",
+      "unicode_decimal": 59091
+    },
+    {
+      "icon_id": "13519481",
+      "name": "s-cooperation",
+      "font_class": "schema",
+      "unicode": "e669",
+      "unicode_decimal": 58985
+    },
+    {
+      "icon_id": "1305472",
+      "name": "任务",
+      "font_class": "renwu",
+      "unicode": "e63f",
+      "unicode_decimal": 58943
+    },
+    {
+      "icon_id": "6193798",
+      "name": "流程",
+      "font_class": "directory",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
+      "icon_id": "7155220",
+      "name": "用户",
+      "font_class": "yonghu",
+      "unicode": "e650",
+      "unicode_decimal": 58960
+    },
+    {
+      "icon_id": "20080464",
+      "name": "资源目录管理",
+      "font_class": "resource",
+      "unicode": "e865",
+      "unicode_decimal": 59493
+    },
+    {
+      "icon_id": "20784222",
+      "name": "快进",
+      "font_class": "steps",
+      "unicode": "e6be",
+      "unicode_decimal": 59070
+    }
+  ]
+}

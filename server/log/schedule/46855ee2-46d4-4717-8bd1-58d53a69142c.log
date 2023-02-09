@@ -1,0 +1,3 @@
+[2021-03-23 10:13:10] [TRACE] tasklog.notification - 启动任务
+[2021-03-23 10:14:05] [INFO] tasklog.notification - 任务：上班打卡通知执行成功
+[2021-03-23 10:14:13] [TRACE] tasklog.cancel - 取消任务

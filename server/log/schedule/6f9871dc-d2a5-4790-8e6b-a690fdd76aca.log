@@ -1,0 +1,15 @@
+[2021-03-24 11:16:37] [TRACE] tasklog.notification - 启动任务
+[2021-03-24 11:16:41] [TRACE] tasklog.cancel - 取消任务
+[2021-04-27 21:49:54] [TRACE] tasklog.notification - 启动任务
+[2021-04-27 21:50:03] [INFO] tasklog.notification - 任务：上班打卡通知执行成功
+[2021-04-27 21:50:51] [TRACE] tasklog.cancel - 取消任务
+[2021-04-27 21:51:45] [TRACE] tasklog.cancel - 取消任务
+[2021-04-27 21:51:48] [TRACE] tasklog.notification - 启动任务
+[2021-04-27 21:52:03] [INFO] tasklog.notification - 任务：上班打卡通知执行成功
+[2021-04-27 21:52:57] [TRACE] tasklog.cancel - 取消任务
+[2021-04-27 21:53:01] [TRACE] tasklog.notification - 启动任务
+[2021-04-27 21:53:03] [INFO] tasklog.notification - 任务：下班班打卡通知执行成功
+[2021-04-27 21:53:06] [INFO] tasklog.notification - 任务：下班班打卡通知执行成功
+[2021-04-27 21:53:09] [INFO] tasklog.notification - 任务：下班班打卡通知执行成功
+[2021-04-27 21:53:12] [INFO] tasklog.notification - 任务：下班班打卡通知执行成功
+[2021-04-27 21:53:12] [TRACE] tasklog.cancel - 取消任务

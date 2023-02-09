@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./iconfont.css">
+  <style>
+    html,body,.container{
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .left {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background: #40c9c6;
+      margin: 0 14px;
+      border-radius: 8px;
+    }
+    .left .iconfont {
+      font-size: 40px;
+      color: #fff;
+      font-weight: bold;
+    }
+    .right {
+      min-width: 80px;
+      height: 80px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin: 0 14px;
+    }
+    .line {
+      font-weight: bold;
+    }
+    .line-title {
+      line-height: 18px;
+      color: rgba(0,0,0,.45);
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    .line-count {
+      color: #666;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .line:last-child{
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      <span class="iconfont icon-renwu" id="icon"></span>
+    </div>
+    <div class="right">
+    </div>
+  </div>
+  <script src="./jquery.js"></script>
+  <script src="./jquery.waypoints.min.js"></script>
+  <script src="./jquery.countup.min.js"></script>
+  <script>
+    // 处理参数的
+    $.par2Json = function (string, overwrite) {
+      var obj = {}, pairs = string.split('&'), d = decodeURIComponent, name, value
+      $.each(pairs, function (i, pair) {
+        pair = pair.split('=')
+        name = d(pair[0])
+        value = d(pair[1])
+        obj[name] = value
+      })
+      return obj
+    }
+    var data = $.par2Json(location.href.split('?').pop())
+    if (data && data.type && data.baseUrl) {
+      $(".left").css("background", data.color ? data.color : '#40c9c6')
+      switch (data.type) {
+        case 'schema':
+          $("#icon").attr('class', 'iconfont icon-schema')
+          $('.right').append(`
+            <div class="line">
+              <div class="line-title">方案</div>
+              <div class="line-count counter">1500</div>
+            </div>
+          `)
+          $('.counter').countUp()
+          // $.ajax({
+          //   url: `${data.baseUrl}schema/getSchemas?offset=0&limit=10&token=${data.token}`,
+          //   type: 'get',
+          //   dataType: 'json',
+          //   success: function (data) {
+          //     $('.right').append(`
+          //       <div class="line">
+          //         <div class="line-title">方案</div>
+          //         <div class="line-count counter">${data.count}</div>
+          //       </div>
+          //     `)
+          //     $('.counter').countUp()
+          //   },
+          //   error: function (error) {
+          //     console.log(error)
+          //   }
+          // })
+          break
+        default:
+          $("#icon").attr('class', 'iconfont icon-currency')
+          $('.right').append(`
+            <div class="line">
+              <div class="line-title">占位名称</div>
+              <div class="line-count counter">0</div>
+            </div>
+          `)
+          $('.counter').countUp()
+          break
+      }
+    }
+  </script>
+</body>
+</html>
