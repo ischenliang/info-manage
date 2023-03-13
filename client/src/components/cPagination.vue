@@ -6,7 +6,7 @@
       :current-page="page"
       :total="total"
       :page-size="size"
-      :page-sizes="[10, 20, 50, 100]"
+      :page-sizes="sizes"
       :pager-count="pager"
       :hide-on-single-page="singleHide"
       @current-change="listPageChange"
@@ -26,6 +26,12 @@ export default {
     size: { // 每页显示数量
       type: Number,
       default: 10
+    },
+    sizes: {
+      type: Array,
+      default:  () => {
+        return [10, 20, 50, 100]
+      }
     },
     total: { // 总数量
       type: Number,

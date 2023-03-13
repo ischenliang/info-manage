@@ -5,90 +5,46 @@
       <c-flex-auto />
       <el-button
         type="primary"
-        size="medium"
+        size="small"
         v-perms="'system:password:add'"
         @click="visible = true">
         新增
       </el-button>
       <el-button
         type="danger"
-        size="medium"
+        size="small"
         v-perms="'system:password:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">
         删除
       </el-button>
-      <cDropdown :show.sync="show" />
     </div>
-    <div class="table">
-      <el-table
-        style="width: 100%;"
-        height="100%"
-        stripe
-        ref="table"
-        border
-        size="medium"
-        v-loading="list.loading"
-        @sort-change="sortChange"
-        @selection-change="selectChange"
-        :data="list.data">
-        <el-table-column type="selection" width="60" align="center"/>
-        <el-table-column v-if="show[0].value" label="名称" prop="name" min-width="100" align="center" sortable="custom"  :show-overflow-tooltip="true"/>
-        <el-table-column v-if="show[1].value" label="网址" prop="url" min-width="150" align="center" sortable="custom"  :show-overflow-tooltip="true">
-          <template v-slot="{ row }">{{ row.url ? row.url : '-' }}</template>
-        </el-table-column>
-        <el-table-column v-if="show[2].value" label="类别" prop="type" min-width="80" align="center" sortable="custom"  :show-overflow-tooltip="true">
-          <template v-slot="{ row }">
-            <el-tag type="success" size="mini">{{ row.type === 1 ? '网站' : '软件' }}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column v-if="show[3].value" label="账号" prop="account" min-width="150" align="center" sortable="custom"  :show-overflow-tooltip="true">
-          <template v-slot="{ row }">
-            {{row.account}}
-            <c-toggle-copy
-              :copy.sync="row.accountCopy"
-              :text="row.account"
-              :key="row.id + 'copy' + '-account'" />
-          </template>
-        </el-table-column>
-        <el-table-column v-if="show[4].value" label="密码" prop="password" min-width="220" align="center" sortable="custom" :show-overflow-tooltip="true">
-          <template v-slot="{ row }">
-            {{ row.password | passwordFormat(row.look) }}
-            <c-toggle-look :look.sync="row.look" :key="row.id + 'look'" />
-            <c-toggle-copy
-              :copy.sync="row.passwordCopy"
-              :text="row.password"
-              style="margin-left: 5px;"
-              :key="row.id + 'copy'" />
-          </template>
-        </el-table-column>
-        <el-table-column v-if="show[5].value" label="备注" prop="remark" min-width="150" align="center" sortable="custom" />
-        <el-table-column v-if="show[6].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom" />
-        <el-table-column v-if="show[7].value" label="修改时间" prop="mtime" min-width="160" align="center" sortable="custom" />
-        <el-table-column label="操作" width="160" align="center">
-          <template v-slot="{ row }">
-            <el-button
-              type="primary"
-              size="mini"
-              icon="el-icon-edit"
-              title="编辑"
+    <div class="table" v-loading="list.loading">
+      <el-row>
+        <el-col
+          v-for="(item, index) in list.data"
+          :xl="6"
+          :lg="8"
+          :md="12"
+          :key="item.id">
+          <password-item :item="item">
+            <div
+              class="password-action-item"
               v-perms="'system:password:update'"
-              @click="itemEdit(row)" />
-            <el-button
-              type="danger"
-              size="mini"
-              icon="el-icon-delete"
-              title="删除"
+              @click="itemEdit(item)">编辑</div>
+            <div
+              class="password-action-item"
               v-perms="'system:password:delete'"
-              @click="itemDelete(row)" />
-          </template>
-        </el-table-column>
-      </el-table>
+              @click="itemDelete(item)">删除</div>
+          </password-item>
+        </el-col>
+      </el-row>
     </div>
     <cPagination
       :total="list.total"
       :page.sync="list.page"
       :size.sync="list.size"
+      :sizes="[12, 24, 36, 100]"
       @change="listGet" />
     <com-dialog v-if="visible" :visible.sync="visible" @submit="listGet" :id.sync="id" />
   </div>
@@ -96,26 +52,18 @@
 
 <script>
 import ComDialog from './Dialog'
+import PasswordItem from './password-item.vue'
 export default {
   name: 'PasswordList',
   components: {
-    ComDialog
+    ComDialog,
+    PasswordItem
   },
   data () {
     return {
-      show: [
-        { label: '名称', disabled: true, value: true },
-        { label: '网址', disabled: true, value: true },
-        { label: '类别', disabled: true, value: true },
-        { label: '账号', disabled: true, value: true },
-        { label: '密码', disabled: false, value: true },
-        { label: '备注', disabled: false, value: false },
-        { label: '创建时间', disabled: false, value: false },
-        { label: '修改时间', disabled: false, value: true }
-      ],
       list: {
         page: 1,
-        size: 10,
+        size: 12,
         total: 0,
         loading: false,
         filters: {
@@ -138,14 +86,6 @@ export default {
       }
     }
   },
-  filters: {
-    passwordFormat (password, look) {
-      if (look) {
-        return password
-      }
-      return password.replace(/[A-Za-z0-9-_@#*\\$!^&*\\(\\)+=;'"\\.,`~]/g, '*')
-    }
-  },
   methods: {
     // 获取数据
     listGet () {
@@ -163,11 +103,6 @@ export default {
       }).then(res => {
         this.list.total = res.data.data.total
         this.list.data = res.data.data.data
-        this.list.data.forEach(item => {
-          this.$set(item, 'look', false)
-          this.$set(item, 'accountCopy', false)
-          this.$set(item, 'passwordCopy', false)
-        })
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
@@ -234,21 +169,20 @@ export default {
   },
   created () {
     this.listGet()
-  },
-  // 解决：el-table抖动问题
-  beforeUpdate () {
-    this.$nextTick(() => {
-      // 在数据加载完，重新渲染表格
-      this.$refs.table.doLayout()
-    })
   }
 }
 </script>
 
 <style lang="scss">
 .el-table {
-    .cell {
-      word-break: normal;
-    }
+  .cell {
+    word-break: normal;
   }
+}
+.el-row {
+  padding: 10px 5px;
+  .el-col {
+    padding: 10px 12px 12px;
+  }
+}
 </style>

@@ -11,7 +11,7 @@
       <div class="image-list">
         <div class="image-item" v-for="(item, index) in list.data" :key="index" :title="item.name">
           <el-image
-            :src="item.path"
+            :src="addPrefix(item.path)"
             :preview-src-list="list.srcList"
             lazy>
             <div slot="error" class="image-slot">
@@ -74,7 +74,9 @@ export default {
       }).then(res => {
         this.list.data = res.data.data.data
         this.list.total = res.data.data.total
-        this.list.srcList = res.data.data.data.map(item => item.path)
+        this.list.srcList = res.data.data.data.map(item => {
+          return this.addPrefix(item.path)
+        })
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
@@ -115,6 +117,10 @@ export default {
           this.listGet()
         })
       }).catch(() => {})
+    },
+    // 添加前缀
+    addPrefix (url) {
+      return window.g.ip + url.replace(/\\/g, '/')
     }
   },
   created () {

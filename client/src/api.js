@@ -1,7 +1,8 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 // 这样做的方法是为了如果有多个后台
-const baseURL = ['http://124.222.54.192:3000/api', 'http://data.zz.baidu.com']
+// 124.222.54.192
+const baseURL = ['http://127.0.0.1:3000/api', 'http://data.zz.baidu.com']
 const http = axios.create()
 
 // 定义所有的请求

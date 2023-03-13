@@ -30,14 +30,20 @@ app.use(async (ctx, next) => {
     if (notauth.includes(ctx.request.url.split('?')[0])) {
       await next()
     } else {
-      if (ctx.request.headers.authorization === undefined) {
-        ctx.throw(401, resConfig['401'])
+      const url = ctx.req.url
+      if (url.indexOf('/api') === -1) {
+        ctx.status = 200
+        ctx.type = 'image/png'
       } else {
-        try {
-          ctx.uid = token.verify(ctx.request.headers.authorization, appConfig.secret).data
-          await next()
-        } catch (error) {
-          ctx.throw(401, error)
+        if (ctx.request.headers.authorization === undefined) {
+          ctx.throw(401, resConfig['401'])
+        } else {
+          try {
+            ctx.uid = token.verify(ctx.request.headers.authorization, appConfig.secret).data
+            await next()
+          } catch (error) {
+            ctx.throw(401, error)
+          }
         }
       }
     }

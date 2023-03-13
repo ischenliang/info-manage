@@ -179,8 +179,8 @@ export default {
 
 <style lang="scss">
 .project-list {
-  display: flex;
-  flex-wrap: wrap;
+  width: 100%;
+  min-height: 100%;
   .el-col {
     padding: 0 5px 10px;
   }

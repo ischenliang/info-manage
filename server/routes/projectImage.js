@@ -81,7 +81,7 @@ router.get('/list', async(ctx, next) => {
       data: await list(ctx.query, ctx.uid)
     }
   } catch (error) {
-    ctx.throw(error.status, error)
+    console.log(error)
   }
 })
 

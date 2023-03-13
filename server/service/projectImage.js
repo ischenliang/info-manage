@@ -81,7 +81,7 @@ async function detail (id) {
         id
       }
     })
-    res.path = 'data:image/png;base64,' + fse.readFileSync(path.join(__dirname, '../', res.path), 'base64')
+    // res.path = 'data:image/png;base64,' + fse.readFileSync(path.join(__dirname, '../', res.path), 'base64')
     return res
   } catch (error) {
     throw error
@@ -109,9 +109,9 @@ async function list (query) {
       ],
       raw: true
     })
-    rows.forEach(item => {
-      item.path = 'data:image/png;base64,' + fse.readFileSync(path.join(__dirname, '../', item.path), 'base64')
-    })
+    // rows.forEach(item => {
+    //   item.path = 'data:image/png;base64,' + fse.readFileSync(path.join(__dirname, '../', item.path), 'base64')
+    // })
     return {
       total: count,
       data: rows
