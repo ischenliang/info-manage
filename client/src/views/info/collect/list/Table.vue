@@ -49,16 +49,6 @@
             <a :href="scope.row.url" target="_blank" style="color: blue;">{{ scope.row.name }}</a>
           </template>
         </el-table-column>
-        <!-- <el-table-column v-if="show[1].value" label="地址" prop="url" min-width="150" align="center" sortable="custom">
-          <template slot-scope="scope">
-            <el-link
-              :type="setLink(scope.row, scope.$index).type"
-              :href="setLink(scope.row, scope.$index).url"
-              target="_blank">
-              {{ setLink(scope.row, scope.$index).url }}
-            </el-link>
-          </template>
-        </el-table-column> -->
         <el-table-column v-if="show[2].value" label="图标" prop="logo" min-width="100" align="center" sortable="custom">
           <template v-slot="{ row }">
             <img :src="row.logo" alt="">
@@ -67,19 +57,7 @@
         <el-table-column v-if="show[3].value" label="类别" prop="collect_type" min-width="150" align="center" sortable="custom">
           <template v-slot="{ row }">{{ row.collect_type.name }}</template>
         </el-table-column>
-        <!-- <el-table-column v-if="show[4].value" label="仓库" prop="repository" min-width="150" align="center" sortable="custom">
-          <template slot-scope="scope">
-            <el-link
-              v-if="scope.row.repository"
-              :type="setLink(scope.row, scope.$index).type"
-              :href="setLink(scope.row, scope.$index).repository"
-              target="_blank">
-              {{ setLink(scope.row, scope.$index).repository }}
-            </el-link>
-            <template v-else>-</template>
-          </template>
-        </el-table-column> -->
-        <!-- <el-table-column v-if="show[5].value" label="标签" prop="tag" min-width="100" align="center" sortable="custom"/> -->
+        <el-table-column v-if="show[5].value" label="标签" prop="tag" min-width="100" align="center" sortable="custom"/>
         <el-table-column v-if="show[6].value" label="备注" prop="remark" min-width="200" align="center" sortable="custom"/>
         <el-table-column v-if="show[7].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom"/>
         <el-table-column v-if="show[8].value" label="更新时间" prop="mtime" min-width="160" align="center" sortable="custom"/>

@@ -1,13 +1,10 @@
 <template>
-  <div class="app-page" style="padding: 12px 15px 12px 15px;">
-    <div class="toolbar">
-      <el-page-header
-        @back="$router.push({ path: '/info/memory/list' })"
-        :content="'备忘录详情'" />
-      <c-flex-auto />
-    </div>
+  <div class="app-page" style="padding: 0px;">
     <div class="table memory">
       <div class="memory-header">
+          <div class="left-top">
+            <el-button type="primary" icon="el-icon-back" size="mini" @click="$router.push({ path: '/info/memory/list' })">返回</el-button>
+          </div>
         <div class="memory-title">{{ memory.name }}</div>
         <div class="memory-meta">
           <div class="memory-line">
@@ -18,32 +15,16 @@
           <div class="memory-line">
             标签：
             <template v-for="(item, index) in memory.tag">
-              <span :key="index">
-                <span>{{ item }}</span>
-                <span v-if="index < memory.tag.length - 1" class="memory-separator">|</span>
-              </span>
+              <el-tag :key="index" size="mini" type="success">{{ item }}</el-tag>
             </template>
           </div>
           <div class="memory-line">
-            重要性：<el-rate v-model="memory.priority" disabled show-score text-color="#ff9900" score-template="{value}" />
+            排序值：{{ memory.priority }}
           </div>
         </div>
       </div>
       <div class="memory-content markdown-body">
         <article v-html="setContent()"></article>
-      </div>
-      <div class="memory-footer">
-        <article>
-          <div class="memory-line">
-            <el-tag
-              v-for="(item, index) in memory.tag"
-              :key="index"
-              size="small"
-              effect="plain">{{ item }}</el-tag>
-          </div>
-          <div class="memory-line"><span>备忘录作者</span>: {{ memory.uid }}</div>
-          <div class="memory-line"><span>版权</span>: {{ `©${ $moment().format('YYYY') } by 作者` }}</div>
-        </article>
       </div>
     </div>
     <c-back-up :container="'table'" :top="200" />
@@ -98,12 +79,16 @@ export default {
 <style lang="scss">
 .memory {
   background: #f0f2f5 !important;
+  padding: 1px !important;
+  display: flex;
+  flex-direction: column;
   &::-webkit-scrollbar {
     display: none;
   }
   .memory-header {
-    background-image: url('https://cdn.jsdelivr.net/gh/helinghands/cdn/img/default_top13.jpg');
-    min-height: 150px;
+    flex-shrink: 0;
+    background-image: url('./images/banner.jpg');
+    min-height: 200px;
     width: 100%;
     background-repeat: no-repeat;
     padding: 10px 50px;
@@ -111,6 +96,12 @@ export default {
     flex-direction: column;
     justify-content: flex-end;
     overflow: hidden;
+    position: relative;
+    .left-top {
+      position: absolute;
+      top: 10px;
+      left: 20px;
+    }
     .memory-title{
       font-size: 22px;
       margin-bottom: 0.4rem;
@@ -128,42 +119,23 @@ export default {
         font-size: 14px;
         display: flex;
         flex-wrap: wrap;
-        .memory-separator{
-          margin: 0 0.25rem;
+        .el-tag {
+          margin-left: 5px;
         }
       }
     }
   }
   .memory-content{
     padding: 20px;
+    flex: 1;
+    overflow: auto;
     article {
       width: 100%;
+      min-height: 100%;
       border-radius: 8px;
       padding: 20px 30px;
       min-height: 400px;
       background-color: #fff;
-    }
-  }
-  .memory-footer{
-    padding: 0 20px;
-    article {
-      position: relative;
-      margin: 10px 0 0.5rem;
-      padding: 0.5rem 0.8rem;
-      border: 1px solid #ccc;
-      transition: box-shadow 0.3s ease-in-out;
-      .memory-line{
-        min-height: 28px;
-        font-size: 14px;
-        color: #4c4948;
-        .el-tag {
-          margin-right: 10px;
-          border-radius: 10px;
-          &:last-child{
-            margin-right: 0;
-          }
-        }
-      }
     }
   }
 }

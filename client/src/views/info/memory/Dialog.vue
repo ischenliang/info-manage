@@ -21,15 +21,9 @@
           <el-form-item label="名称" prop="name">
             <el-input v-model="form.name"/>
           </el-form-item>
-          <el-form-item label="重要性" prop="priority">
-            <div class="c-input">
-              <el-rate
-                v-model="form.priority"
-                show-text
-                allow-half
-                text-color="#ff9900"
-                :texts="['不重要', '一般', '重要', '非常重要', '超级重要']" />
-            </div>
+          <el-form-item label="排序值" prop="priority">
+            <el-input-number v-model="form.priority" :precision="2" :min="0"></el-input-number>
+            <span style="margin-left: 5px;color: #8c8c8c;">值越小越靠前</span>
           </el-form-item>
         </div>
         <el-form-item label="标签" prop="tag" class="form-item-tags">

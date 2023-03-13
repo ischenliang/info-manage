@@ -39,6 +39,7 @@ export default {
   }
   .el-tabs__content{
     flex: 1 1 auto;
+    padding: 0px !important;
     .el-tab-pane{
       width: 100%;
       height: 100%;

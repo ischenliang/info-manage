@@ -22,11 +22,8 @@
       <el-form-item label="logo地址" prop="repository">
         <el-input v-model="form.repository" placeholder="请输入logo地址"></el-input>
       </el-form-item>
-      <el-form-item label="图标" prop="logo">
-        <el-input v-model="form.logo" placeholder="请输入内容">
-          <template slot="prepend">{{ prefix }}</template>
-          <template slot="append">{{ '?' + suffix }}</template>
-        </el-input>
+      <el-form-item label="排序值" prop="logo">
+        <el-input-number v-model="form.logo" :precision="2" :min="0"></el-input-number>
       </el-form-item>
       <el-form-item label="标签" prop="tag" class="form-item-tags">
         <c-tags-input
@@ -52,6 +49,10 @@ export default {
   props: {
     visible: Boolean,
     id: {
+      type: String,
+      default: ''
+    },
+    tid: {
       type: String,
       default: ''
     }
@@ -88,7 +89,7 @@ export default {
     addSubmit () {
       const data = JSON.parse(JSON.stringify(this.form))
       data.tag = data.tag.join(',')
-      data.logo = this.prefix + data.logo + '?' + this.suffix
+      data.logo = data.logo.toString()
       this.$http({
         name: 'AddCollect',
         requireAuth: true,
@@ -107,7 +108,7 @@ export default {
     editSubmit () {
       const data = JSON.parse(JSON.stringify(this.form))
       data.tag = data.tag.join(',')
-      data.logo = this.prefix + data.logo + '?' + this.suffix
+      data.logo = data.logo.toString()
       this.$http({
         name: 'UpdateCollect',
         requireAuth: true,
@@ -143,8 +144,9 @@ export default {
         requireAuth: true,
         paths: [this.id]
       }).then(res => {
-        res.data.data.logo = res.data.data.logo.replace(new RegExp(this.prefix), '')
-        res.data.data.logo = res.data.data.logo.replace(new RegExp('\\?' + this.suffix), '')
+        // res.data.data.logo = res.data.data.logo.replace(new RegExp(this.prefix), '')
+        // res.data.data.logo = res.data.data.logo.replace(new RegExp('\\?' + this.suffix), '')
+        res.data.data.logo = parseFloat(res.data.data.logo)
         res.data.data.tag = res.data.data.tag.split(',')
         this.form = res.data.data
       }).catch(error => {
@@ -155,6 +157,9 @@ export default {
   created () {
     if (this.id !== '') {
       this.listGet()
+    }
+    if (this.tid) {
+      this.form.tid = this.tid
     }
     this.$http({
       name: 'GetCollectTypes',

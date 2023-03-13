@@ -94,6 +94,7 @@ async function list (query, uid) {
         uid
       },
       order: [
+        ['priority', 'asc'],
         [query.sort ? query.sort : 'mtime', query.order ? query.order : 'desc']
       ],
       limit: limit,

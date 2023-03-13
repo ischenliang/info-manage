@@ -80,7 +80,7 @@ async function detail (id, uid) {
 async function list (query, uid) {
   try {
     const limit = query.size ? parseInt(query.size) : 10
-    const { count, rows } = await Collect.findAndCountAll({
+    const params = {
       where: {
         [Op.or]: [
           { name:  { [Op.like]: query.search ? `%${query.search}%` :　'%%' } },
@@ -93,8 +93,6 @@ async function list (query, uid) {
       order: [
         [query.sort ? query.sort : 'ctime', query.order ? query.order : 'desc']
       ],
-      limit: limit,
-      offset: query.page ? (parseInt(query.page) - 1) * limit : 0,
       include: [{
         model: CollectType,
         attributes: ['name'],
@@ -103,7 +101,15 @@ async function list (query, uid) {
           name: { [Op.like]: query.type ? `%${query.type}%` : '%%' }
         }
       }]
-    })
+    }
+    if (query.tid) {
+      params.where.tid = query.tid
+    }
+    if (query.page) {
+      params. limit = limit
+      params.offset = query.page ? (parseInt(query.page) - 1) * limit : 0
+    }
+    const { count, rows } = await Collect.findAndCountAll(params)
     return {
       total: count,
       data: rows

@@ -1,6 +1,6 @@
 <template>
   <div class="app-page" style="padding: 0;">
-    <div class="table center" style="padding: 10px;">
+    <div class="table center v-scrollbar">
       <grid-layout
         :layout="layout.layout"
         :col-num="layout.colNum"
@@ -98,24 +98,16 @@ export default {
 .app-page {
   .center {
     flex: 1 1 auto;
-    height: 100%;
+    // height: 100%;
+    padding: 0px !important;
     background-color: #f0f2f5 !important;
-    overflow: auto;
     position: relative;
     .vue-grid-layout {
-      height: 100% !important;
-      overflow: hidden auto;
+      min-height: 100% !important;
       flex-shrink: 0;
-      &::-webkit-scrollbar {
-        display: none;
-      }
       .vue-grid-item{
         background: #fff;
         box-shadow: 4px 4px 40px rgb(0 0 0 / 5%);
-        // div,iframe {
-        //   width: 100%;
-        //   height: 100%;
-        // }
       }
     }
   }

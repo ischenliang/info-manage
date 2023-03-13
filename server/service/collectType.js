@@ -102,7 +102,14 @@ async function list (query, uid) {
         [query.sort ? query.sort : 'ctime', query.order ? query.order : 'desc']
       ],
       limit: limit,
-      offset: query.page ? (parseInt(query.page) - 1) * limit : 0
+      offset: query.page ? (parseInt(query.page) - 1) * limit : 0,
+      distinct:true,
+      include: [
+        {
+          model: Collect,
+          attributes: ['id']
+        }
+      ]
     })
     return {
       total: count,

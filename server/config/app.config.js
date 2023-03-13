@@ -8,6 +8,6 @@ module.exports = {
     dialect: 'mysql',
     database: 'info',
     user: 'root',
-    password: '100259b'
+    password: 'xxxxxx'
   }
 }
