@@ -1,5 +1,5 @@
 <template>
-  <div class="app-page">
+  <div class="app-page special">
     <div class="toolbar">
       <el-input v-model="list.filters.search" placeholder="请输入内容" suffix-icon="el-icon-search" @input="listGet"/>
       <c-flex-auto />

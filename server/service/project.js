@@ -120,8 +120,8 @@ async function list (query, uid) {
       order: [
         [query.sort ? query.sort : 'mtime', query.order ? query.order : 'desc']
       ],
-      limit: limit,
-      offset: query.page ? (parseInt(query.page) - 1) * limit : 0,
+      // limit: limit,
+      // offset: query.page ? (parseInt(query.page) - 1) * limit : 0,
       // include: [
       //   {
       //     model: ProjectImage,

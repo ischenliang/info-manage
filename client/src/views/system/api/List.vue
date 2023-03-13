@@ -1,5 +1,5 @@
 <template>
-  <div class="app-page">
+  <div class="app-page" style="padding: 10px;">
     <el-tabs v-model="active" type="border-card" class="info-tabs">
       <el-tab-pane label="接口列表" name="first">
         <api v-if="active === 'first'" />

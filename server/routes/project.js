@@ -25,7 +25,7 @@ router.post('/add', async(ctx, next) => {
   }
 })
 
-// 删除
+// 删除: 海英删除对应的数据，如项目文档、项目图集、项目任务、项目代码
 router.delete('/deleteById/:id', async(ctx, next) => {
   try {
     ctx.status = 200
