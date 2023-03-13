@@ -4,7 +4,7 @@ import CUI from '@/components/index'
 import VueQuillEditor from 'vue-quill-editor'
 import mavonEditor from 'mavon-editor'
 
-import 'quill/dist/quill.core.css'
+import 'vue-quill-editor/dist/'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 import 'mavon-editor/dist/css/index.css'
