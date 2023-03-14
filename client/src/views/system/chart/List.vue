@@ -5,14 +5,15 @@
       <c-flex-auto />
       <el-button
         type="primary"
-        size="medium"
-        v-perms="'system:user:add'"
+        size="small"
+        v-perms="'system:chart:add'"
         @click="visible = true">
         新增
       </el-button>
       <el-button
         type="danger"
-        size="medium"
+        size="small"
+        v-perms="'system:chart:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">
         删除
@@ -42,14 +43,23 @@
             <el-button
               type="primary"
               size="mini"
+              icon="el-icon-view"
+              title="查看"
+              v-perms="'system:chart:detail'"
+              @click="itemEdit(row)" />
+            <el-button
+              type="primary"
+              size="mini"
               icon="el-icon-edit"
               title="编辑"
+              v-perms="'system:chart:update'"
               @click="itemEdit(row)" />
             <el-button
               type="danger"
               size="mini"
               icon="el-icon-delete"
               title="删除"
+              v-perms="'system:chart:delete'"
               @click="itemDelete(row)" />
           </template>
         </el-table-column>

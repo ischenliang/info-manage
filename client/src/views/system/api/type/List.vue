@@ -9,7 +9,7 @@
       <div style="flex: auto;"></div>
       <el-button
         type="primary"
-        size="medium"
+        size="small"
         v-perms="'system:apitype:add'"
         @click="visible = true">
         新增
@@ -17,7 +17,7 @@
       <c-json-excel :name="'GetApiTypes'" :fields="$fields.apitype" :filename="'api_type'" style="margin: 0 10px;" />
       <el-button
         type="danger"
-        size="medium"
+        size="small"
         v-perms="'system:apitype:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">

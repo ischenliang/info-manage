@@ -19,14 +19,14 @@
       <c-flex-auto />
       <el-button
         type="primary"
-        size="medium"
+        size="small"
         v-perms="'system:memory:add'"
         @click="$router.push({ path: '/info/memory/add' })">
         新增
       </el-button>
       <el-button
         type="danger"
-        size="medium"
+        size="small"
         v-perms="'system:memory:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">

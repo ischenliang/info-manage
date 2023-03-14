@@ -97,7 +97,7 @@ const time = computed(() => {
   }
   &-action {
     flex-shrink: 0;
-    width: 140px;
+    width: 150px;
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;

@@ -20,13 +20,13 @@
       <div style="margin-top: 10px;">
         <el-button
           type="primary"
-          size="medium"
+          size="small"
           v-perms="'system:resource:upload'"
           :loading="loading"
           @click="upload">
           上传
         </el-button>
-        <el-button type="danger" icon="el-icon-error" size="medium" @click="cancel">取消</el-button>
+        <el-button type="danger" icon="el-icon-error" size="small" @click="cancel">取消</el-button>
       </div>
     </div>
     <div :class="'table ' + tableClass" style="align-items: center;display: flex;flex-direction: column;background: #f5f7f9;" v-if="type === 'folder'">
@@ -45,8 +45,8 @@
         </li>
       </ul>
       <div style="margin-top: 10px;">
-        <el-button type="primary" icon="el-icon-upload" size="medium" :disabled="disabled" @click="upload" :loading="loading">上传</el-button>
-        <el-button type="danger" icon="el-icon-error" size="medium" @click="cancel">取消</el-button>
+        <el-button type="primary" icon="el-icon-upload" size="small" :disabled="disabled" @click="upload" :loading="loading">上传</el-button>
+        <el-button type="danger" icon="el-icon-error" size="small" @click="cancel">取消</el-button>
       </div>
     </div>
   </div>

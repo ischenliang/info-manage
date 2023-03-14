@@ -7,7 +7,7 @@
       <c-flex-auto />
       <el-button
         type="danger"
-        size="medium"
+        size="small"
         @click="$router.push({ path: '/monitor/job/list' })">取消</el-button>
     </div>
     <div class="table">

@@ -9,15 +9,15 @@
       <div style="flex: auto;"></div>
       <el-button
         type="primary"
-        size="medium"
+        size="small"
         v-perms="'system:menu:add'"
         @click="visible = true">
         新增
       </el-button>
-      <el-button type="warning" size="medium">导出</el-button>
+      <el-button type="warning" size="small">导出</el-button>
       <el-button
         type="danger"
-        size="medium"
+        size="small"
         v-perms="'system:menu:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">

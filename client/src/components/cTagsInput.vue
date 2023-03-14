@@ -4,7 +4,7 @@
       v-for="(item, index) in list"
       :key="index"
       closable
-      size="medium"
+      size="small"
       :disable-transitions="false"
       :type="type"
       :effect="theme"

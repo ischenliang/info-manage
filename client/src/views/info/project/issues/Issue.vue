@@ -63,10 +63,10 @@
           </el-form>
         </div>
         <div class="pagination" style="justify-content: flex-start;">
-          <el-button v-if="this.id" type="danger" size="medium" @click="itemDelete">删除</el-button>
+          <el-button v-if="this.id" type="danger" size="small" @click="itemDelete">删除</el-button>
           <c-flex-auto />
-          <el-button type="primary" size="medium" @click="submit" :loading="loading">保存</el-button>
-          <el-button type="danger" size="medium" @click="cancle">取消</el-button>
+          <el-button type="primary" size="small" @click="submit" :loading="loading">保存</el-button>
+          <el-button type="danger" size="small" @click="cancle">取消</el-button>
         </div>
       </div>
   </el-drawer>

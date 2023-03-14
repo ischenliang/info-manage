@@ -77,7 +77,12 @@ app.use(async (ctx, next) => {
     if (index !== -1) {
       await next()
     } else {
-      ctx.throw(401, resConfig['401'])
+      // ctx.throw(401, resConfig['401'])
+      ctx.body = {
+        code: 401,
+        data: resConfig['401'],
+        msg: resConfig['401']
+      }
     }
   }
 })

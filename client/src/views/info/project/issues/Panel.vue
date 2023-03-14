@@ -3,8 +3,8 @@
     <div class="toolbar">
       <el-input v-model="list.filters.search" @input="listGet" placeholder="请输入内容" suffix-icon="el-icon-search" />
       <c-flex-auto />
-      <el-button type="primary" size="medium" @click="drawer = true;id = ''">新建任务</el-button>
-      <el-button type="info" @click="toggle" size="medium">列表模式</el-button>
+      <el-button type="primary" size="small" @click="drawer = true;id = ''">新建任务</el-button>
+      <el-button type="info" @click="toggle" size="small">列表模式</el-button>
     </div>
     <div class="table issues-table c-scrollbar" style="background-color: #f0f2f5;" v-loading="list.loading">
       <el-card class="issue-card" shadow="never" :body-style="{ padding: '10px 15px' }">

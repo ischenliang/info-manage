@@ -1,6 +1,6 @@
 <template>
   <el-dropdown trigger="click" :hide-on-click="false" style="margin-left: 10px;">
-    <el-button type="primary" size="medium">
+    <el-button type="primary" size="small">
       列<i class="el-icon-caret-bottom"></i>
     </el-button>
     <el-dropdown-menu slot="dropdown">

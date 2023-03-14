@@ -358,8 +358,10 @@ export default (config) => {
 
     // 发送请求
     http(requestConfig).then(res => {
-      if (res.data) {
+      if (res.data.code === 200) {
         resolve(res)
+      } else {
+        reject(res.data.data || '出错啦')
       }
     }).catch(error => {
       reject(error)

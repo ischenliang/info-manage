@@ -20,14 +20,14 @@
     </div>
     <span slot="footer" class="dialog-footer">
       <el-button
-        size="medium"
+        size="small"
         plain
         icon="el-icon-folder-add"
         @click="addFolder"
         :loading="loading"
         style="float: left;">新建文件夹</el-button>
-      <el-button type="primary" size="medium" @click="submit">确定</el-button>
-      <el-button type="danger" size="medium" @click="close">取消</el-button>
+      <el-button type="primary" size="small" @click="submit">确定</el-button>
+      <el-button type="danger" size="small" @click="close">取消</el-button>
     </span>
   </el-dialog>
 </template>

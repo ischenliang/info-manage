@@ -9,7 +9,7 @@
       <div style="flex: auto;"></div>
       <el-button
         type="primary"
-        size="medium"
+        size="small"
         v-perms="'system:role:add'"
         @click="visible = true">
         新增
@@ -17,7 +17,7 @@
       <c-json-excel :name="'GetRoles'" :fields="$fields.role" :filename="'role'" style="margin: 0 10px;" />
       <el-button
         type="danger"
-        size="medium"
+        size="small"
         v-perms="'system:role:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">

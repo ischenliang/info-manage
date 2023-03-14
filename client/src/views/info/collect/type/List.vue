@@ -9,14 +9,14 @@
       <c-flex-auto />
       <el-button
         type="primary"
-        size="medium"
+        size="small"
         v-perms="'system:ctype:add'"
         @click="visible = true">
         新增
       </el-button>
       <el-button
         type="danger"
-        size="medium"
+        size="small"
         v-perms="'system:ctype:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">
@@ -31,6 +31,7 @@
         stripe
         ref="table"
         border
+        size="medium"
         v-loading="list.loading"
         @sort-change="sortChange"
         @selection-change="selectChange"

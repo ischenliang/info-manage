@@ -1,8 +1,8 @@
 <template>
   <div class="app-page" style="padding: 0;">
     <div class="toolbar">
-      <el-button type="primary" size="medium" @click="handleSelect('all')">全选</el-button>
-      <el-button type="primary" size="medium" @click="handleSelect('no')">全不选</el-button>
+      <el-button type="primary" size="small" @click="handleSelect('all')">全选</el-button>
+      <el-button type="primary" size="small" @click="handleSelect('no')">全不选</el-button>
     </div>
     <div class="table">
       <el-tree
@@ -21,8 +21,8 @@
       </el-tree>
     </div>
     <div class="pagination">
-      <el-button type="primary" size="medium" @click="submit" :loading="loading">确认</el-button>
-      <el-button type="danger" size="medium" @click="cancel">取消</el-button>
+      <el-button type="primary" size="small" @click="submit" :loading="loading">确认</el-button>
+      <el-button type="danger" size="small" @click="cancel">取消</el-button>
     </div>
   </div>
 </template>

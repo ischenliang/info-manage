@@ -6,10 +6,10 @@
         <el-option v-for="(item, index) in list.types" :key="index" :label="item.name" :value="item.id" />
       </el-select>
       <c-flex-auto />
-      <el-button type="info" @click="toggle" size="medium">看板模式</el-button>
+      <el-button type="info" @click="toggle" size="small">看板模式</el-button>
       <el-button
         type="primary"
-        size="medium"
+        size="small"
         v-perms="'system:collect:add'"
         @click="visible = true">
         新增

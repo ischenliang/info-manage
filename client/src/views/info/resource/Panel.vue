@@ -2,7 +2,7 @@
   <div class="app-page resource-panel">
     <div class="toolbar">
       <c-flex-auto />
-      <el-button type="info" @click="toggle" size="medium" icon="el-icon-notebook-2">列表</el-button>
+      <el-button type="info" @click="toggle" size="small" icon="el-icon-notebook-2">列表</el-button>
     </div>
     <div class="table">
       <div class="resource-list">

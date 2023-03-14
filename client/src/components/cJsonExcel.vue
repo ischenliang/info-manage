@@ -21,7 +21,7 @@
     :fetch="getData"
     :before-generate="handleGenerate"
     :before-finish="handleFinish">
-    <el-button type="warning" size="medium" :loading="loading">导出</el-button>
+    <el-button type="warning" size="small" :loading="loading">导出</el-button>
   </json-excel>
 </template>
 

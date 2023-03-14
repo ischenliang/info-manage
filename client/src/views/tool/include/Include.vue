@@ -3,8 +3,8 @@
     <div class="toolbar">
       <span style="font-weight: bold;">百度网站收录</span>
       <c-flex-auto />
-      <el-button @click="addItem" type="primary" size="medium">新增</el-button>
-      <el-button @click="submit" :loading="loading" type="success" size="medium">提交</el-button>
+      <el-button @click="addItem" type="primary" size="small">新增</el-button>
+      <el-button @click="submit" :loading="loading" type="success" size="small">提交</el-button>
     </div>
     <div class="table" style="padding: 10px 20px;">
       <div style="line-height: 30px;color: #696867;">主动向百度搜索主动推送资源，让您的网站能够被百度搜索引擎收录.....</div>

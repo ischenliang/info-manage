@@ -9,7 +9,7 @@
       <div style="flex: auto;"></div>
       <el-button
         type="primary"
-        size="medium"
+        size="small"
         v-perms="'system:user:add'"
         @click="visible = true">
         新增
@@ -17,7 +17,7 @@
       <c-json-excel :name="'GetUsers'" :fields="$fields.user" :filename="'user'" style="margin: 0 10px;" />
       <el-button
         type="danger"
-        size="medium"
+        size="small"
         v-perms="'system:user:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">
@@ -42,7 +42,7 @@
         <el-table-column v-if="show[0].value" prop="username" label="用户名称" width="120" align="center" sortable="custom" />
         <el-table-column v-if="show[1].value" prop="avatar" label="用户头像" min-width="120" align="center" sortable="custom">
           <template v-slot="{ row }">
-            <el-avatar :src="row.avatar" size="medium"></el-avatar>
+            <el-avatar :src="row.avatar" size="small"></el-avatar>
           </template>
         </el-table-column>
         <el-table-column v-if="show[2].value" prop="nickname" label="用户昵称" min-width="120" align="center" sortable="custom" />

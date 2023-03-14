@@ -7,12 +7,12 @@
       <c-flex-auto />
       <el-button
         type="success"
-        size="medium"
+        size="small"
         @click="submit"
         :loading="loading">保存</el-button>
       <el-button
         type="danger"
-        size="medium"
+        size="small"
         @click="$router.push({ path: '/info/project/list' })">取消</el-button>
     </div>
     <div class="table" style="padding: 10px 20px;">

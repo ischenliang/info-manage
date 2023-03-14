@@ -3,10 +3,10 @@
     <div class="toolbar">
       <el-input v-model="list.filters.search" placeholder="请输入内容" suffix-icon="el-icon-search" @input="listGet"/>
       <c-flex-auto />
-      <!-- <el-button type="info" @click="toggle" size="medium" icon="el-icon-reading">面板</el-button> -->
+      <!-- <el-button type="info" @click="toggle" size="small" icon="el-icon-reading">面板</el-button> -->
       <el-button
         type="primary"
-        size="medium"
+        size="small"
         v-perms="'system:resource:add'"
         @click="itemAdd">
         新增
@@ -16,7 +16,7 @@
           type="warning"
           v-perms="'system:resource:upload'"
           style="margin: 0 10px;"
-          size="medium">
+          size="small">
           上传
         </el-button>
         <el-dropdown-menu slot="dropdown">
@@ -26,7 +26,7 @@
       </el-dropdown>
       <el-button
         type="info"
-        size="medium"
+        size="small"
         title="保存网路图片"
         v-perms="'system:resource:saveImg'"
         @click="itemSave">
@@ -34,7 +34,7 @@
       </el-button>
       <el-button
         type="danger"
-        size="medium"
+        size="small"
         v-perms="'system:resource:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">
@@ -42,7 +42,7 @@
       </el-button>
       <el-button
         type="success"
-        size="medium"
+        size="small"
         v-perms="'system:resource:move'"
         @click="moveVisible = true"
         :disabled="moveDisabled">
@@ -50,7 +50,7 @@
       </el-button>
       <el-button
         type="success"
-        size="medium"
+        size="small"
         v-perms="'system:resource:copy'"
         @click="copyVisible = true"
         :disabled="copyDisabled">

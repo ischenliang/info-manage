@@ -11,7 +11,7 @@
       <div style="flex: auto;"></div>
       <el-button
         type="primary"
-        size="medium"
+        size="small"
         v-perms="'system:api:add'"
         @click="visible = true">
         新增
@@ -19,7 +19,7 @@
       <c-json-excel :name="'GetApis'" :fields="$fields.api" :filename="'api'" style="margin: 0 10px;" />
       <el-button
         type="danger"
-        size="medium"
+        size="small"
         v-perms="'system:api:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">
@@ -58,7 +58,7 @@
         </el-table-column>
         <el-table-column v-if="show[5].value" label="类型" prop="type" min-width="100" align="center" sortable="custom">
           <template v-slot="{ row }">
-             <el-tag :type="row.type | typeFormat" effect="dark" size="medium" style="width: 68px;">{{ row.type }}</el-tag>
+             <el-tag :type="row.type | typeFormat" effect="dark" size="small" style="width: 68px;">{{ row.type }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column v-if="show[6].value" label="创建时间" prop="ctime" min-width="160" align="center" sortable="custom"/>

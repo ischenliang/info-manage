@@ -5,14 +5,14 @@
       <c-flex-auto />
       <el-button
         type="primary"
-        size="medium"
+        size="small"
         v-perms="'system:task:add'"
         @click="$router.push({ path: '/monitor/job/add' })">
         新增
       </el-button>
       <el-button
         type="danger"
-        size="medium"
+        size="small"
         v-perms="'system:task:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">

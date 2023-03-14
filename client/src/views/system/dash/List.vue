@@ -5,14 +5,15 @@
       <c-flex-auto />
       <el-button
         type="primary"
-        size="medium"
-        v-perms="'system:user:add'"
+        size="small"
+        v-perms="'system:dash:add'"
         @click="$router.push({ path: '/system/dash/layout/add' })">
         新增
       </el-button>
       <el-button
         type="danger"
-        size="medium"
+        size="small"
+        v-perms="'system:dash:delete'"
         @click="deleteSelected"
         :disabled="deleteDisabled">
         删除
@@ -42,14 +43,23 @@
             <el-button
               type="primary"
               size="mini"
+              icon="el-icon-view"
+              title="查看"
+              v-perms="'system:dash:detail'"
+              @click="$router.push({ path: `/system/dash/layout/${row.id}` })" />
+            <el-button
+              type="primary"
+              size="mini"
               icon="el-icon-edit"
               title="编辑"
+              v-perms="'system:dash:update'"
               @click="$router.push({ path: `/system/dash/layout/${row.id}` })" />
             <el-button
               type="danger"
               size="mini"
               icon="el-icon-delete"
               title="删除"
+              v-perms="'system:dash:delete'"
               @click="itemDelete(row)" />
           </template>
         </el-table-column>
