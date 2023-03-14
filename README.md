@@ -1,4 +1,6 @@
 # 信息管理系统
+![202303141144578.png](http://img.itchenliang.club/img/202303141144578.png)
+![202303141145151.png](http://img.itchenliang.club/img/202303141145151.png)
 
 
 ## 概述
