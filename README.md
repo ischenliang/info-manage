@@ -12,9 +12,9 @@
 ## 在线体验
 **在线演示**
 ```yml
-地址: http://info.itchenliang.club/
-账号: guest
-密码: guest
+演示地址: http://info.itchenliang.club/
+演示账号: guest
+演示密码: guest
 ```
 
 
