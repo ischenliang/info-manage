@@ -127,10 +127,13 @@
                 <router-link to="/">
                   <el-dropdown-item>首页</el-dropdown-item>
                 </router-link>
-                <a target="_blank" href="https://gitee.com/itchenliang">
+                <a target="_blank" :href="systemInfo.gitee">
                   <el-dropdown-item>Gitee</el-dropdown-item>
                 </a>
-                <a target="_blank" href="https://gitee.com/itchenliang/xapi">
+                <a target="_blank" :href="systemInfo.github">
+                  <el-dropdown-item>Github</el-dropdown-item>
+                </a>
+                <a target="_blank" :href="systemInfo.doc">
                   <el-dropdown-item>项目文档</el-dropdown-item>
                 </a>
                 <el-dropdown-item divided @click.native="logout">
@@ -177,6 +180,9 @@ export default {
   computed: {
     cachedTags () {
       return this.$store.state.tagsview.cachedTags
+    },
+    systemInfo () {
+      return window.g
     },
     ...mapGetters({
       menus: 'menus',
