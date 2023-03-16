@@ -296,6 +296,13 @@ const list = {
   AddProjectIssue: { method: 'post', url: baseURL[0] + '/pissue/add' },
   // 删除项目任务 请求类型：delete 请求地址：/pissue/deleteById
   DeleteProjectIssue: { method: 'delete', url: baseURL[0] + '/pissue/deleteById' },
+  /**
+   * 日志管理
+  */
+  // 日志列表 请求类型：get 请求地址：/log/list
+  GetLogs: { method: 'get', url: baseURL[0] + '/log/list' },
+  // 删除项目任务 请求类型：delete 请求地址：/log/deleteById
+  DeleteLog: { method: 'delete', url: baseURL[0] + '/log/deleteById' },
 
   /**
    * 公共接口

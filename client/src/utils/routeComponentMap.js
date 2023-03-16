@@ -18,6 +18,7 @@ export default {
   AccountList: () => import('@/views/info/account/List'),
   SystemPermission: () => import('@/views/system/permission/List'),
   SystemMenu: () => import('@/views/system/menu/List'),
+  SystemLog: () => import('@/views/system/log/List'),
   SystemRole: () => import('@/views/system/role/List'),
   SystemUser: () => import('@/views/system/user/List'),
   SystemApi: () => import('@/views/system/api/List'),

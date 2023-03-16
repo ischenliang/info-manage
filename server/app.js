@@ -10,6 +10,20 @@ loadMiddleware(app)
 require('./models/Middle')
 const { userApi } = require('./service/user')
 
+
+// 获取客户端IP地址
+function getClientIP(req) {
+  let ip = req.headers['x-forwarded-for'] || // 判断是否有反向代理 IP
+    req.ip  ||
+    req.connection.remoteAddress || // 判断 connection 的远程 IP
+    req.socket.remoteAddress || // 判断后端的 socket 的 IP
+    req.connection.socket.remoteAddress || ''
+  if(ip) {
+    ip = ip.replace('::ffff:', '')
+  }
+  return ip
+}
+
 /**
  * 全局拦截器
  * 1. 判断当前请求url是否在 notauth 中 indexOf
@@ -28,6 +42,9 @@ const notauth = ['/api/login', '/api/test/download', '/api/resource/download', '
 app.use(async (ctx, next) => {
   try {
     if (notauth.includes(ctx.request.url.split('?')[0])) {
+      // ctx.req_ip = getClientIP(ctx.req)
+      // 本地开发时需要启用该参数
+      ctx.req_ip = '218.88.29.98'
       await next()
     } else {
       const url = ctx.req.url

@@ -3,6 +3,7 @@ const fs = require('fs')
 const fse = require('fs-extra')
 const path = require('path')
 const nodemailer = require('nodemailer')
+const axios = require('axios')
 
 module.exports = {
   // md5加密
@@ -108,6 +109,22 @@ module.exports = {
       subject: title, // 标题
       // text: text, // 通知内容(纯文本)
       html: content // 通知内容(html)
+    })
+  },
+  // 百度地图web服务API：普通IP地位
+  useBaiDuLocationByIp: (ip) => {
+    let baseUrl = `https://api.map.baidu.com/location/ip?ak=xx&ip=${ip}&coor=bd09ll`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'get',
+        url: baseUrl
+      }).then(res => {
+        if (res.data.status === 0) {
+          resolve(res.data?.content)
+        } else {
+          reject(res.data?.msg)
+        }
+      })
     })
   }
 }
