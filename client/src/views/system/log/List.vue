@@ -1,6 +1,6 @@
 <template>
-  <div class="app-page">
-    <div class="table">
+  <div class="app-page" style="padding: 10px;">
+    <div class="table" style="padding: 10px 10px;">
       <el-table
         style="width: 100%;"
         height="100%"
@@ -13,12 +13,20 @@
         @selection-change="selectChange"
         :data="list.data">
         <el-table-column type="selection" width="60" align="center"/>
-        <el-table-column v-if="show[0].value" prop="name" label="操作用户" width="200" align="center" sortable="custom" />
-        <el-table-column v-if="show[1].value" prop="content" label="操作信息" min-width="200" align="center" sortable="custom" />
-        <el-table-column v-if="show[2].value" prop="type" label="操作类型" width="200" align="center" sortable="custom" />
-        <el-table-column v-if="show[3].value" prop="address" label="操作来源" width="200" align="center" sortable="custom" />
-        <el-table-column v-if="show[4].value" prop="ip" label="访问ip" width="200" align="center" sortable="custom" />
-        <el-table-column v-if="show[5].value" prop="ctime" label="操作时间" width="160" align="center" sortable="custom" />
+        <el-table-column prop="name" label="操作用户" align="center" sortable="custom" />
+        <el-table-column prop="content" label="操作信息" align="center" sortable="custom" />
+        <el-table-column prop="type" label="操作类型" align="center" sortable="custom" />
+        <el-table-column prop="address" label="操作来源" align="center" sortable="custom">
+          <template v-slot="{ row }">
+            {{ row.client_info.province + row.client_info.city || '-' }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="ip" label="访问ip" align="center" sortable="custom">
+          <template v-slot="{ row }">
+            {{ row.client_info.ip }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="ctime" label="操作时间" width="160" align="center" sortable="custom" />
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
             <el-button
@@ -83,12 +91,8 @@ export default {
         },
         requireAuth: true
       }).then(res => {
-        this.list.total = res.data.data.total
-        this.list.data = res.data.data.data?.map(el => {
-          el.address = el.client_info?.province + el.client_info?.city
-          el.ip = el.client_info?.ip
-          return el
-        })
+        this.list.total = res.data.data.count
+        this.list.data = res.data.data.data
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {

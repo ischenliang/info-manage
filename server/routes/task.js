@@ -80,7 +80,7 @@ router.get('/list', async(ctx, next) => {
 })
 
 // 任务日志
-router.get('/log/:id', async(ctx, next) => {
+router.get('/logs/:id', async(ctx, next) => {
   try {
     ctx.status = 200
     ctx.body = {

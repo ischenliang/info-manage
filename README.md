@@ -2,6 +2,17 @@
 ![202303141144578.png](https://imgs.itchenliang.club/img/202303141144578.png)
 ![202303141145151.png](https://imgs.itchenliang.club/img/202303141145151.png)
 
+## 项目地址
+- 【github】: [https://github.com/ischenliang/info-manage](https://github.com/ischenliang/info-manage)
+- 【gitee】: [https://gitee.com/itchenliang/info-manage](https://gitee.com/itchenliang/info-manage)
+
+## 演示体验
+演示地址: [http://info.itchenliang.club/](http://info.itchenliang.club/)
+```yml
+演示账号: guest
+演示密码: guest
+```
+
 
 ## 概述
 随着信息化时代的不断发展，我们每天都在产生各种信息化数据，数据量一旦过大，大家都会出现忘记账号和密码、某些文件忘记放哪里了等问题，故开发了这款**个人信息管理系统**，它是一款基于`koa2 + vue2.7 + vite3 +   mysql`技术实现的个人日常信息数据管理系统。

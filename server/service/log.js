@@ -42,16 +42,15 @@ async function add (log) {
  * @param {*} page 当前页码
  * @param {*} size 每页条数
  */
-async function findAll (query, uid) {
+async function findAll (query, uid, flag) {
   try {
     const size = query.size ? parseInt(query.size) : 10 // 如果没传参数设置一个默认值
     const page = query.page ? parseInt(query.page) : 1
-    const { count, rows } = await Log.findAndCountAll({
+    const params = {
       include: {
         all: true
       },
       where: {
-        uid
       },
       offset: (page - 1) * size,
       limit: size,
@@ -59,7 +58,11 @@ async function findAll (query, uid) {
       order: [
         [query.order ? query.order : 'ctime', query.sort ? query.sort : 'desc'] // 使用 Element 表格中的排序是互斥的，所以每次排序只能排一个元素的
       ]
-    })
+    }
+    if (!flag) {
+      params.where.uid = uid
+    }
+    const { count, rows } = await Log.findAndCountAll(params)
     return {
       count,
       data: rows

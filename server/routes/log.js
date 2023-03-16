@@ -27,7 +27,7 @@ router.get('/list', async (ctx, next) => {
     ctx.body = {
       code: 200,
       msg: resConfig[ctx.request.method],
-      data: await findAll(ctx.query, ctx.uid)
+      data: await findAll(ctx.query, ctx.uid, ctx.state.lookAllLogs)
     }
   } catch (error) {
     error.status = error.status ? error.status : 500

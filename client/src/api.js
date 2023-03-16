@@ -210,7 +210,7 @@ const list = {
   // 任务详情 请求类型：get 请求地址：/task/detail
   GetTask: { method: 'get', url: baseURL[0] + '/task/detail' },
   // 任务执行日志 请求类型：get 请求地址：/task/log
-  GetTaskLog: { method: 'get', url: baseURL[0] + '/task/log' },
+  GetTaskLog: { method: 'get', url: baseURL[0] + '/task/logs' },
 
   /**
    * 仪表盘管理

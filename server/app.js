@@ -42,9 +42,9 @@ const notauth = ['/api/login', '/api/test/download', '/api/resource/download', '
 app.use(async (ctx, next) => {
   try {
     if (notauth.includes(ctx.request.url.split('?')[0])) {
-      // ctx.req_ip = getClientIP(ctx.req)
+      ctx.req_ip = getClientIP(ctx.req)
       // 本地开发时需要启用该参数
-      ctx.req_ip = '218.88.29.98'
+      // ctx.req_ip = '218.88.29.98'
       await next()
     } else {
       const url = ctx.req.url
@@ -83,7 +83,7 @@ app.use(async (ctx, next) => {
     await next()
   } else {
     let url = ctx.request.url.split('?')[0]
-    const regx = ['detail', 'deleteById', 'userMenu', 'userApi', 'roleApi', 'roleMenu', 'resetPwd', 'moveOrder', 'log']
+    const regx = ['detail', 'deleteById', 'userMenu', 'userApi', 'roleApi', 'roleMenu', 'resetPwd', 'moveOrder', 'logs']
     regx.forEach(item => {
       if (url.indexOf(item) !== -1) {
         url = url.replace(new RegExp(`${item}\/.*`), `${item}/:id`)
@@ -91,10 +91,12 @@ app.use(async (ctx, next) => {
     })
     const apis = await userApi(ctx.uid)
     const index = apis.findIndex(item => item.path === url && item.type.toUpperCase() === ctx.request.method.toUpperCase())
+    // 是否拥有删除日志权限，拥有即代表可以查看所有日志
+    const lookAllLogs = apis.some(item => item.path === '/api/log/deleteById/:id')
+    ctx.state.lookAllLogs = lookAllLogs
     if (index !== -1) {
       await next()
     } else {
-      // ctx.throw(401, resConfig['401'])
       ctx.body = {
         code: 401,
         data: resConfig['401'],
