@@ -37,15 +37,16 @@ module.exports = {
     return origin + '/avatar/' + `${uid}.${suffix}`
   },
   // 上传文件
-  upload: (bpath, file, name) => {
+  upload: (bpath, file, name, public = true) => {
     // 获取文件后缀
     const suffix = file.name.split('.').pop()
     // 为了文件夹上传
     if (file.name.split('/').length > 1) {
-      fse.mkdirsSync(path.join(__dirname, '../public', bpath, file.name.split('/').slice(0, -1).join('/')))
+      fse.mkdirsSync(path.join(__dirname, public ? '../public' : '../', bpath, file.name.split('/').slice(0, -1).join('/')))
     }
     // 文件路径: 文件存放目录 + 用户 + 名称.后缀
-    let filePath = path.join(__dirname, '../public', bpath,  name ? `${name}.${suffix}` : file.name)
+    let filePath = path.join(__dirname, public ? '../public' : '../', bpath,  name ? `${name}.${suffix}` : file.name)
+    console.log(filePath)
     // 创建可读流
     const render = fs.createReadStream(file.path)
     // 默认会覆盖文件

@@ -182,10 +182,10 @@ async function upload (files, parent, uid) {
     // 需要判断是否上传的多个文件
     if (files.length) {
       files.forEach(item => {
-        util.upload(path.join('/resource', uid, parent), item)
+        util.upload(path.join('/resource', uid, parent), item, null, false)
       })
     } else {
-      util.upload(path.join('/resource', uid, parent), files)
+      util.upload(path.join('/resource', uid, parent), files, null, false)
     }
     return '上传成功'
   } catch (error) {
