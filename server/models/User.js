@@ -1,66 +1,67 @@
 const { Sequelize, DataTypes } = require('sequelize')
 const moment = require('moment')
 const seq = require('../utils/seq')
-
-// User 模型
-const UserModel = seq.define('user', {
+/**
+ * id: 用户主键 UUID
+ * username：用户账号 String 唯一
+ * password：用户密码 String(需要md5加密)
+ * nickname：用户昵称 String
+ * avatar: 用户头像 String 默认http://vue.ruoyi.vip/static/img/profile.473f5971.jpg
+ * remark：用户备注 String
+ * status: 用户状态 Boolean 默认false
+ * ctime：用户创建时间 String(moment().format('YYYY-MM-DD HH:mm:ss'))
+ */
+const User = seq.define('user', {
   id: {
     type: DataTypes.UUID,
     allowNull: false,
-    primaryKey: true, // 主键
-    defaultValue: Sequelize.UUIDV4
+    primaryKey: true,
+    defaultValue: Sequelize.UUIDV4,
+    comment: 'uuid'
   },
   username: {
     type: DataTypes.STRING,
     allowNull: false,
-    comment: '登录账号',
-    unique: true // 登录账号只能唯一
+    comment: '用户名',
+    unique: 'username'
   },
   password: {
     type: DataTypes.STRING,
     allowNull: false,
-    comment: '登录密码'
+    comment: '密码'
   },
   nickname: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: '网友007',
-    comment: '昵称'
+    defaultValue: '用户007',
+    comment: '用户昵称'
   },
   avatar: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'https://dss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2712859483,1666841396&fm=26&gp=0.jpg',
+    defaultValue: 'http://vue.ruoyi.vip/static/img/profile.473f5971.jpg',
     comment: '用户头像'
-  },
-  gender: {
-    type: DataTypes.STRING,
-    allowNull: true,
-    defaultValue: '未知',
-    comment: '用户性别'
   },
   remark: {
     type: DataTypes.STRING,
     allowNull: true,
+    defaultValue: '',
     comment: '用户备注'
-  },
-  updatetime: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    comment: '更新时间',
-    defaultValue: moment().format('YYYY-MM-DD HH:mm:ss')
   },
   status: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
-    comment: '用户状态', // 可用/不可用
-    defaultValue: true
+    defaultValue: true,
+    comment: '用户状态'
+  },
+  ctime: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: moment().format('YYYY-MM-DD HH:mm:ss'),
+    comment: '用户创建时间'
   }
 }, {
-  freezeTableName: true // 设置 freezeTableName 后，表格名称就不用再加s，否则：user => users
-  // 不设置 timestamps，Sequlize 会自动为我们添加创建时间和更新时间
+  freezeTableName: true
 })
 
-module.exports = {
-  UserModel
-}
+module.exports = User
