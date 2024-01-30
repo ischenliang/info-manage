@@ -12,7 +12,7 @@ async function add (file, obj) {
   obj.mtime = moment().format('YYYY-MM-DD HH:mm:ss')
   try {
     const res = await Project.create(obj)
-    const result = util.upload(path.join('/project/code'), file, res.id)
+    const result = util.upload(path.join('/project/code'), file, res.id, false)
     await Project.update({
       path: result.path
     }, {

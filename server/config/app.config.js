@@ -8,6 +8,6 @@ module.exports = {
     dialect: 'mysql', // 使用数据库类型，这里默认是mysql
     database: 'info', // 数据库名称
     user: 'root', // 数据库用户名
-    password: 'a1b2c3' // 数据库密码
+    password: '100259' // 数据库密码
   }
 }
