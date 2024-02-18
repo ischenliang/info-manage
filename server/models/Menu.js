@@ -1,10 +1,32 @@
 const { Sequelize, DataTypes } = require('sequelize')
 const moment = require('moment')
 const seq = require('../utils/seq')
-const { IconModel } = require('./Icon')
 
-// Menu 模型
-const MenuModel = seq.define('menu', {
+/**
+ * id: 菜单主键 UUID
+ * name：菜单名称 String
+ * pid：父级菜单id UUID
+ * order：显示顺序 Integer
+ * path：路由地址 String
+      * redirect：重定向地址 String：最终决定不用
+      *    考虑是否需要使用：
+      *      否：默认目录的重定向到子菜单第一项，问题：当嵌套多层时会出现问题:解决方案递归....
+      *      是：考虑实现方式....
+ * component：组件路径 String
+ * type：菜单类型 Integer 默认1
+ *    1：目录 2：菜单
+ * is_frame：是否外链 Boolean 默认false
+ * visible：菜单显示 Boolean 默认false
+ *    1：显示 0：隐藏
+ *    使用了该字段后就可以不用激活项字段
+ * status：菜单状态 Boolean 默认false
+ *    1：正常 0：停用
+ * icon：菜单图标 String
+ * remark：菜单备注 String
+ * ctime：菜单创建时间
+ * mtime：菜单更新时间
+ */
+const Menu = seq.define('menu', {
   id: {
     type: DataTypes.UUID,
     allowNull: false,
@@ -17,66 +39,76 @@ const MenuModel = seq.define('menu', {
     allowNull: false,
     comment: '菜单名称'
   },
-  url: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    comment: '菜单路径'
-  },
   pid: {
     type: DataTypes.UUID,
     allowNull: true,
     comment: '上级菜单id'
   },
+  order: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 1,
+    comment: '菜单排序'
+  },
+  path: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    comment: '菜单路由'
+  },
   component: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'Layout',
-    comment: '组件名称'
+    defaultValue: '/Layout',
+    comment: '组件路径'
   },
-  enable: {
+  type: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 1,
+    comment: '菜单类型：目录1，菜单2'
+  },
+  is_frame: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,
-    comment: '菜单是否启用'
+    comment: '是否外链'
   },
   visible: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: true,
-    comment: '是否显示在菜单栏上'
+    comment: '菜单显示'
   },
-  active: {
-    type: DataTypes.UUID,
-    allowNull: true,
-    comment: '激活菜单项'
-  },
-  order: {
-    type: DataTypes.INTEGER,
+  status: {
+    type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: 1,
-    comment: '排序：值越大就越靠前'
+    defaultValue: false,
+    comment: '菜单状态'
   },
-  type: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 2,
-    comment: '菜单类别：目录1，菜单2'
-  },
-  redirect: {
-    type: DataTypes.UUID,
-    allowNull: true,
-    comment: '重定向：为了解决目录菜单时应该默认前往哪个子菜单'
-  },
-  updatetime: {
+  icon: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: moment().format('YYYY-MM-DD HH:mm:ss'),
-    comment: '重定向：为了解决目录菜单时应该默认前往哪个子菜单'
+    comment: '菜单图标'
+  },
+  remark: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: '菜单备注'
+  },
+  ctime: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    comment: '菜单创建时间',
+    defaultValue: moment().format('YYYY-MM-DD HH:mm:ss')
+  },
+  mtime: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    comment: '菜单更新时间',
+    defaultValue: moment().format('YYYY-MM-DD HH:mm:ss')
   }
 }, {
   freezeTableName: true
 })
 
-module.exports = {
-  MenuModel
-}
+module.exports = Menu

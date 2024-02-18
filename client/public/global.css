@@ -1,0 +1,27 @@
+/*.markdown-body .highlight pre, .markdown-body pre {*/
+/*  padding: 16px; */
+/*  overflow: auto; */
+/*  background-color: none !important; */
+/*  color: #abb2bf; */
+/* border: 1px solid #abb2bf !important;*/
+/*}*/
+
+.v-note-wrapper .v-note-panel .v-note-navigation-wrapper {
+  position: relative !important; 
+}
+
+.v-note-wrapper .v-note-panel .v-note-show.single-show {
+  flex: 1 !important;
+}
+.v-show-content {
+  background: #F5F5FA !important;
+}
+
+.el-cascader-menu__wrap {
+  height: 100% !important;
+}
+
+.markdown-body .task-list-item input {
+  margin: 0 0.2em 0.25em 0 !important;
+  vertical-align: middle;
+}
