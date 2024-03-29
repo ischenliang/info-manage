@@ -93,8 +93,8 @@ module.exports = {
   // 发送邮件
   async sendMail (email, title, content) {
     // 发送邮件封装
-    var user = '1825956830@qq.com' // 发送人邮箱
-    var pass = 'pmjcgrpplkwociaf' // 邮箱授权码
+    var user = 'xxxxx@qq.com' // 发送人邮箱
+    var pass = 'xxxxxxx' // 邮箱授权码
     let transporter = nodemailer.createTransport({
       host: "smtp.qq.com",
       port: 587,
