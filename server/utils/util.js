@@ -114,6 +114,7 @@ module.exports = {
   },
   // 百度地图web服务API：普通IP地位
   useBaiDuLocationByIp: (ip) => {
+    // 这里的ak=xx需要改成你自己的api key
     let baseUrl = `https://api.map.baidu.com/location/ip?ak=xx&ip=${ip}&coor=bd09ll`
     return new Promise((resolve, reject) => {
       axios({
