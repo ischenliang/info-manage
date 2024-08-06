@@ -1,5 +1,4 @@
 const router = require('koa-router')()
-const moment = require('moment')
 router.prefix('/api/role')
 const resConfig = require('../config/app.res')
 const { add, deleteById, update, detail, list, roleMenu, roleApi } = require('../service/role')

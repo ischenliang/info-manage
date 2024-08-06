@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { defaultRoles, showDisableMessage } from './config'
 export default {
   props: {
     visible: Boolean,
@@ -90,6 +91,9 @@ export default {
           if (this.id === '' || this.id === undefined) {
             this.addSubmit()
           } else {
+            if (defaultRoles.includes(this.form.name)) {
+              return showDisableMessage(this)
+            }
             this.editSubmit()
           }
         }

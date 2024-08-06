@@ -26,6 +26,16 @@ export const routes = [
     }
   },
   {
+    path: '/register',
+    component: () => import('@/views/Register'),
+    meta: {
+      title: 'register',
+      hidden: 0,
+      is_frame: 0,
+      icon: ''
+    }
+  },
+  {
     path: '/401',
     component: () => import('@/views/error-page/401'),
     meta: {
@@ -38,16 +48,6 @@ export const routes = [
     component: () => import('@/views/error-page/404'),
     meta: {
       title: '404',
-      hidden: 0,
-      is_frame: 0,
-      icon: ''
-    }
-  },
-  {
-    path: '/test',
-    component: () => import('@/views/test/Test'),
-    meta: {
-      title: 'Test',
       hidden: 0,
       is_frame: 0,
       icon: ''
@@ -161,7 +161,7 @@ router.beforeEach(async (to, from, next) => {
       })
     }
   } else {
-    const notauth = ['/login', '/404', '/401']
+    const notauth = ['/login', '/404', '/401', '/register']
     if (notauth.includes(to.path)) {
       next()
     } else {

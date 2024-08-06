@@ -39,16 +39,20 @@
         @selection-change="selectChange"
         :data="list.data">
         <el-table-column type="selection" width="60" align="center"/>
-        <el-table-column v-if="show[0].value" prop="name" label="角色名称" width="200" align="center" sortable="custom" />
-        <el-table-column v-if="show[1].value" prop="remark" label="备注" min-width="200" align="center" sortable="custom" />
-        <el-table-column v-if="show[2].value" prop="priority" label="显示顺序" width="120" align="center" sortable="custom" />
-        <el-table-column v-if="show[3].value" prop="status" label="状态" width="120" align="center" sortable="custom">
+        <el-table-column v-if="show[0].value" prop="name" label="角色名称" min-width="150" align="center" sortable="custom" />
+        <el-table-column v-if="show[1].value" prop="remark" label="备注" min-width="150" align="center" sortable="custom" />
+        <el-table-column v-if="show[2].value" prop="priority" label="显示顺序" min-width="120" align="center" sortable="custom" />
+        <el-table-column v-if="show[3].value" prop="status" label="状态" width="130" align="center" sortable="custom">
           <template v-slot="{ row }">
-            <el-switch v-model="row.status" @change="updateRow(row)"></el-switch>
+            <el-switch
+              v-model="row.status"
+              :disabled="defaultRoles.includes(row.name)"
+              @change="updateRow(row)">
+            </el-switch>
           </template>
         </el-table-column>
-        <el-table-column v-if="show[4].value" prop="ctime" label="创建时间" width="160" align="center" sortable="custom" />
-        <el-table-column v-if="show[5].value" prop="mtime" label="修改时间" width="160" align="center" sortable="custom" />
+        <el-table-column v-if="show[4].value" prop="ctime" label="创建时间" width="180" align="center" sortable="custom" />
+        <el-table-column v-if="show[5].value" prop="mtime" label="修改时间" width="180" align="center" sortable="custom" />
         <el-table-column label="操作" width="220" align="center">
           <template v-slot="{ row }">
             <el-button
@@ -56,6 +60,7 @@
               size="mini"
               icon="el-icon-lock"
               title="授权"
+              :disabled="defaultRoles.includes(row.name)"
               v-perms="'system:role:detail'"
               @click="itemAuth(row)" />
             <el-button
@@ -63,6 +68,7 @@
               size="mini"
               icon="el-icon-edit"
               title="编辑"
+              :disabled="defaultRoles.includes(row.name)"
               v-perms="'system:role:update'"
               @click="itemEdit(row)" />
             <el-button
@@ -70,6 +76,7 @@
               size="mini"
               icon="el-icon-delete"
               title="删除"
+              :disabled="defaultRoles.includes(row.name)"
               v-perms="'system:role:delete'"
               @click="itemDelete(row)" />
           </template>
@@ -87,6 +94,7 @@
 
 <script>
 import ComDialog from './Dialog'
+import { defaultRoles, showDisableMessage } from './config'
 export default {
   name: 'SystemRole',
   components: {
@@ -120,7 +128,8 @@ export default {
         selected: []
       },
       visible: false,
-      id: ''
+      id: '',
+      defaultRoles: Object.freeze(defaultRoles)
     }
   },
   methods: {
@@ -129,17 +138,15 @@ export default {
       this.$http({
         name: 'GetRoles',
         params: {
-          status: this.list.filters.status,
+          ...this.list.filters,
           page: this.list.page,
-          size: this.list.size,
-          search: this.list.filters.search,
-          sort: this.list.filters.sort,
-          order: this.list.filters.order
+          size: this.list.size
         },
         requireAuth: true
       }).then(res => {
-        this.list.total = res.data.data.total
-        this.list.data = res.data.data.data
+        const { total, data } = res.data.data
+        this.list.total = total
+        this.list.data = data
       }).catch(error => {
         this.$notify.error(error)
       }).finally(() => {
@@ -159,6 +166,9 @@ export default {
     },
     // 更新role
     updateRow (row) {
+      if (defaultRoles.includes(row.name)) {
+        return showDisableMessage(this)
+      }
       this.$http({
         name: 'UpdateRole',
         requireAuth: true,

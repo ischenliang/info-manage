@@ -1,33 +1,32 @@
 <template>
-  <!-- 组件wrapper -->
-  <div class="login_wrapper">
-    <!-- <c-particles /> -->
-    <div class="login-section">
-      <div class="login-text">信息管理系统</div>
-      <el-form :model="form" :rules="rules" ref="formRef">
-        <el-form-item prop="username">
-          <el-input v-model="form.username" prefix-icon="el-icon-user" placeholder="账号"></el-input>
-        </el-form-item>
-        <el-form-item prop="password" style="margin-bottom: 10px;">
-          <el-input v-model="form.password" prefix-icon="el-icon-lock" show-password placeholder="密码"></el-input>
-        </el-form-item>
-        <!-- 滑动验证 -->
-        <!-- <el-form-item prop="password" style="margin-bottom: 5px;">
-          <el-input v-model="form.password" prefix-icon="el-icon-lock" show-password></el-input>
-        </el-form-item> -->
-        <el-form-item prop="remember" style="text-align: left;margin-bottom: 10px;">
-          <el-checkbox v-model="form.remember">记住密码</el-checkbox>
-        </el-form-item>
-        <el-form-item class="login_btn">
-          <el-button :loading="loading" type="primary" @click.native="login">登录</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-  </div>
+  <center-layout>
+    <el-form :model="form" :rules="rules" ref="formRef">
+      <el-form-item prop="username">
+        <el-input v-model="form.username" prefix-icon="el-icon-user" placeholder="账号"></el-input>
+      </el-form-item>
+      <el-form-item prop="password" style="margin-bottom: 10px;">
+        <el-input v-model="form.password" prefix-icon="el-icon-lock" show-password placeholder="密码"></el-input>
+      </el-form-item>
+      <el-form-item prop="remember" style="text-align: left;margin-bottom: 10px;">
+        <el-checkbox v-model="form.remember">记住密码</el-checkbox>
+      </el-form-item>
+      <el-form-item class="login_btn">
+        <el-button :loading="loading" type="primary" @click.native="login">登录</el-button>
+      </el-form-item>
+    </el-form>
+    <p>
+      还没有账号?
+      <router-link to="/register" class="active-link">点此注册</router-link>
+    </p>
+  </center-layout>
 </template>
 
 <script>
+import CenterLayout from './CenterLayout.vue'
 export default {
+  components: {
+    CenterLayout
+  },
   data () {
     return {
       // 表单
@@ -118,59 +117,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.login_wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  background-image: url('../assets/img/bg.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  text-align: center;
-  .login-section {
-    // background-color: rgba(0,0,0,0.2);
-    background-color: #FFFFFF;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-radius: 10px;
-    width: 400px;
-    min-height: 300px;
-    padding: 0 50px 0px 50px;
-    box-sizing: border-box;
-    z-index: 1;
-    .login-text{
-      width: 100%;
-      height: 60px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 2.2rem;
-      // color: #f2f2f2;
-      color: #1e4874;
-      margin: 20px 0;
-      letter-spacing: 2px;
-      text-shadow: 3px 3px 3px #e7e0de,
-                   -2px -2px 2px #a1d4e7;
-    }
-    .login_btn{
-      button{
-        width: 100%;
-      }
-    }
-    .el-form{
-      padding-bottom: 10px;
-      .el-input__icon{
-        color: #111;
-      }
-      .el-input__inner{
-        background-color: rgba(255,255,255,0.8);
-        padding: 0 10px 0 35px;
-        font-size: 17px !important;
-      }
-    }
-  }
-}
-</style>

@@ -309,6 +309,8 @@ const list = {
   */
   // 登录 请求类型：post 请求地址：/login
   Login: { method: 'post', url: baseURL[0] + '/login' },
+  // 注册 请求类型：post 请求地址：/register
+  Register: { method: 'post', url: baseURL[0] + '/register' },
   // 系统监控 请求类型：get 请求地址：/monitor/server
   MonitorSystem: { method: 'get', url: baseURL[0] + '/monitor/server' },
   // 服务监控 请求类型：get 请求地址：/monitor/process

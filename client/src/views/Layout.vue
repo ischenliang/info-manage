@@ -213,12 +213,14 @@ export default {
   },
   methods: {
     ...mapActions({
-      clear_info: 'user/CLEAR_INFO'
+      clear_info: 'user/CLEAR_INFO',
+      del_all_tag: 'tagsview/del_all_tag'
     }),
     logout () {
       this.$Cookies.remove('token')
       this.$Cookies.remove('uid')
       this.clear_info()
+      this.del_all_tag()
       this.$router.push({ path: '/login' })
     }
   }

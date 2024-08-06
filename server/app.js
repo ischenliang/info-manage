@@ -38,7 +38,7 @@ function getClientIP(req) {
  * 4.根据authorization获取里面的用户信息
  *    将用户信息存储到ctx中
 */
-const notauth = ['/api/login', '/api/test/download', '/api/resource/download', '/api/project/download', '/api/pimage/download', '/api/tool/dns', '/api/tool/baidu']
+const notauth = ['/api/login', '/api/register', '/api/test/download', '/api/resource/download', '/api/project/download', '/api/pimage/download', '/api/tool/dns', '/api/tool/baidu']
 app.use(async (ctx, next) => {
   try {
     if (notauth.includes(ctx.request.url.split('?')[0])) {
@@ -108,7 +108,7 @@ app.use(async (ctx, next) => {
 
 // 全局错误处理
 app.on('error', async(error, ctx) => {
-  ctx.status = error.status ? error.status : 500
+  // ctx.status = error.status ? error.status : 500
   const code = error.status ? error.status : 500
   ctx.body = {
     code: code,
