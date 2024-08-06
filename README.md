@@ -31,6 +31,7 @@
 ```js
 微信: CL13281289371
 QQ: 1825956830
+Email: itchenliang@163.com
 ```
 
 
