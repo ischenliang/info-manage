@@ -1,10 +1,8 @@
 # 信息管理系统
-![202303141144578.png](https://imgs.itchenliang.club/img/202303141144578.png)
-![202303141145151.png](https://imgs.itchenliang.club/img/202303141145151.png)
 
 ## 项目地址
-- 【github】: [https://github.com/ischenliang/info-manage](https://github.com/ischenliang/info-manage)
-- 【gitee】: [https://gitee.com/itchenliang/info-manage](https://gitee.com/itchenliang/info-manage)
+- 【Github】: [https://github.com/ischenliang/info-manage](https://github.com/ischenliang/info-manage)
+- 【Gitee】: [https://gitee.com/itchenliang/info-manage](https://gitee.com/itchenliang/info-manage)
 
 ## 演示体验
 演示地址: [http://info.itchenliang.club/](http://info.itchenliang.club/)
@@ -12,10 +10,11 @@
 演示账号: guest
 演示密码: guest
 ```
+该项目可以用于毕业设计答辩使用，有需要的朋友可以在下方找到我的联系方式！
 
 
 ## 概述
-随着信息化时代的不断发展，我们每天都在产生各种信息化数据，数据量一旦过大，大家都会出现忘记账号和密码、某些文件忘记放哪里了等问题，故开发了这款**个人信息管理系统**，它是一款基于`koa2 + vue2.7 + vite3 +   mysql`技术实现的个人日常信息数据管理系统。
+随着信息化时代的不断发展，我们每天都在产生各种信息化数据，数据量一旦过大，大家都会出现忘记账号和密码、某些文件忘记放哪里了等问题，故开发了这款**个人信息管理系统**，它是一款基于`Nodejs(koa2) + vue2.7 + vite3 + mysql`技术实现的个人日常信息数据管理系统。
 
 该系统通过页面权限和按钮权限实现了对不同角色呈现不同的页面和按钮功能，以此达到根据不同的用户的使用场景不同定制化配置页面和权限。
 
@@ -28,80 +27,12 @@
 演示密码: guest
 ```
 
-
 ## 安装部署
-### 前期准备
-1. 安装node
-> node版本 >= 18.15.0
-2. 克隆代码
-> 使用git clone命令克隆代码
-
-### 后端部署
-1. 数据库配置
-> 进入到`server/config/`目录下找到`app.config.js`文件，修改其中的数据库配置
+联系我获取详细安装部署教程，同时获取数据库初始化`sql`文件，当然也可以找我定制化开发！！！
 ```js
-module.exports = {
-  port: 3000, // 端口号
-  secret: 'a1b2c3', // jwt加密密钥
-  expiresIn: 60 * 60 * 24, // 60 * 60 * 24: 24小时 或者可以使用 1h == 60 * 60
-  mysql: {
-    host: '127.0.0.1', // 数据库ip
-    port: '3306', // 数据库端口
-    dialect: 'mysql', // 使用数据库类型，这里默认是mysql
-    database: 'info', // 数据库名称
-    user: 'root', // 数据库用户名
-    password: 'a1b2c3' // 数据库密码
-  }
-}
+微信: CL13281289371
+QQ: 1825956830
 ```
-2. 依赖安装
-```sh
-cd server
-npm install
-```
-3. 启动应用
-```sh
-node app.js
-# 或者使用npm scripts启动
-npm run start
-```
-4. 部署到服务器
-> 由于我们这里是node项目，故而不需要再次打包，只需要将server目录拷贝到服务器里，修改数据库配置、启用端口等信息，然后再执行npm run start即可。
-> 当然一般在服务器上是使用`forever`或者`pm2`来启动项目。
-
-
-### 前端部署
-1. 修改后台接口地址
-> 进入到`client/public`目录下，找到`global.js`文件，修改`window.g.ip`内容
-```js
-// 全局设置
-window.g = {
-  ip: 'http://127.0.0.1:3000', // 替换成你部署的后台ip地址和端口
-  github: 'https://github.com/ischenliang/info-manage',
-  gitee: 'https://gitee.com/itchenliang/info-manage',
-  doc: 'https://gitee.com/itchenliang/info-manage/doc'
-}
-
-// 用于后续图表预览时使用
-localStorage.setItem('baseUrl', window.g.ip)
-```
-2. 依赖安装
-```sh
-cd client
-npm install
-```
-3. 启动应用
-```sh
-npm run dev
-```
-4. 部署到服务器
-> 我们这里是使用的`vite + vue`开发的单页面应用，所以需要打包后再部署到服务器
-```sh
-npm run build
-```
-然后将打包后的`dist`目录下的所有文件拷贝到服务器的静态资源服务下。
-> 例如: nginx或者宝塔面包的nginx下、再或者tomcat目录下。
-> 当然为了方便部署，打包后也可以修改`dist/global.js`文件中的后台接口配置。
 
 
 ## 内置功能
