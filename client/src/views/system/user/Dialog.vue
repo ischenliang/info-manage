@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { useCrypto, useEncode64 } from '../../../utils/useCrypto'
 export default {
   props: {
     visible: Boolean,
@@ -54,7 +55,7 @@ export default {
         password: '',
         role: [],
         nickname: '用户007',
-        avatar: 'http://localhost:3000/avatar/26192b0d-9281-4363-b8c5-e05a29bef677.jpg',
+        avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80',
         status: true,
         remark: ''
       },
@@ -73,30 +74,44 @@ export default {
     },
     // 新增提交
     addSubmit () {
-      this.$http({
-        name: 'AddUser',
-        requireAuth: true,
-        data: this.form
-      }).then(res => {
-        this.$emit('submit')
-        this.close()
-        this.$notify.success(res.data.msg)
-      }).catch(error => {
-        this.$notify.error(error)
+      useCrypto(this.form.password).then(res => {
+        const { label, data: password_enc } = res
+        this.$http({
+          name: 'AddUser',
+          requireAuth: true,
+          data: {
+            ...this.form,
+            password: password_enc,
+            label
+          }
+        }).then(res => {
+          this.$emit('submit')
+          this.close()
+          this.$notify.success(res.data.msg)
+        }).catch(error => {
+          this.$notify.error(error)
+        })
       })
     },
     // 编辑提交
     editSubmit () {
-      this.$http({
-        name: 'UpdateUser',
-        requireAuth: true,
-        data: this.form
-      }).then(res => {
-        this.$emit('submit')
-        this.close()
-        this.$notify.success(res.data.msg)
-      }).catch(error => {
-        this.$notify.error(error)
+      useCrypto(this.form.password).then(res => {
+        const { label, data: password_enc } = res
+        this.$http({
+          name: 'UpdateUser',
+          requireAuth: true,
+          data: {
+            ...this.form,
+            password: password_enc,
+            label
+          }
+        }).then(res => {
+          this.$emit('submit')
+          this.close()
+          this.$notify.success(res.data.msg)
+        }).catch(error => {
+          this.$notify.error(error)
+        })
       })
     },
     // 提交中间件

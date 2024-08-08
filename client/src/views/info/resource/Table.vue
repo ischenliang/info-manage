@@ -166,6 +166,7 @@
 <script>
 import folder from './icon/folder.png'
 import file from './icon/file.png'
+import { CRYPTO_PADDING } from '../../../global.config'
 export default {
   name: 'ResourceTable',
   props: {
@@ -353,7 +354,7 @@ export default {
         requireAuth: true,
         params: {
           path: row.path,
-          token: this.$Cookies.get('token')
+          token: this.$Cookies.get(CRYPTO_PADDING.token)
         },
         headers: {
           'Content-Type': 'application/octet-stream'

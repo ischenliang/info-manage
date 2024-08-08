@@ -171,6 +171,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { CRYPTO_PADDING } from '../global.config'
 export default {
   data () {
     return {
@@ -217,7 +218,7 @@ export default {
       del_all_tag: 'tagsview/del_all_tag'
     }),
     logout () {
-      this.$Cookies.remove('token')
+      this.$Cookies.remove(CRYPTO_PADDING.token)
       this.$Cookies.remove('uid')
       this.clear_info()
       this.del_all_tag()

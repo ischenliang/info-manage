@@ -23,6 +23,7 @@
 
 <script>
 import CenterLayout from './CenterLayout.vue'
+import { useCrypto, useEncode64 } from '../utils/useCrypto'
 export default {
   components: {
     CenterLayout
@@ -61,40 +62,41 @@ export default {
     }
   },
   methods: {
+    setCookie (key, value) {
+      this.$Cookies.set(key, value, {
+        expires: this.expires,
+        sameSite: 'lax'
+      })
+    },
     // 登录按钮点击
     login () {
-      const formData = new FormData()
-      formData.append('username', this.form.username)
-      formData.append('password', this.form.password)
       // 获取登录表单实例,验证表单通过
       this.$refs.formRef.validate(valid => {
         if (!valid) {
           this.$msg.error('请按照要求填写表单')
         } else {
           this.loading = true
-          this.$http({
-            name: 'Login',
-            data: formData,
-            requireAuth: false
-          }).then(res => {
-            this.$Cookies.set('token', res.data.data.token, {
-              expires: this.expires,
-              sameSite: 'lax'
+          useCrypto(this.form.password).then(res => {
+            const { label, data: password_enc } = res
+            const username_enc = useEncode64(this.form.username)
+            this.$http({
+              name: 'Login',
+              data: {
+                username: username_enc,
+                password: password_enc,
+                label: label
+              },
+              requireAuth: false
+            }).then(res => {
+              this.setCookie('uid', res.data.data.id)
+              this.setCookie('user', JSON.stringify(res.data.data))
+              this.$router.push({ path: this.path })
+              this.$notify.success(res.data.msg)
+            }).catch(error => {
+              this.$notify.error(error)
+            }).finally(() => {
+              this.loading = false
             })
-            this.$Cookies.set('uid', res.data.data.user.id, {
-              expires: this.expires,
-              sameSite: 'lax'
-            })
-            this.$Cookies.set('user', JSON.stringify(res.data.data.user), {
-              expires: this.expires,
-              sameSite: 'lax'
-            })
-            this.$router.push({ path: this.path })
-            this.$notify.success(res.data.msg)
-          }).catch(error => {
-            this.$notify.error(error)
-          }).finally(() => {
-            this.loading = false
           })
         }
       })

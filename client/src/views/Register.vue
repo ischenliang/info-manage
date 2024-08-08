@@ -26,6 +26,7 @@
 
 <script>
 import CenterLayout from './CenterLayout.vue'
+import { useCrypto, useEncode64 } from '../utils/useCrypto'
 export default {
   components: {
     CenterLayout
@@ -90,17 +91,26 @@ export default {
           this.$msg.error('请按照要求填写表单')
         } else {
           this.loading = true
-          this.$http({
-            name: 'Register',
-            data: this.form,
-            requireAuth: false
-          }).then(res => {
-            this.$router.push({ path: '/login' })
-            this.$notify.success('账号注册成功！')
-          }).catch(error => {
-            this.$notify.error(error)
-          }).finally(() => {
-            this.loading = false
+          useCrypto(this.form.password).then(res => {
+            const { label, data: password_enc } = res
+            const username_enc = useEncode64(this.form.username)
+            this.$http({
+              name: 'Register',
+              data: {
+                nickname: this.form.nickname,
+                password: password_enc,
+                label,
+                username: username_enc
+              },
+              requireAuth: false
+            }).then(res => {
+              this.$router.push({ path: '/login' })
+              this.$notify.success('账号注册成功！')
+            }).catch(error => {
+              this.$notify.error(error)
+            }).finally(() => {
+              this.loading = false
+            })
           })
         }
       })

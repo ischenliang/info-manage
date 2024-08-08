@@ -9,6 +9,8 @@ const token = require('jsonwebtoken')
 loadMiddleware(app)
 require('./models/Middle')
 const { userApi } = require('./service/user')
+const { NOT_AUTH, REG_PREFIX, CRYPTO_PADDING: { token: token_prefix } } = require('./global.config')
+const { showLog } = require('./utils/log')
 
 
 // 获取客户端IP地址
@@ -38,28 +40,30 @@ function getClientIP(req) {
  * 4.根据authorization获取里面的用户信息
  *    将用户信息存储到ctx中
 */
-const notauth = ['/api/login', '/api/register', '/api/test/download', '/api/resource/download', '/api/project/download', '/api/pimage/download', '/api/tool/dns', '/api/tool/baidu']
 app.use(async (ctx, next) => {
+  showLog(ctx)
   try {
-    if (notauth.includes(ctx.request.url.split('?')[0])) {
-      ctx.req_ip = getClientIP(ctx.req)
-      // 本地开发时需要启用该参数
-      // ctx.req_ip = '218.88.29.98'
+    ctx.req_ip = getClientIP(ctx.req)
+    if (NOT_AUTH.includes(ctx.request.url.split('?')[0])) {
       await next()
     } else {
       const url = ctx.req.url
+      // 处理静态资源的
       if (url.indexOf('/api') === -1) {
         ctx.status = 200
         ctx.type = 'image/png'
       } else {
-        if (ctx.request.headers.authorization === undefined) {
+        // 处理token
+        const authorization = ctx.request.headers[token_prefix]
+        if (authorization === undefined) {
           ctx.throw(401, resConfig['401'])
         } else {
-          try {
-            ctx.uid = token.verify(ctx.request.headers.authorization, appConfig.secret).data
+          const payload = token.verify(authorization, appConfig.secret)
+          if (payload.req_ip === getClientIP(ctx.req)) {
+            ctx.uid = payload.data
             await next()
-          } catch (error) {
-            ctx.throw(401, error)
+          } else {
+            ctx.throw(401, resConfig['401'])
           }
         }
       }
@@ -78,37 +82,42 @@ app.use(async (ctx, next) => {
  * 3. 根据角色获取对应的Api
 */
 app.use(async (ctx, next) => {
-  ctx.compress = true
-  if (notauth.includes(ctx.request.url.split('?')[0])) {
-    await next()
-  } else {
-    let url = ctx.request.url.split('?')[0]
-    const regx = ['detail', 'deleteById', 'userMenu', 'userApi', 'roleApi', 'roleMenu', 'resetPwd', 'moveOrder', 'logs']
-    regx.forEach(item => {
-      if (url.indexOf(item) !== -1) {
-        url = url.replace(new RegExp(`${item}\/.*`), `${item}/:id`)
+  try {
+    ctx.compress = true
+    const { url: request_url, method } = ctx.request
+    let url = request_url.split('?')[0]
+    if (!NOT_AUTH.includes(url)) {
+      REG_PREFIX.forEach(item => {
+        if (url.indexOf(item) !== -1) {
+          url = url.replace(new RegExp(`${item}\/.*`), `${item}/:id`)
+        }
+      })
+      // 判断是否拥有权限
+      const apis = await userApi(ctx.uid)
+      const index = apis.findIndex(item => item.path === url && item.type.toUpperCase() === method.toUpperCase())
+      // 是否拥有删除日志权限，拥有即代表可以查看所有日志
+      const lookAllLogs = apis.some(item => item.path === '/api/log/deleteById/:id')
+      ctx.state.lookAllLogs = lookAllLogs
+      if (index !== -1) {
+        await next()
+      } else {
+        ctx.body = {
+          code: 401,
+          data: resConfig['401'],
+          msg: resConfig['401']
+        }
       }
-    })
-    const apis = await userApi(ctx.uid)
-    const index = apis.findIndex(item => item.path === url && item.type.toUpperCase() === ctx.request.method.toUpperCase())
-    // 是否拥有删除日志权限，拥有即代表可以查看所有日志
-    const lookAllLogs = apis.some(item => item.path === '/api/log/deleteById/:id')
-    ctx.state.lookAllLogs = lookAllLogs
-    if (index !== -1) {
-      await next()
     } else {
-      ctx.body = {
-        code: 401,
-        data: resConfig['401'],
-        msg: resConfig['401']
-      }
+      await next()
     }
+  } catch (error) {
+    console.log(error)
+    ctx.throw(401, '报错啦')
   }
 })
 
 // 全局错误处理
 app.on('error', async(error, ctx) => {
-  // ctx.status = error.status ? error.status : 500
   const code = error.status ? error.status : 500
   ctx.body = {
     code: code,

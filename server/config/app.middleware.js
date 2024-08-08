@@ -1,7 +1,7 @@
 // 静态文件处理
 const static = require('koa-static')
 // 跨域处理
-const cors = require('koa2-cors')
+const cors = require('@koa/cors')
  // 路由
 const router = require('koa-router')
 // 路由自动加载
@@ -15,15 +15,25 @@ const parameter = require('koa-parameter')
 // 数据压缩
 const compress = require('koa-compress')
 const path = require('path')
+const { CRYPTO_PADDING } = require('../global.config')
 
 
 // 加载中间件
 function loadMiddleware (app) {
   app.use(static(path.join(__dirname, '../public')))
+  // app.use(cors({
+  //   allowMethods: ['GET', 'POST', 'DELETE', 'PUT'],
+  //   allowHeaders: ['Content-Type', 'Authorization', 'Accept', CRYPTO_PADDING.token],
+  //   // 允许headers跨域
+  //   exposeHeaders: [CRYPTO_PADDING.token] 
+  // }))
   app.use(cors({
-    credentials: true,
-    allowMethods: ['GET', 'POST', 'DELETE', 'PUT'],
-    allowHeaders: ['Content-Type', 'Authorization', 'Accept']
+    origin: '*',
+    maxAge: 5, // 指定本次预检请求的有效期，单位为秒。
+    credentials: true, // 是否允许发送Cookie
+    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], //设置所允许的HTTP请求方法'
+    allowHeaders: ['Content-Type', 'Authorization', 'Accept', CRYPTO_PADDING.token], //设置服务器支持的所有头信息字段
+    exposeHeaders: [CRYPTO_PADDING.token] //设置获取其他自定义字段
   }))
   // 解析request body
   app.use(koaBody({

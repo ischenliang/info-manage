@@ -17,6 +17,7 @@ const ProjectDocument = require('./ProjectDocument')
 const Chart = require('./Chart')
 const Dashboard = require('./Dashboard')
 const Log = require('./Log')
+const Crypto = require('./Crypto')
 
 // 用户角色表
 User.belongsToMany(Role, { through: 'user_role', as:'ur' })
@@ -96,5 +97,6 @@ module.exports = {
   ProjectDocument,
   Dashboard,
   Chart,
-  Log
+  Log,
+  Crypto
 }

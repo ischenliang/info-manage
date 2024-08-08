@@ -80,6 +80,7 @@
 </template>
 
 <script>
+import { CRYPTO_PADDING} from '../../../global.config'
 export default {
   name: 'ProjectList',
   data () {
@@ -135,7 +136,7 @@ export default {
         name: 'DownloadProject',
         params: {
           id: row.id,
-          token: this.$Cookies.get('token')
+          token: this.$Cookies.get(CRYPTO_PADDING.token)
         }
       }).then(res => {
         window.open(`${res.config.url}?id=${res.config.params.id}&token=${res.config.params.token}`, '_self')

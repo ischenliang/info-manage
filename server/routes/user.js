@@ -55,7 +55,7 @@ router.put('/update', async(ctx, next) => {
     ctx.body = {
       code: 200,
       msg: resConfig[ctx.request.method],
-      data: await update(ctx.request.body)
+      data: await update(ctx.request.body, ctx.req_ip)
     }
   } catch (error) {
     error.status = error.status ? error.status : 500

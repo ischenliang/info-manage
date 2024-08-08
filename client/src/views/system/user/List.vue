@@ -96,6 +96,7 @@
 
 <script>
 import ComDialog from './Dialog'
+import { useCrypto } from '../../../utils/useCrypto'
 export default {
   name: 'SystemUser',
   components: {
@@ -186,20 +187,25 @@ export default {
     },
     // 重置
     resetPwd (row) {
-      const role = []
-      row.ur.forEach(item => role.push(item.id))
-      this.$set(row, 'role', role)
-      row.password = '111111'
-      this.$http({
-        name: 'UpdateUser',
-        requireAuth: true,
-        data: row
-      }).then(res => {
-        this.listGet()
-        this.$notify.success(res.data.msg)
-      }).catch(error => {
-        this.$notify.error(error)
-      })
+      this.$confirm.warning('确定要重置该用户密码吗？').then(res => {
+        useCrypto('111111').then(res => {
+          const { label, data: password_enc } = res
+          this.$http({
+            name: 'UpdateUser',
+            requireAuth: true,
+            data: {
+              password: password_enc,
+              label: label,
+              id: row.id
+            }
+          }).then(res => {
+            this.listGet()
+            this.$notify.success(res.data.msg)
+          }).catch(error => {
+            this.$notify.error(error)
+          })
+        })
+      }).catch(() => {})
     },
     // 排序回调
     sortChange (row) {

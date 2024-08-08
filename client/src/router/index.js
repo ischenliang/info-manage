@@ -4,6 +4,7 @@ import Cookies from 'js-cookie'
 import store from '@/store'
 import { Message } from 'element-ui'
 import routeComponentMap from '@/utils/routeComponentMap'
+import { CRYPTO_PADDING } from '../global.config'
 
 Vue.use(VueRouter)
 
@@ -109,7 +110,7 @@ export function parseRoutes (routes) {
 */
 router.beforeEach(async (to, from, next) => {
   // 使用localStorage 还是使用 Cookies
-  const token = Cookies.get('token')
+  const token = Cookies.get(CRYPTO_PADDING.token)
   const uid = Cookies.get('uid')
   const user = Cookies.get('user')
   const perms = store.getters.perms
@@ -143,7 +144,7 @@ router.beforeEach(async (to, from, next) => {
       }
     } catch (error) {
       // 清空数据
-      Cookies.remove('token')
+      Cookies.remove(CRYPTO_PADDING.token)
       Cookies.remove('uid')
       Cookies.remove('user')
       store.dispatch('user/CLEAR_INFO')

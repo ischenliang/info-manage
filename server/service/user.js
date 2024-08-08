@@ -7,6 +7,7 @@ const { getApiTree } = require('./Api')
 const moment = require('moment')
 const fse = require('fs-extra')
 const path = require('path')
+const { decodeData } = require('../utils/crypto')
 
 /**
  * 新增
@@ -71,22 +72,27 @@ async function deleteById (id) {
  *  1.更新用户角色：先删除该用户的角色，然后再重新新增
  *  2.更新用户
  */
-async function update (user) {
+async function update (user, req_ip) {
   try {
-    // 删除用户角色
-    await sequelize.query(`delete from user_role where userId='${user.id}'`)
-    // 再重新新增用户角色
-    let values = []
-    user.role.forEach(item => {
-      values.push(`('${user.id}', '${item}')`)
-    })
-    await sequelize.query(`insert into user_role (userId, roleId) values${values.join(',')}`)
+    const { id, role, password, label } = user
+    if (id && role) {
+      // 删除用户角色
+      await sequelize.query(`delete from user_role where userId='${id}'`)
+      // 再重新新增用户角色
+      let values = []
+      role.forEach(item => {
+        values.push(`('${id}', '${item}')`)
+      })
+      await sequelize.query(`insert into user_role (userId, roleId) values${values.join(',')}`)
+    }
     // 更新用户
-    if (user.password !== '' && user.password !== undefined && user.password !== null) {
-      user.password = MD5(user.password)
-    } else {
-      // 删除password属性
-      delete user.password
+    if (password) {
+      const { data: password_dec, error } = await decodeData(password, label, req_ip)
+      if (error) {
+        throw error
+      } else {
+        user.password = MD5(password_dec)
+      }
     }
     return await User.update(user,{
       where: {
