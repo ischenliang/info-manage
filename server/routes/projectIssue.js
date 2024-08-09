@@ -1,10 +1,6 @@
 const router = require('koa-router')()
 router.prefix('/api/pissue')
 const resConfig = require('../config/app.res')
-const appConfig = require('../config/app.config')
-const send = require('koa-send')
-const token = require('jsonwebtoken')
-const path = require('path')
 const { add, deleteById, detail, list, update } = require('../service/projectIssue')
 
 // 新增

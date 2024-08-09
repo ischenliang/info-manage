@@ -1,6 +1,5 @@
-const { ApiType, Api } = require('../models/Middle')
+const { ApiType } = require('../models/Middle')
 const { Op } = require("sequelize")
-const sequelize = require('../utils/seq')
 const moment = require('moment')
 
 // 新增

@@ -6,7 +6,6 @@ const send = require('koa-send')
 const token = require('jsonwebtoken')
 const path = require('path')
 const { add, deleteById, detail, list, update } = require('../service/projectImage')
-const { Project } = require('../models/Middle')
 
 // 新增
 router.post('/upload', async(ctx, next) => {

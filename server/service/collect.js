@@ -1,8 +1,6 @@
 const { CollectType, Collect } = require('../models/Middle')
 const { Op } = require("sequelize")
-const sequelize = require('../utils/seq')
 const moment = require('moment')
-const { model } = require('../utils/seq')
 
 // 新增
 async function add (collect) {

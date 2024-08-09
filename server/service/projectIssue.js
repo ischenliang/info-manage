@@ -1,10 +1,6 @@
-const { Project, ProjectImage, ProjectIssue } = require('../models/Middle')
+const { ProjectIssue } = require('../models/Middle')
 const { Op } = require("sequelize")
-const sequelize = require('../utils/seq')
 const moment = require('moment')
-const util = require('../utils/util')
-const path = require('path')
-const fse = require('fs-extra')
 
 // 新增
 async function add (obj) {

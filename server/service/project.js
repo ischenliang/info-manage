@@ -1,6 +1,5 @@
 const { Project, ProjectImage } = require('../models/Middle')
 const { Op } = require("sequelize")
-const sequelize = require('../utils/seq')
 const moment = require('moment')
 const util = require('../utils/util')
 const path = require('path')

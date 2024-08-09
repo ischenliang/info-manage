@@ -1,6 +1,5 @@
 const { AccountTag } = require('../models/Middle')
-const { Op, Sequelize } = require("sequelize")
-const sequelize = require('../utils/seq')
+const { Op } = require("sequelize")
 const moment = require('moment')
 const seq = require('../utils/seq')
 

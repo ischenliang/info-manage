@@ -1,6 +1,5 @@
 const { Task } = require('../models/Middle')
 const { Op } = require("sequelize")
-const sequelize = require('../utils/seq')
 const fse = require('fs-extra')
 const path = require('path')
 const readline = require('readline')
