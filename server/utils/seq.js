@@ -1,5 +1,4 @@
 const { Sequelize } = require('sequelize')
-const logger = require('../utils/log')
 const config = require('../config/app.config')
 
 const conf = {
@@ -7,31 +6,24 @@ const conf = {
   port: config.mysql.port,
   dialect: config.mysql.dialect,
   define: {
-    timestamps: false
+    timestamps: false // 不自动创建createAt和updateAt时间字段
   },
-  logging: sql => {
-    logger.logger.info(sql)
+  logging: sql => { // 不让sql语句在命令行终端输出
+    // console.log(sql)
   }
 }
 const seq = new Sequelize(config.mysql.database, config.mysql.user, config.mysql.password, conf)
 // 测试连接是否成功
-// seq.authenticate()
-// .then(() => {
-//   console.log('数据库连接成功')
-// }).catch(() => {
-//   console.log('数据库连接失败')
-// })
+// seq.authenticate().then().catch()
 
 // 根据 model 自动创建表
 seq
-  .sync()
-  .then(() => {
-    logger.logger.info('数据表创建成功')
+  .sync({
+    alter: true, // alter：为true时更新表字段
+    force: false // force:为true时强制删除表
   })
-  .catch(error => {
-    logger.logger.info('数据表创建失败：' + error.message)
-  })
-// 使用参考：https://www.cnblogs.com/amujoe/p/9983385.html
-// 参考：https://www.sequelize.com.cn/core-concepts/getting-started
+  .then()
+  .catch()
+
 
 module.exports = seq

@@ -1,7 +1,0 @@
-@mixin heatmapSlider() {
-  @include smartMappingSlider(esri-heatmap-slider);
-}
-
-@if $include_HeatmapSlider == true {
-  @include heatmapSlider();
-}

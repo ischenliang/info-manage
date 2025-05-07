@@ -1,0 +1,234 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,body,#app{
+  height: 100%;
+  width: 100%;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  font-size: 14px;
+}
+.app-wrapper{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  // 侧边栏目
+  .sidebar-container{
+    height: 100%;
+    flex-shrink: 0;
+    overflow: hidden;
+    background-color: #304156;
+    display: flex;
+    flex-direction: column;
+    .sidebar-logo-container{
+      position: relative;
+      width: 100%;
+      height: 50px;
+      line-height: 50px;
+      flex-shrink: 0;
+      // background-color: rgb(48, 65, 86);
+      background-color: #324761;
+      text-align: center;
+      overflow: hidden;
+      justify-content: center;
+      align-items: center;
+      color: #d1d9e4;
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      // display: none;
+      .sidebar-logo-link{
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        &:link,&:visited,&:hover,&:active {
+          text-decoration: none;
+          color: #fff;
+        }
+        img.sidebar-logo {
+          width: 40px;
+          // height: 40px;
+        }
+        span.sidebar-title {
+          color: #fff;
+          font-weight: 600;
+          font-size: 16px;
+          padding-top: 6px;
+        }
+      }
+    }
+    .el-scrollbar{
+      width: 100%;
+      overflow: auto;
+      flex: 1 1 auto;
+    }
+    &.has-logo .sidebar-logo-container {
+      display: flex;
+    }
+    &.has-logo .el-scrollbar{
+      height: calc(100% - 50px);
+    }
+    // 解决菜单折叠时文字未隐藏bug
+    .el-menu--collapse .el-submenu__title span{
+      height: 0;
+      width: 0;
+      overflow: hidden;
+      visibility: hidden;
+      display: inline-block;
+    }
+    .el-menu--collapse .el-submenu__icon-arrow{
+      display: none;
+    }
+  }
+  // 右边内容区
+  .main-container{
+    flex: 1 1 auto;
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    // 头部区域
+    .app-header{
+      width: 100%;
+      flex-shrink: 0;
+      background-color: #ffffff;
+      // 顶部导航栏
+      .app-navbar{
+        width: 100%;
+        height: 50px;
+        overflow: hidden;
+        position: relative;
+        background: #fff;
+        box-shadow: 0 1px 4px rgba(0,21,41,.08);
+        display: flex;
+        .app-hamburger {
+          width: 50px;
+          height: 100%;
+          flex-shrink: 0;
+          cursor: pointer;
+          background: #fff;
+          transition: background .3s;
+          padding: 0px 15px;
+          &:hover {
+            background: #f9f9f9;
+          }
+          span {
+            font-size: 18px;
+            line-height: 50px;
+          }
+        }
+        .app-breadbrumb {
+          height: 100%;
+          flex: 1 1 auto;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          flex-wrap: nowrap;
+          margin-left: 8px;
+        }
+        .app-rightmenu {
+          // width: 200px;
+          height: 100%;
+          flex-shrink: 0;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+        }
+      }
+      // tags标签栏
+      .app-tagsview{
+        height: 34px;
+        width: 100%;
+        background: #fff;
+        border-bottom: 1px solid #d8dce5;
+        overflow: hidden;
+        box-shadow: 0 1px 3px 0 rgba(0,0,0,.12), 0 0 3px 0 rgba(0,0,0,.04);
+      }
+    }
+    // 主体内容区域
+    .app-main{
+      width: 100%;
+      flex: 1 1 auto;
+      background-color: #f0f2f5;
+      overflow: auto;
+      // 每个页面
+      .app-page{
+        // padding: 12px 15px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        .toolbar{
+          width: 100%;
+          flex: 0 0 3.5rem;
+          // padding: 0 0.25rem 0.5rem 0.25rem;
+          padding: 12px 15px 0.5rem 15px;
+          display: flex;
+          flex-shrink: 0;
+          align-items: center;
+          flex-wrap: nowrap;
+          .el-input, .el-select {
+            display: flex;
+            flex: 0 1 12.5rem;
+            min-width: 6rem;
+            padding: 0 0.25rem;
+          }
+          .el-input:first-child, .el-select:first-child{
+            padding-left: 0;
+          }
+        }
+        .table{
+          width: 100%;
+          background: #fff;
+          overflow: auto;
+          flex: 1 1 auto;
+          padding: 0 15px 0.5rem 15px;
+          .el-table__body-wrapper{
+            height: calc(100% - 59px) !important;
+          }
+        }
+        &.special {
+          overflow: auto;
+          .table {
+            flex: 0 0 auto;
+          }
+        }
+        .pagination {
+          width: 100%;
+          flex: 0 0 2.5rem;
+          padding: 0.625rem 0.25rem 0.625rem 0.25rem;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+        }
+      }
+    }
+  }
+}
+
+.v-scrollbar {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  &::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 6px;/*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+  }
+  &::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 6px;
+    // box-shadow: inset 0 0 5px #ddd;
+    background: #c3c3c3;
+  }
+  /*滚动条里面轨道*/
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    // border-radius: 5px;
+    background: #e5e5e5;
+  }
+}
